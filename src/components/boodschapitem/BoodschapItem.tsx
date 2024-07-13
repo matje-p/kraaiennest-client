@@ -52,7 +52,7 @@ const BoodschapItem: React.FC<BoodschapItemProps> = ({
 
       try {
         setIsLoading(true);
-        await editBoodschapInBackend(id, { item: text });
+        await editBoodschapInBackend(id, text);
         setIsLoading(false);
       } catch (error) {
         setError("Failed to update the item.");

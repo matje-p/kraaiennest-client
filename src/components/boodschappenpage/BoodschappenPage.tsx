@@ -14,7 +14,6 @@ const BoodschappenPage: React.FC = () => {
   const { user } = useAuth0();
 
   const [boodschappen, setBoodschappen] = useState<BoodschapProps[]>([]);
-
   const [changeLog, setChangeLog] = useState<BoodschapProps[]>([]);
 
   useEffect(() => {
@@ -34,7 +33,7 @@ const BoodschappenPage: React.FC = () => {
   const addBoodschap = async () => {
     const newBoodschap = {
       item: "Voer boodschap in", // Customize as needed
-      userAdded: user?.name, // Customize as needed
+      userAdded: String(user?.name), // Customize as needed
       userDone: "", // Customize as needed
       dateAdded: new Date(), // Assuming randDate() generates a date
       dateDone: new Date(), // Assuming randDate() generates a date

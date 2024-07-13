@@ -6,13 +6,13 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/items
 
 
 export const fetchBoodschappenHistory = async (): Promise<BoodschapProps[]> => {
-  const response = await axios.get(API_URL);
+  const response = await axios.get<BoodschapProps[]>(API_URL);
   console.log('API: Fetched data:', response.data); // Log fetched data
   return response.data;
 };
 
 // Function to add a new boodschap to the backend
-export const addBoodschapToBackend = async (boodschap: any) => {
+export const addBoodschapToBackend = async (boodschap: BoodschapProps) => {
   try {
     console.log('API: Adding new boodschap:', boodschap.id);
     const response = await axios.post(API_URL, boodschap);
@@ -24,10 +24,10 @@ export const addBoodschapToBackend = async (boodschap: any) => {
 };
 
 // Function to edit an existing boodschap
-export const editBoodschapInBackend = async (id: string, updatedBoodschap: any) => {
+export const editBoodschapInBackend = async (id: string, updatedText: any) => {
   try {
-    console.log('API: Updating data for ID:', id, updatedBoodschap);
-    const response = await axios.put(`${API_URL}/${id}`, updatedBoodschap);
+    console.log('API: Updating data for ID:', id, updatedText);
+    const response = await axios.put(`${API_URL}/${id}`, updatedText);
     return response.data;
   } catch (error) {
     console.error('API: Error editing boodschap:', error);
@@ -59,14 +59,3 @@ export const markBoodschapAsDoneInBackend = async (id: string, userDone: string,
   }
 };
 
-// Function to undo boodschappen in the backend
-export const undoBoodschappenInBackend = async (prevBoodschappen:BoodschapProps[]) => {
-  try {
-    console.log('API: Reverting to previous state:', prevBoodschappen);
-    const response = await axios.post(`${API_URL}/undo`, { prevBoodschappen });
-    return response.data;
-  } catch (error) {
-    console.error('API: Error undoing boodschappen:', error);
-    throw error;
-  }
-};
