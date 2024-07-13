@@ -8,17 +8,22 @@ import {
   deleteBoodschapFromBackend,
   markBoodschapAsDoneInBackend,
 } from "../../api"; // Import the delete function
+import { set } from "mongoose";
 
 interface BoodschapRowProps {
   boodschappen: BoodschapProps[];
   updateBoodschappen: (newBoodschappen: BoodschapProps[]) => void;
   id: string;
+  changeLog: BoodschapProps[];
+  setChangeLog: (changeLog: BoodschapProps[]) => void;
 }
 
 const BoodschapRow = ({
   boodschappen,
   updateBoodschappen,
   id,
+  changeLog,
+  setChangeLog,
 }: BoodschapRowProps) => {
   console.log("Rendering BoodschapRow");
   const { user } = useAuth0();
@@ -33,7 +38,6 @@ const BoodschapRow = ({
   const deleteBoodschapRow = async (id: string) => {
     try {
       await deleteBoodschapFromBackend(id); // Call the API to delete the boodschap
-
       const newBoodschappen = boodschappen.filter(
         (boodschap) => boodschap.id !== id
       );
@@ -44,6 +48,7 @@ const BoodschapRow = ({
   };
 
   const handleDeleteClick = () => {
+    setChangeLog([...changeLog, boodschap]);
     deleteBoodschapRow(boodschap.id);
   };
 
@@ -59,6 +64,7 @@ const BoodschapRow = ({
     } catch (error) {
       console.error("Error marking boodschap as done:", error);
     }
+    setChangeLog([...changeLog, boodschap]);
     updateBoodschappen(newBoodschappen);
   };
 
@@ -84,6 +90,8 @@ const BoodschapRow = ({
               <BoodschapItem
                 boodschappen={boodschappen}
                 updateBoodschappen={updateBoodschappen}
+                changeLog={changeLog}
+                setChangeLog={setChangeLog}
                 id={id}
               />
             </span>

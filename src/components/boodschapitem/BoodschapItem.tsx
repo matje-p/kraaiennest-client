@@ -8,12 +8,16 @@ interface BoodschapItemProps {
   boodschappen: BoodschapProps[];
   updateBoodschappen: (newBoodschappen: BoodschapProps[]) => void;
   id: string;
+  changeLog: BoodschapProps[];
+  setChangeLog: (changeLog: BoodschapProps[]) => void;
 }
 
 const BoodschapItem: React.FC<BoodschapItemProps> = ({
   boodschappen,
   updateBoodschappen,
   id,
+  changeLog,
+  setChangeLog,
 }) => {
   console.log("Rendering BoodschapItem");
   const boodschap = boodschappen.find((boodschap) => boodschap.id === id);
@@ -43,6 +47,7 @@ const BoodschapItem: React.FC<BoodschapItemProps> = ({
       const newBoodschappen = boodschappen.map((b) =>
         b.id === id ? { ...b, item: text } : b
       );
+      setChangeLog([...changeLog, boodschap]);
       updateBoodschappen(newBoodschappen);
 
       try {

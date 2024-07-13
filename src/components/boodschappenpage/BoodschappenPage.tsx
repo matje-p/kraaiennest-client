@@ -8,6 +8,7 @@ import {
   addBoodschapToBackend,
   undoBoodschappenInBackend,
 } from "../../api"; // Import the API services
+import { set } from "mongoose";
 
 const BoodschappenPage: React.FC = () => {
   console.log("rendering BoodschappenPage");
@@ -16,6 +17,8 @@ const BoodschappenPage: React.FC = () => {
   const [boodschappenHistory, updateBoodschappenHistory] = useState<
     BoodschapProps[][]
   >([]);
+
+  const [changeLog, setChangeLog] = useState<BoodschapProps[]>([]);
 
   useEffect(() => {
     const loadBoodschappenHistory = async () => {
@@ -58,6 +61,7 @@ const BoodschappenPage: React.FC = () => {
         addedBoodschap,
       ];
       updateBoodschappen(newBoodschappen);
+      setChangeLog([...changeLog, addedBoodschap]);
     } catch (error) {
       console.error("Error adding boodschap:", error);
     }
@@ -105,12 +109,15 @@ const BoodschappenPage: React.FC = () => {
   const boodschappen =
     boodschappenHistory[boodschappenHistory.length - 1] || [];
 
+  console.log("Change log: ", changeLog);
   return (
     <>
       <BoodschappenHeader onAdd={addBoodschap} undo={undo} sort={sort} />
       <BoodschappenLijst
         boodschappen={boodschappen}
         updateBoodschappen={updateBoodschappen}
+        changeLog={changeLog}
+        setChangeLog={setChangeLog}
       />
     </>
   );

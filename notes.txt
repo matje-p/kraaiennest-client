@@ -1,6 +1,26 @@
-Use redux instead of passing the state variable all the way down?
-Add routes 
-improve layouts with responsive flex boxes etc (shift from vstack to hstack)
-Have the component as function, al other functions in the component as const
-use axios for fetch
-Use validation
+
+Boodschappen items >> in cache
+
+
+Before changing anything: 
+    1. Store the previous element and its state
+
+For undo: 
+    1. If the ID of the element does not exist: add item
+    2. If the ID of the element does exist, update the value that has changed
+    Remove the element from the previous state vector 
+
+  
+
+This should all be stored in a history object that is in cache 
+
+When an undoing an item that is added
+    delete item (...)
+    
+When undoing an item that is deleted 
+    create element and all the fields
+
+when undoing an item that is checked
+
+When undoing an item that has been edited
+

@@ -4,11 +4,15 @@ import { BoodschapProps } from "../../types/Props";
 interface BoodschappenLijstProps {
   boodschappen: BoodschapProps[];
   updateBoodschappen: (newBoodschappen: BoodschapProps[]) => void;
+  changeLog: BoodschapProps[];
+  setChangeLog: (changeLog: BoodschapProps[]) => void;
 }
 
 const BoodschappenLijst = ({
   boodschappen,
   updateBoodschappen,
+  changeLog,
+  setChangeLog,
 }: BoodschappenLijstProps) => {
   console.log("Rendering BoodschappenLijst");
   if (!boodschappen) {
@@ -24,6 +28,8 @@ const BoodschappenLijst = ({
             <BoodschapRow
               boodschappen={boodschappen}
               updateBoodschappen={updateBoodschappen}
+              changeLog={changeLog}
+              setChangeLog={setChangeLog}
               id={boodschap.id}
               key={boodschap.id}
             />
