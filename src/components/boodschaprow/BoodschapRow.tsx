@@ -8,7 +8,6 @@ import {
   deleteBoodschapFromBackend,
   markBoodschapAsDoneInBackend,
 } from "../../api"; // Import the delete function
-import { set } from "mongoose";
 
 interface BoodschapRowProps {
   boodschappen: BoodschapProps[];
@@ -89,7 +88,7 @@ const BoodschapRow = ({
             <span id="message">
               <BoodschapItem
                 boodschappen={boodschappen}
-                updateBoodschappen={updateBoodschappen}
+                setBoodschappen={setBoodschappen}
                 changeLog={changeLog}
                 setChangeLog={setChangeLog}
                 id={id}

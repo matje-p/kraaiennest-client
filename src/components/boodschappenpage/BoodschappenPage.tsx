@@ -8,7 +8,6 @@ import {
   addBoodschapToBackend,
   // undoBoodschappenInBackend,
 } from "../../api"; // Import the API services
-import { set } from "mongoose";
 
 const BoodschappenPage: React.FC = () => {
   console.log("rendering BoodschappenPage");
@@ -54,6 +53,34 @@ const BoodschappenPage: React.FC = () => {
 
   const undo = () => {
     console.log("Undoing changes");
+
+    // Check if changeLog has any entries
+    if (changeLog.length === 0) {
+      console.log("No changes to undo");
+      return;
+    }
+
+    const lastChange = changeLog[changeLog.length - 1];
+    const existingIndex = boodschappen.findIndex(
+      (boodschap) => boodschap.id === lastChange.id
+    );
+
+    setBoodschappen((prevBoodschappen) => {
+      // undoing a deletion
+      if (existingIndex === -1) {
+        return [...prevBoodschappen, lastChange];
+        // undoing a change
+      } else {
+        return prevBoodschappen.map((boodschap) =>
+          boodschap.id === lastChange.id ? lastChange : boodschap
+        );
+      }
+    });
+
+    // Remove the last object from changeLog
+    setChangeLog((prevChangeLog) =>
+      prevChangeLog.slice(0, prevChangeLog.length - 1)
+    );
   };
 
   const sort = () => {
