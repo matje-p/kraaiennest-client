@@ -15,6 +15,7 @@ const BoodschapItem: React.FC<BoodschapItemProps> = ({
   updateBoodschappen,
   id,
 }) => {
+  console.log("Rendering BoodschapItem");
   const boodschap = boodschappen.find((boodschap) => boodschap.id === id);
 
   if (!boodschap) {

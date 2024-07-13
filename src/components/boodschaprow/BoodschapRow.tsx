@@ -19,6 +19,7 @@ const BoodschapRow = ({
   updateBoodschappen,
   id,
 }: BoodschapRowProps) => {
+  console.log("Rendering BoodschapRow");
   interface User {
     name: string;
   }

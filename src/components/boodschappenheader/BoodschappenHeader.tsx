@@ -7,6 +7,7 @@ type HeaderProps = {
 };
 
 const BoodschappenHeader = ({ onAdd, undo, sort }: HeaderProps) => {
+  console.log("Rendering BoodschappenHeader");
   interface User {
     name: string;
   }

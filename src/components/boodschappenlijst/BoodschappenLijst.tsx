@@ -10,6 +10,7 @@ const BoodschappenLijst = ({
   boodschappen,
   updateBoodschappen,
 }: BoodschappenLijstProps) => {
+  console.log("Rendering BoodschappenLijst");
   if (!boodschappen) {
     console.log("No boodschappen available");
     return <div>No boodschappen available</div>;
