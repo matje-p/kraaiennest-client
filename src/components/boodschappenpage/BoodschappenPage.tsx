@@ -9,6 +9,7 @@ import {
 } from "../../api"; // Import the API services
 
 const BoodschappenPage: React.FC = () => {
+  console.log("rendering BoodschappenPage");
   interface User {
     name: string;
   }
