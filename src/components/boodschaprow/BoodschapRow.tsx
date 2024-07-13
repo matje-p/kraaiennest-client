@@ -12,7 +12,7 @@ import { set } from "mongoose";
 
 interface BoodschapRowProps {
   boodschappen: BoodschapProps[];
-  updateBoodschappen: (newBoodschappen: BoodschapProps[]) => void;
+  setBoodschappen: (boodschappen: BoodschapProps[]) => void;
   id: string;
   changeLog: BoodschapProps[];
   setChangeLog: (changeLog: BoodschapProps[]) => void;
@@ -20,7 +20,7 @@ interface BoodschapRowProps {
 
 const BoodschapRow = ({
   boodschappen,
-  updateBoodschappen,
+  setBoodschappen,
   id,
   changeLog,
   setChangeLog,
@@ -41,7 +41,7 @@ const BoodschapRow = ({
       const newBoodschappen = boodschappen.filter(
         (boodschap) => boodschap.id !== id
       );
-      updateBoodschappen(newBoodschappen);
+      setBoodschappen(newBoodschappen);
     } catch (error) {
       console.error("Error deleting boodschap:", error);
     }
@@ -65,7 +65,7 @@ const BoodschapRow = ({
       console.error("Error marking boodschap as done:", error);
     }
     setChangeLog([...changeLog, boodschap]);
-    updateBoodschappen(newBoodschappen);
+    setBoodschappen(newBoodschappen);
   };
 
   const dateAddedString = boodschap ? transformDate(boodschap.dateAdded) : "";

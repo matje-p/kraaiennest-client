@@ -6,7 +6,7 @@ import { editBoodschapInBackend } from "../../api";
 
 interface BoodschapItemProps {
   boodschappen: BoodschapProps[];
-  updateBoodschappen: (newBoodschappen: BoodschapProps[]) => void;
+  setBoodschappen: (boodschappen: BoodschapProps[]) => void;
   id: string;
   changeLog: BoodschapProps[];
   setChangeLog: (changeLog: BoodschapProps[]) => void;
@@ -14,7 +14,7 @@ interface BoodschapItemProps {
 
 const BoodschapItem: React.FC<BoodschapItemProps> = ({
   boodschappen,
-  updateBoodschappen,
+  setBoodschappen,
   id,
   changeLog,
   setChangeLog,
@@ -48,7 +48,7 @@ const BoodschapItem: React.FC<BoodschapItemProps> = ({
         b.id === id ? { ...b, item: text } : b
       );
       setChangeLog([...changeLog, boodschap]);
-      updateBoodschappen(newBoodschappen);
+      setBoodschappen(newBoodschappen);
 
       try {
         setIsLoading(true);

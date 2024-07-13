@@ -3,14 +3,14 @@ import { BoodschapProps } from "../../types/Props";
 
 interface BoodschappenLijstProps {
   boodschappen: BoodschapProps[];
-  updateBoodschappen: (newBoodschappen: BoodschapProps[]) => void;
+  setBoodschappen: (boodschappen: BoodschapProps[]) => void;
   changeLog: BoodschapProps[];
   setChangeLog: (changeLog: BoodschapProps[]) => void;
 }
 
 const BoodschappenLijst = ({
   boodschappen,
-  updateBoodschappen,
+  setBoodschappen,
   changeLog,
   setChangeLog,
 }: BoodschappenLijstProps) => {
@@ -27,7 +27,7 @@ const BoodschappenLijst = ({
           {boodschappen.map((boodschap) => (
             <BoodschapRow
               boodschappen={boodschappen}
-              updateBoodschappen={updateBoodschappen}
+              setBoodschappen={setBoodschappen}
               changeLog={changeLog}
               setChangeLog={setChangeLog}
               id={boodschap.id}

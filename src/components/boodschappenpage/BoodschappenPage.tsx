@@ -6,7 +6,7 @@ import { BoodschapProps } from "../../types/Props";
 import {
   fetchBoodschappenHistory,
   addBoodschapToBackend,
-  undoBoodschappenInBackend,
+  // undoBoodschappenInBackend,
 } from "../../api"; // Import the API services
 import { set } from "mongoose";
 
@@ -14,9 +14,7 @@ const BoodschappenPage: React.FC = () => {
   console.log("rendering BoodschappenPage");
   const { user } = useAuth0();
 
-  const [boodschappenHistory, updateBoodschappenHistory] = useState<
-    BoodschapProps[][]
-  >([]);
+  const [boodschappen, setBoodschappen] = useState<BoodschapProps[]>([]);
 
   const [changeLog, setChangeLog] = useState<BoodschapProps[]>([]);
 
@@ -24,7 +22,7 @@ const BoodschappenPage: React.FC = () => {
     const loadBoodschappenHistory = async () => {
       try {
         const initialBoodschappen = await fetchBoodschappenHistory();
-        updateBoodschappenHistory([initialBoodschappen]);
+        setBoodschappen(initialBoodschappen);
         console.log("Initial boodschappen loaded:", initialBoodschappen);
       } catch (error) {
         console.error("Error fetching boodschappen history:", error);
@@ -33,15 +31,6 @@ const BoodschappenPage: React.FC = () => {
 
     loadBoodschappenHistory();
   }, []);
-
-  const updateBoodschappen = (newBoodschappen: BoodschapProps[]) => {
-    updateBoodschappenHistory((prevHistory: BoodschapProps[][]) => {
-      const newHistory = [...prevHistory, newBoodschappen];
-      return newHistory.length > 5
-        ? newHistory.slice(newHistory.length - 5)
-        : newHistory;
-    });
-  };
 
   const addBoodschap = async () => {
     const newBoodschap = {
@@ -56,11 +45,7 @@ const BoodschappenPage: React.FC = () => {
 
     try {
       const addedBoodschap = await addBoodschapToBackend(newBoodschap);
-      const newBoodschappen = [
-        ...boodschappenHistory[boodschappenHistory.length - 1],
-        addedBoodschap,
-      ];
-      updateBoodschappen(newBoodschappen);
+      setBoodschappen([...boodschappen, addedBoodschap]);
       setChangeLog([...changeLog, addedBoodschap]);
     } catch (error) {
       console.error("Error adding boodschap:", error);
@@ -68,29 +53,12 @@ const BoodschappenPage: React.FC = () => {
   };
 
   const undo = () => {
-    if (boodschappenHistory.length > 1) {
-      const prevBoodschappenHistory = boodschappenHistory.slice(
-        0,
-        boodschappenHistory.length - 1
-      );
-      const prevBoodschappen =
-        prevBoodschappenHistory[prevBoodschappenHistory.length - 1] || [];
-      console.log("printing prev boodschappen");
-      console.log(prevBoodschappen);
-      console.log("done printing prev boodschappen");
-
-      undoBoodschappenInBackend(prevBoodschappen);
-      updateBoodschappenHistory(prevBoodschappenHistory);
-    }
+    console.log("Undoing changes");
   };
 
   const sort = () => {
-    const itemsPending = boodschappenHistory[
-      boodschappenHistory.length - 1
-    ].filter((item) => !item.done);
-    const itemsCompleted = boodschappenHistory[
-      boodschappenHistory.length - 1
-    ].filter((item) => item.done);
+    const itemsPending = boodschappen.filter((item) => !item.done);
+    const itemsCompleted = boodschappen.filter((item) => item.done);
 
     itemsPending.sort(
       (item1, item2) =>
@@ -103,11 +71,8 @@ const BoodschappenPage: React.FC = () => {
     );
 
     const sortedBoodschappen = itemsPending.concat(itemsCompleted);
-    updateBoodschappen(sortedBoodschappen);
+    setBoodschappen(sortedBoodschappen);
   };
-
-  const boodschappen =
-    boodschappenHistory[boodschappenHistory.length - 1] || [];
 
   console.log("Change log: ", changeLog);
   return (
@@ -115,7 +80,7 @@ const BoodschappenPage: React.FC = () => {
       <BoodschappenHeader onAdd={addBoodschap} undo={undo} sort={sort} />
       <BoodschappenLijst
         boodschappen={boodschappen}
-        updateBoodschappen={updateBoodschappen}
+        setBoodschappen={setBoodschappen}
         changeLog={changeLog}
         setChangeLog={setChangeLog}
       />
