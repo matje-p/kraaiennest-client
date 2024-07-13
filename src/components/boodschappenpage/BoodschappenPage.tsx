@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import BoodschappenHeader from "../boodschappenheader/BoodschappenHeader";
 import BoodschappenLijst from "../boodschappenlijst/BoodschappenLijst";
 import { BoodschapProps } from "../../types/Props";
-import { useAuth0 } from "@auth0/auth0-react";
 import {
   fetchBoodschappenHistory,
   addBoodschapToBackend,
@@ -10,7 +9,14 @@ import {
 } from "../../api"; // Import the API services
 
 const BoodschappenPage: React.FC = () => {
-  const { user } = useAuth0();
+  interface User {
+    name: string;
+  }
+
+  const user: User = {
+    name: "Matthias",
+  };
+
   const [boodschappenHistory, updateBoodschappenHistory] = useState<
     BoodschapProps[][]
   >([]);
