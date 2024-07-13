@@ -1,10 +1,10 @@
 import { createBrowserRouter, RouteObject } from "react-router-dom";
-import BoodschappenPage from "../components/boodschappenpage/BoodschappenPage";
+import BoodschappenPageOverall from "../components/boodschappenpageoverall/BoodschappenPageOverall";
 
 const routes: RouteObject[] = [
   {
     path: "/",
-    element: <BoodschappenPage />,
+    element: <BoodschappenPageOverall />,
   },
 ];
 
