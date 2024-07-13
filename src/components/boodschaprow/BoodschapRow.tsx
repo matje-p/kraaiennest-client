@@ -1,4 +1,5 @@
 import React from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 import BoodschapItem from "../boodschapitem/BoodschapItem";
 import styles from "./BoodschapRow.module.scss";
 import { BoodschapProps } from "../../types/Props";
@@ -20,13 +21,7 @@ const BoodschapRow = ({
   id,
 }: BoodschapRowProps) => {
   console.log("Rendering BoodschapRow");
-  interface User {
-    name: string;
-  }
-
-  const user: User = {
-    name: "Matthias",
-  };
+  const { user } = useAuth0();
 
   const boodschap = boodschappen.find((boodschap) => boodschap.id === id);
 

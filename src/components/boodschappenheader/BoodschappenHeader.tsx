@@ -1,4 +1,5 @@
 import styles from "./BoodschappenHeader.module.scss";
+import { useAuth0, LogoutOptions } from "@auth0/auth0-react";
 
 type HeaderProps = {
   onAdd: () => void; // Assuming onAdd is a function that takes no arguments and returns nothing
@@ -8,15 +9,11 @@ type HeaderProps = {
 
 const BoodschappenHeader = ({ onAdd, undo, sort }: HeaderProps) => {
   console.log("Rendering BoodschappenHeader");
-  interface User {
-    name: string;
-  }
-
-  const user: User = {
-    name: "Matthias",
-  };
-
-  const handleLogout = () => console.log("placeholder: logunt");
+  const { logout, user } = useAuth0();
+  const handleLogout = () =>
+    logout({
+      returnTo: window.location.origin,
+    } as LogoutOptions);
 
   return (
     <header

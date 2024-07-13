@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 import BoodschappenHeader from "../boodschappenheader/BoodschappenHeader";
 import BoodschappenLijst from "../boodschappenlijst/BoodschappenLijst";
 import { BoodschapProps } from "../../types/Props";
@@ -10,13 +11,7 @@ import {
 
 const BoodschappenPage: React.FC = () => {
   console.log("rendering BoodschappenPage");
-  interface User {
-    name: string;
-  }
-
-  const user: User = {
-    name: "Matthias",
-  };
+  const { user } = useAuth0();
 
   const [boodschappenHistory, updateBoodschappenHistory] = useState<
     BoodschapProps[][]
