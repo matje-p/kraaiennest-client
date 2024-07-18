@@ -24,7 +24,8 @@ const useAddBoodschap = () => {
           boodschappen?.map((todo) => (todo === newBoodschap ? savedBoodschap : todo))
         );
       },
-      onError: (error, newBoodschap, context) => {
+      onError: (error, _, context) => {
+        console.log(error)
         if (!context) return;
         queryClient.setQueryData<Boodschap[]>(CACHE_KEY_BOODSCHAPPEN, context.previousBoodschaps);
       },
