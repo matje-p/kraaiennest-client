@@ -1,4 +1,4 @@
-export interface BoodschapProps {
+export interface Boodschap {
   item: string;
   userAdded: string;
   dateAdded: Date;

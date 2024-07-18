@@ -2,25 +2,19 @@
 Boodschappen items >> in cache
 
 
-Before changing anything: 
-    1. Store the previous element and its state
+To do's: 
+React query
 
-For undo: 
-    1. If the ID of the element does not exist: add item
-    2. If the ID of the element does exist, update the value that has changed
-    Remove the element from the previous state vector 
+Remove undo button
 
-  
+Make sure that undo is reflected in backend
+Delete legacy undo function from backend
 
-This should all be stored in a history object that is in cache 
+delete and add
 
-When an undoing an item that is added
-    delete item (...)
-    
-When undoing an item that is deleted 
-    create element and all the fields
 
-when undoing an item that is checked
+In the parent: 
+Define how many rows?
+Define ids of rows?
 
-When undoing an item that has been edited
 

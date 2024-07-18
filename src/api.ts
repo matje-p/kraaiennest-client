@@ -1,20 +1,19 @@
 import axios from 'axios';
-import { BoodschapProps } from './types/Props';
+import { Boodschap } from './types/Props';
 
-// const API_URL = 'http://localhost:5000/api/items';
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/items';
+const API_URL = import.meta.env.VITE_API_URL;
 
 
-export const fetchBoodschappenHistory = async (): Promise<BoodschapProps[]> => {
-  const response = await axios.get<BoodschapProps[]>(API_URL);
+export const fetchBoodschappenHistory = async (): Promise<Boodschap[]> => {
+  const response = await axios.get<Boodschap[]>(API_URL);
   console.log('API: Fetched data:', response.data); // Log fetched data
   return response.data;
 };
 
 // Function to add a new boodschap to the backend
-export const addBoodschapToBackend = async (boodschap: BoodschapProps) => {
+export const addBoodschapToBackend = async (boodschap: Boodschap) => {
   try {
-    console.log('API: Adding new boodschap:', boodschap.id);
+    console.log('API: Adding new boodschap:', boodschap.id);  
     const response = await axios.post(API_URL, boodschap);
     return response.data;
   } catch (error) {

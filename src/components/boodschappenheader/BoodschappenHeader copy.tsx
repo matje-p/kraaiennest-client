@@ -1,17 +1,14 @@
-import { LogoutOptions, useAuth0 } from "@auth0/auth0-react";
+import React from "react";
 import styles from "./BoodschappenHeader.module.scss";
+import { useAuth0, LogoutOptions } from "@auth0/auth0-react";
 
 type HeaderProps = {
-  handleAdd: () => void;
-  // handleUndo: () => void;
-  // handleSort: () => void;
+  onAdd: () => void; // Assuming onAdd is a function that takes no arguments and returns nothing
+  undo: () => void;
+  sort: () => void;
 };
 
-const BoodschappenHeader = ({
-  handleAdd,
-}: // handleUndo,
-// handleSort,
-HeaderProps) => {
+const BoodschappenHeader = ({ onAdd, undo, sort }: HeaderProps) => {
   console.log("Rendering BoodschappenHeader");
   const { logout, user } = useAuth0();
   const handleLogout = () =>
@@ -33,25 +30,19 @@ HeaderProps) => {
           </div>
 
           <div className="d-flex d-none d-md-block align-items-center">
-            <button onClick={handleAdd} className="btn btn-primary btn-sm me-2">
+            <button onClick={onAdd} className="btn btn-primary btn-sm me-2">
               <i className="bi bi-plus"></i>
             </button>
-            <button
-              className="btn btn-primary btn-sm me-2"
-              // onClick={handleUndo}
-            >
+            <button className="btn btn-primary btn-sm me-2" onClick={sort}>
               <i className="bi bi-sort-down"></i>
             </button>
-            <button
-              className="btn btn-primary btn-sm me-2"
-              // onClick={handleUndo}
-            >
+            <button className="btn btn-primary btn-sm me-2" onClick={undo}>
               <i className="bi bi-arrow-counterclockwise"></i>
             </button>
           </div>
 
           <div className="dropdown d-block d-md-none align-items-center">
-            <button onClick={handleAdd} className="btn btn-primary btn-sm me-2">
+            <button onClick={onAdd} className="btn btn-primary btn-sm me-2">
               <i className="bi bi-plus"></i>
             </button>
             <button
@@ -71,18 +62,12 @@ HeaderProps) => {
                 <button className="dropdown-item">{user?.name}</button>
               </li>
               <li>
-                <button
-                  className="dropdown-item"
-                  // onClick={handleSort}
-                >
+                <button className="dropdown-item" onClick={sort}>
                   <i className="bi bi-sort-down"></i> Sorteer
                 </button>
               </li>
               <li>
-                <button
-                  className="dropdown-item"
-                  // onClick={handleUndo}
-                >
+                <button className="dropdown-item" onClick={undo}>
                   <i className="bi bi-arrow-counterclockwise"></i> Maak ongedaan
                 </button>
               </li>

@@ -1,74 +1,80 @@
-import React from "react";
+import React, { useState, useRef, useCallback, useMemo, memo } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import BoodschapItem from "../boodschapitem/BoodschapItem";
 import styles from "./BoodschapRow.module.scss";
-import { BoodschapProps } from "../../types/Props";
+import { Boodschap } from "../../types/Props";
 import transformDate from "../../utils/transformDate";
-import {
-  deleteBoodschapFromBackend,
-  markBoodschapAsDoneInBackend,
-} from "../../api"; // Import the delete function
+import useDeleteBoodschap from "../../hooks/useDeleteBoodschap";
+import useToggleBoodschapDone from "../../hooks/useToggleBoodschapDone";
+import useUpdateBoodschapText from "../../hooks/useChangeBoodschap";
 
-interface BoodschapRowProps {
-  boodschappen: BoodschapProps[];
-  setBoodschappen: (boodschappen: BoodschapProps[]) => void;
-  id: string;
-  changeLog: BoodschapProps[];
-  setChangeLog: (changeLog: BoodschapProps[]) => void;
-}
+const BoodschapRow = ({ boodschap }: { boodschap: Boodschap }) => {
+  console.log("Rendering BoodschapRow", boodschap.id);
 
-const BoodschapRow = ({
-  boodschappen,
-  setBoodschappen,
-  id,
-  changeLog,
-  setChangeLog,
-}: BoodschapRowProps) => {
-  console.log("Rendering BoodschapRow");
+  const { mutate: deleteBoodschap } = useDeleteBoodschap();
+  const { mutate: toggleBoodschapDone } = useToggleBoodschapDone();
+  const { mutate: updateBoodschapText } = useUpdateBoodschapText();
+
   const { user } = useAuth0();
 
-  const boodschap = boodschappen.find((boodschap) => boodschap.id === id);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const localText = useRef<string>(boodschap.item);
+
+  const handleTextClick = useCallback(() => {
+    console.log("Text clicked, isEditing:", isEditing);
+    setIsEditing(true);
+  }, []);
+
+  const handleTextChange = useCallback(
+    (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+      localText.current = event.target.value;
+    },
+    []
+  );
+
+  const handleBlur = useCallback(() => {
+    console.log("Handle blur");
+    updateBoodschapText({
+      id: boodschap.id,
+      text: localText.current,
+    });
+    console.log(localText.current);
+  }, []);
+
+  const handleDeleteClick = useCallback(() => {
+    console.log("Delete button clicked");
+    deleteBoodschap(boodschap.id);
+  }, [boodschap.id, deleteBoodschap]);
+
+  const handleCheckboxChange = useCallback(() => {
+    console.log("Checkbox clicked");
+    toggleBoodschapDone({
+      id: boodschap.id,
+      done: !boodschap.done,
+      userDone: user?.name || "unknown",
+    });
+  }, [boodschap.id, boodschap.done, toggleBoodschapDone, user?.name]);
+
+  const handleKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        handleBlur();
+        setIsEditing(false);
+      }
+    },
+    [handleBlur]
+  );
+
+  const dateAddedString = useMemo(
+    () => transformDate(boodschap.dateAdded),
+    [boodschap.dateAdded]
+  );
+  const dateDoneString = useMemo(() => transformDate(new Date()), []);
 
   if (boodschap === undefined) {
-    console.error("Boodschap not found for the given id:", id);
+    console.error("Boodschap not found for the given id");
     return null; // Return null if boodschap is not found
   }
-
-  const deleteBoodschapRow = async (id: string) => {
-    try {
-      await deleteBoodschapFromBackend(id); // Call the API to delete the boodschap
-      const newBoodschappen = boodschappen.filter(
-        (boodschap) => boodschap.id !== id
-      );
-      setBoodschappen(newBoodschappen);
-    } catch (error) {
-      console.error("Error deleting boodschap:", error);
-    }
-  };
-
-  const handleDeleteClick = () => {
-    setChangeLog([...changeLog, boodschap]);
-    deleteBoodschapRow(boodschap.id);
-  };
-
-  const handleCheckboxChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newDoneStatus = event.target.checked;
-    const newBoodschappen = boodschappen.map((boodschap) =>
-      boodschap.id === id ? { ...boodschap, done: newDoneStatus } : boodschap
-    );
-    try {
-      await markBoodschapAsDoneInBackend(id, "Done test user", newDoneStatus); // Call the API to mark the boodschap as done
-    } catch (error) {
-      console.error("Error marking boodschap as done:", error);
-    }
-    setChangeLog([...changeLog, boodschap]);
-    setBoodschappen(newBoodschappen);
-  };
-
-  const dateAddedString = boodschap ? transformDate(boodschap.dateAdded) : "";
-  const dateDoneString = boodschap ? transformDate(new Date()) : "";
 
   return (
     <tr>
@@ -86,13 +92,26 @@ const BoodschapRow = ({
         <div className="row">
           <div className="col-12 col-md-4 col-lg-6">
             <span id="message">
-              <BoodschapItem
-                boodschappen={boodschappen}
-                setBoodschappen={setBoodschappen}
-                changeLog={changeLog}
-                setChangeLog={setChangeLog}
-                id={id}
-              />
+              <div className="me-1">
+                {isEditing ? (
+                  <textarea
+                    className={`form-control ${styles.boodschapItemInput}`}
+                    defaultValue={boodschap.item}
+                    onChange={handleTextChange}
+                    onBlur={handleBlur}
+                    onKeyDown={handleKeyDown}
+                  />
+                ) : (
+                  <span
+                    className={`${styles.boodschapItemText} ${
+                      boodschap.done ? styles.strikedText : ""
+                    }`}
+                    onClick={handleTextClick}
+                  >
+                    {boodschap.item}
+                  </span>
+                )}
+              </div>
             </span>
           </div>
           <div className="col-12 col-md-8 col-lg-6">
@@ -108,11 +127,12 @@ const BoodschapRow = ({
         <button
           id="close"
           className="btn btn-close"
-          onClick={handleDeleteClick}
+          onClick={handleDeleteClick} // Attach delete handler
         ></button>
       </td>
     </tr>
   );
 };
 
-export default BoodschapRow;
+// Wrap the component with React.memo to prevent unnecessary re-renders
+export default memo(BoodschapRow);
