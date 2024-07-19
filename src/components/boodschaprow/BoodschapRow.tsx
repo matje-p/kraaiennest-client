@@ -1,11 +1,11 @@
-import React, { useState, useRef, useCallback, useMemo, memo } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import styles from "./BoodschapRow.module.scss";
-import { Boodschap } from "../../types/Props";
-import transformDate from "../../utils/transformDate";
+import React, { memo, useCallback, useMemo, useRef, useState } from "react";
+import useUpdateBoodschapText from "../../hooks/useChangeBoodschap";
 import useDeleteBoodschap from "../../hooks/useDeleteBoodschap";
 import useToggleBoodschapDone from "../../hooks/useToggleBoodschapDone";
-import useUpdateBoodschapText from "../../hooks/useChangeBoodschap";
+import { Boodschap } from "../../types/Props";
+import transformDate from "../../utils/transformDate";
+import styles from "./BoodschapRow.module.scss";
 
 const BoodschapRow = ({ boodschap }: { boodschap: Boodschap }) => {
   console.log("Rendering BoodschapRow", boodschap.id);
@@ -22,7 +22,7 @@ const BoodschapRow = ({ boodschap }: { boodschap: Boodschap }) => {
   const handleTextClick = useCallback(() => {
     console.log("Text clicked, isEditing:", isEditing);
     setIsEditing(true);
-  }, []);
+  }, [isEditing]);
 
   const handleTextChange = useCallback(
     (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -37,8 +37,8 @@ const BoodschapRow = ({ boodschap }: { boodschap: Boodschap }) => {
       id: boodschap.id,
       text: localText.current,
     });
-    console.log(localText.current);
-  }, []);
+    setIsEditing(false);
+  }, [boodschap.id, updateBoodschapText]);
 
   const handleDeleteClick = useCallback(() => {
     console.log("Delete button clicked");
@@ -59,7 +59,6 @@ const BoodschapRow = ({ boodschap }: { boodschap: Boodschap }) => {
       if (event.key === "Enter") {
         event.preventDefault();
         handleBlur();
-        setIsEditing(false);
       }
     },
     [handleBlur]
@@ -127,12 +126,11 @@ const BoodschapRow = ({ boodschap }: { boodschap: Boodschap }) => {
         <button
           id="close"
           className="btn btn-close"
-          onClick={handleDeleteClick} // Attach delete handler
+          onClick={handleDeleteClick}
         ></button>
       </td>
     </tr>
   );
 };
 
-// Wrap the component with React.memo to prevent unnecessary re-renders
 export default memo(BoodschapRow);
