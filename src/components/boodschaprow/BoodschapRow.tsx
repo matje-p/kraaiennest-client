@@ -1,5 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import React, { memo, useCallback, useMemo, useRef, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import useUpdateBoodschapText from "../../hooks/useChangeBoodschap";
 import useDeleteBoodschap from "../../hooks/useDeleteBoodschap";
 import useToggleBoodschapDone from "../../hooks/useToggleBoodschapDone";
@@ -17,7 +17,7 @@ const BoodschapRow = ({ boodschap }: { boodschap: Boodschap }) => {
   const { user } = useAuth0();
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const localText = useRef<string>(boodschap.item);
+  const [localText, setLocalText] = useState<string>(boodschap.item);
 
   const handleTextClick = useCallback(() => {
     console.log("Text clicked, isEditing:", isEditing);
@@ -26,7 +26,7 @@ const BoodschapRow = ({ boodschap }: { boodschap: Boodschap }) => {
 
   const handleTextChange = useCallback(
     (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-      localText.current = event.target.value;
+      setLocalText(event.target.value);
     },
     []
   );
@@ -35,10 +35,10 @@ const BoodschapRow = ({ boodschap }: { boodschap: Boodschap }) => {
     console.log("Handle blur");
     updateBoodschapText({
       id: boodschap.id,
-      text: localText.current,
+      text: localText,
     });
     setIsEditing(false);
-  }, [boodschap.id, updateBoodschapText]);
+  }, [updateBoodschapText, boodschap.id, localText]);
 
   const handleDeleteClick = useCallback(() => {
     console.log("Delete button clicked");
@@ -95,7 +95,7 @@ const BoodschapRow = ({ boodschap }: { boodschap: Boodschap }) => {
                 {isEditing ? (
                   <textarea
                     className={`form-control ${styles.boodschapItemInput}`}
-                    defaultValue={boodschap.item}
+                    value={localText}
                     onChange={handleTextChange}
                     onBlur={handleBlur}
                     onKeyDown={handleKeyDown}
@@ -107,7 +107,7 @@ const BoodschapRow = ({ boodschap }: { boodschap: Boodschap }) => {
                     }`}
                     onClick={handleTextClick}
                   >
-                    {boodschap.item}
+                    {localText}
                   </span>
                 )}
               </div>
@@ -133,4 +133,4 @@ const BoodschapRow = ({ boodschap }: { boodschap: Boodschap }) => {
   );
 };
 
-export default memo(BoodschapRow);
+export default BoodschapRow;
