@@ -1,5 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState, memo } from "react";
 import useUpdateBoodschapText from "../../hooks/useChangeBoodschap";
 import useDeleteBoodschap from "../../hooks/useDeleteBoodschap";
 import useToggleBoodschapDone from "../../hooks/useToggleBoodschapDone";
@@ -7,8 +7,12 @@ import { Boodschap } from "../../types/Props";
 import transformDate from "../../utils/transformDate";
 import styles from "./BoodschapRow.module.scss";
 
-const BoodschapRow = ({ boodschap }: { boodschap: Boodschap }) => {
-  console.log("Rendering BoodschapRow", boodschap.id);
+interface BoodschapRowProps {
+  boodschap: Boodschap;
+}
+
+const BoodschapRow: React.FC<BoodschapRowProps> = memo(({ boodschap }) => {
+  console.log("Rendering BoodschapRow", boodschap);
 
   const { mutate: deleteBoodschap } = useDeleteBoodschap();
   const { mutate: toggleBoodschapDone } = useToggleBoodschapDone();
@@ -45,14 +49,24 @@ const BoodschapRow = ({ boodschap }: { boodschap: Boodschap }) => {
     deleteBoodschap(boodschap.id);
   }, [boodschap.id, deleteBoodschap]);
 
-  const handleCheckboxChange = useCallback(() => {
+  const handleCheckboxChange = () => {
     console.log("Checkbox clicked");
     toggleBoodschapDone({
       id: boodschap.id,
       done: !boodschap.done,
       userDone: user?.name || "unknown",
     });
-  }, [boodschap.id, boodschap.done, toggleBoodschapDone, user?.name]);
+    // toggleBoodschapDone;
+  };
+
+  // const handleCheckboxChange = useCallback(() => {
+  //   console.log("Checkbox clicked");
+  //   toggleBoodschapDone({
+  //     id: boodschap.id,
+  //     done: !boodschap.done,
+  //     userDone: user?.name || "unknown",
+  //   });
+  // }, [boodschap.id, boodschap.done, toggleBoodschapDone, user?.name]);
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -131,6 +145,6 @@ const BoodschapRow = ({ boodschap }: { boodschap: Boodschap }) => {
       </td>
     </tr>
   );
-};
+});
 
 export default BoodschapRow;
