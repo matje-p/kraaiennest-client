@@ -2,6 +2,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
 import useBoodschappen from "../../hooks/useBoodschappen";
 import transformDate from "../../utils/transformDate";
+import Spinner from "../spinner/Spinner";
 
 interface BoodschapDetailsProps {
   boodschapId: string;
@@ -18,7 +19,7 @@ const BoodschapDetails: React.FC<BoodschapDetailsProps> = ({ boodschapId }) => {
   const dateDoneString = transformDate(new Date());
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
   if (error) {

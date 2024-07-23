@@ -2,6 +2,7 @@ import React, { useCallback } from "react";
 import useBoodschappen from "../../hooks/useBoodschappen";
 import useDeleteBoodschap from "../../hooks/useDeleteBoodschap";
 import useChangeStore from "../../store";
+import Spinner from "../spinner/Spinner";
 
 interface BoodschapCloseButtonProps {
   boodschapId: string;
@@ -26,7 +27,7 @@ const BoodschapCloseButton: React.FC<BoodschapCloseButtonProps> = ({
   }, [boodschap, deleteBoodschap, appendChangeLog]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
   if (error) {

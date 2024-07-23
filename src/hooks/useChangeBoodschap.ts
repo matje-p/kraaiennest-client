@@ -10,10 +10,10 @@ interface UpdateBoodschapTextContext {
 const useChangeBoodschap = () => {
     const queryClient = useQueryClient();
 
-    return useMutation<void, Error, { id: string; text: string }, UpdateBoodschapTextContext>({
-        mutationFn: ({ id, text }) => boodschapService.changeText(id, text),
+    return useMutation<void, Error, { id: string; item: string }, UpdateBoodschapTextContext>({
+        mutationFn: ({ id, item }) => boodschapService.changeText(id, item),
 
-        onMutate: async ({ id, text }) => {
+        onMutate: async ({ id, item }) => {
             await queryClient.cancelQueries({ queryKey: CACHE_KEY_BOODSCHAPPEN });
 
             const previousBoodschappen = queryClient.getQueryData<Boodschap[]>(CACHE_KEY_BOODSCHAPPEN) ?? [];
@@ -21,7 +21,7 @@ const useChangeBoodschap = () => {
             queryClient.setQueryData<Boodschap[]>(CACHE_KEY_BOODSCHAPPEN, old =>
                 old?.map(boodschap =>
                     boodschap.id === id
-                        ? { ...boodschap, text }
+                        ? { ...boodschap, item }
                         : boodschap
                 ) ?? []
             );

@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
-// import styles from "./BoodschapItem.module.css"; // Assuming you have a CSS module
 import useBoodschappen from "../../hooks/useBoodschappen";
 import useChangeBoodschap from "../../hooks/useChangeBoodschap";
 import styles from "./BoodschapItem.module.scss";
+import Spinner from "../spinner/Spinner";
 
 interface BoodschapItemProps {
   boodschapId: string;
@@ -17,30 +17,23 @@ const BoodschapItem: React.FC<BoodschapItemProps> = ({ boodschapId }) => {
 
   useEffect(() => {
     if (boodschap) {
-      setLocalText(boodschap.item); // Assuming `text` is the property containing the message
+      setLocalText(boodschap.item); // Assuming `item` is the property containing the message
     }
   }, [boodschap]);
 
   const handleTextClick = useCallback(() => setIsEditing(true), []);
 
   const handleTextChange = useCallback(
-    (event: React.ChangeEvent<HTMLTextAreaElement>) =>
-      setLocalText(event.target.value),
+    (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setLocalText(event.target.value);
+    },
     []
   );
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error loading boodschap.</div>;
-  }
-
   const handleBlur = useCallback(() => {
-    console.log("Text changed");
     if (boodschap && localText !== boodschap.item) {
-      updateBoodschapText({ id: boodschap.id, text: localText });
+      updateBoodschapText({ id: boodschap.id, item: localText });
+      setLocalText(localText);
     }
     setIsEditing(false);
   }, [updateBoodschapText, boodschap, localText]);
@@ -54,6 +47,14 @@ const BoodschapItem: React.FC<BoodschapItemProps> = ({ boodschapId }) => {
     },
     [handleBlur]
   );
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  if (error) {
+    return <div>Error loading boodschap.</div>;
+  }
 
   return (
     <div className="col-12 col-md-4 col-lg-6">

@@ -2,6 +2,7 @@
 import React, { useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useLocation } from "react-router-dom";
+import Spinner from "../spinner/Spinner";
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -18,16 +19,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
   }, [isLoading, isAuthenticated, loginWithRedirect, location.pathname]);
 
   if (isLoading) {
-    return (
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{ height: "100vh" }}
-      >
-        <div className="spinner-border text-secondary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    );
+    return <Spinner />;
   }
 
   if (!isAuthenticated) {

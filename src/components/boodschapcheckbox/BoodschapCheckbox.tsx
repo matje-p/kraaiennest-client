@@ -2,6 +2,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
 import useBoodschappen from "../../hooks/useBoodschappen";
 import useToggleBoodschapDone from "../../hooks/useToggleBoodschapDone";
+import Spinner from "../spinner/Spinner";
 
 interface BoodschapCheckboxProps {
   boodschapId: string;
@@ -27,7 +28,7 @@ const BoodschapCheckbox: React.FC<BoodschapCheckboxProps> = ({
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
   if (error) {
