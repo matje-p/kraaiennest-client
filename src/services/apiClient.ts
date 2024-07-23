@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Boodschap } from "../types/Props";
 
 const axiosInstance = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
@@ -16,16 +17,16 @@ class APIClient<T> {
         return res.data;
     }
 
-    getOne = async (id: string) => {
+    undo = async (boodschap : Boodschap) => {
         const res = await axiosInstance
-            .get<T>(`${this.endpoint}${id}`);
-        return res.data;
+        .put(`${this.endpoint}${boodschap.id}`, boodschap);
+        return res.data
     }
 
-    post = async (data: T) => {
+    post = async (boodschap: Boodschap) => {
 
         const res = await axiosInstance
-            .post<T>(this.endpoint, data);
+            .post<T>(this.endpoint, boodschap);
         return res.data;
     }
 
