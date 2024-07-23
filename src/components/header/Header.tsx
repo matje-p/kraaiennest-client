@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import AddButton from "../addbutton/AddButton";
 import LogoutButton from "../logoutbutton/LogoutButton";
-import styles from "./BoodschappenHeader.module.scss";
+import styles from "./Header.module.scss";
 
 const Header = () => {
   console.log("Rendering BoodschappenHeader");
