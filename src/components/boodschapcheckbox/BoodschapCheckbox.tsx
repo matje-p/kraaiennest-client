@@ -1,8 +1,7 @@
-import React from "react";
-import useBoodschap from "../../hooks/useBoodschap";
 import { useAuth0 } from "@auth0/auth0-react";
-import useToggleBoodschapDone from "../../hooks/useToggleBoodschapDone";
+import React from "react";
 import useBoodschappen from "../../hooks/useBoodschappen";
+import useToggleBoodschapDone from "../../hooks/useToggleBoodschapDone";
 
 interface BoodschapCheckboxProps {
   boodschapId: string;

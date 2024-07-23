@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
-import useBoodschap from "../../hooks/useBoodschap";
 // import styles from "./BoodschapItem.module.css"; // Assuming you have a CSS module
-import styles from "./BoodschapItem.module.scss";
-import useChangeBoodschap from "../../hooks/useChangeBoodschap";
 import useBoodschappen from "../../hooks/useBoodschappen";
+import useChangeBoodschap from "../../hooks/useChangeBoodschap";
+import styles from "./BoodschapItem.module.scss";
 
 interface BoodschapItemProps {
   boodschapId: string;
@@ -29,6 +28,14 @@ const BoodschapItem: React.FC<BoodschapItemProps> = ({ boodschapId }) => {
       setLocalText(event.target.value),
     []
   );
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading boodschap.</div>;
+  }
 
   const handleBlur = useCallback(() => {
     console.log("Text changed");

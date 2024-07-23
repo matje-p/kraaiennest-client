@@ -1,8 +1,7 @@
-import React from "react";
-import useBoodschap from "../../hooks/useBoodschap";
-import transformDate from "../../utils/transformDate";
 import { useAuth0 } from "@auth0/auth0-react";
+import React from "react";
 import useBoodschappen from "../../hooks/useBoodschappen";
+import transformDate from "../../utils/transformDate";
 
 interface BoodschapDetailsProps {
   boodschapId: string;
@@ -17,6 +16,14 @@ const BoodschapDetails: React.FC<BoodschapDetailsProps> = ({ boodschapId }) => {
     ? transformDate(boodschap.dateAdded)
     : "Date unknown";
   const dateDoneString = transformDate(new Date());
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading boodschap.</div>;
+  }
 
   return (
     <div className="col-12 col-md-8 col-lg-6">

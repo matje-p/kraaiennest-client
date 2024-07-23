@@ -12,7 +12,7 @@ const BoodschapCloseButton: React.FC<BoodschapCloseButtonProps> = ({
 }) => {
   const { data: boodschappen, error, isLoading } = useBoodschappen();
   const boodschap = boodschappen?.find((b) => b.id === boodschapId);
-  const { changeLog, appendChangeLog } = useChangeStore();
+  const { appendChangeLog } = useChangeStore();
   const { mutate: deleteBoodschap } = useDeleteBoodschap();
   // console.log(b);
   console.log("BoodschapId", boodschapId);
@@ -24,6 +24,14 @@ const BoodschapCloseButton: React.FC<BoodschapCloseButtonProps> = ({
       deleteBoodschap(boodschap.id);
     }
   }, [boodschap, deleteBoodschap, appendChangeLog]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading boodschap.</div>;
+  }
 
   return (
     <button
