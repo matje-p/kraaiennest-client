@@ -1,31 +1,12 @@
-import { LogoutOptions, useAuth0 } from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react";
+import AddButton from "../addbutton/AddButton";
+import LogoutButton from "../logoutbutton/LogoutButton";
 import styles from "./BoodschappenHeader.module.scss";
-import useAddBoodschap from "../../hooks/useAddBoodschap";
-import useChangeStore from "../../store";
 
-const BoodschappenHeader = () => {
+const Header = () => {
   console.log("Rendering BoodschappenHeader");
 
-  const { logout, user } = useAuth0();
-  const handleLogout = () =>
-    logout({
-      returnTo: window.location.origin,
-    } as LogoutOptions);
-  const addBoodschap = useAddBoodschap();
-  const newBoodschap = {
-    item: "Voer boodschap in", // Customize as needed
-    userAdded: String(user?.name), // Customize as needed
-    userDone: "", // Customize as needed
-    dateAdded: new Date(), // Assuming randDate() generates a date
-    dateDone: new Date(), // Assuming randDate() generates a date
-    done: false,
-    id: Math.random().toString(36).substr(2, 9),
-  };
-  const handleAdd = () => {
-    addBoodschap.mutate(newBoodschap);
-  };
-
-  // console.log(changeLog);
+  const { user } = useAuth0();
 
   return (
     <header
@@ -41,18 +22,16 @@ const BoodschappenHeader = () => {
           </div>
 
           <div className="d-flex d-none d-md-block align-items-center">
-            <button onClick={handleAdd} className="btn btn-primary btn-sm me-2">
-              <i className="bi bi-plus"></i>
-            </button>
+            <AddButton />
+
             <button className="btn btn-primary btn-sm me-2">
               <i className="bi bi-arrow-counterclockwise"></i>
             </button>
           </div>
 
           <div className="dropdown d-block d-md-none align-items-center">
-            <button onClick={handleAdd} className="btn btn-primary btn-sm me-2">
-              <i className="bi bi-plus"></i>
-            </button>
+            <AddButton />
+
             <button
               className="btn btn-primary dropdown-toggle btn-sm"
               type="button"
@@ -69,17 +48,13 @@ const BoodschappenHeader = () => {
               <li>
                 <button className="dropdown-item">{user?.name}</button>
               </li>
-
               <li>
                 <button className="dropdown-item">
                   <i className="bi bi-arrow-counterclockwise"></i> Maak ongedaan
                 </button>
               </li>
-
               <li>
-                <button className="dropdown-item" onClick={handleLogout}>
-                  <i className="bi bi-box-arrow-right"></i> Log uit
-                </button>
+                <LogoutButton />
               </li>
             </ul>
           </div>
@@ -97,10 +72,7 @@ const BoodschappenHeader = () => {
             </button>
             <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <li>
-                <button className="dropdown-item" onClick={handleLogout}>
-                  <i className="bi bi-box-arrow-right me-2"></i>
-                  Log uit
-                </button>
+                <LogoutButton />
               </li>
             </ul>
           </div>
@@ -110,4 +82,4 @@ const BoodschappenHeader = () => {
   );
 };
 
-export default BoodschappenHeader;
+export default Header;

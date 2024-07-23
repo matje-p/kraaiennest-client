@@ -1,18 +1,17 @@
 import React from "react";
 import useBoodschappen from "../../hooks/useBoodschappen";
-import BoodschappenHeader from "../boodschappenheader/BoodschappenHeader";
 import BoodschapRow from "../boodschaprow/BoodschapRow";
-import useBoodschap from "../../hooks/useBoodschap";
+import Header from "../header/Header";
 
 const BoodschappenPage: React.FC = () => {
+  console.log("BoodschappenPage rendered");
   const { data: boodschappen, error, isLoading } = useBoodschappen();
-
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>{error.message}</p>;
 
   return (
     <>
-      <BoodschappenHeader
+      <Header
       // handleSort={() => console.log("Sort clicked")}
       // handleUndo={() => console.log("Undo clicked")}
       />

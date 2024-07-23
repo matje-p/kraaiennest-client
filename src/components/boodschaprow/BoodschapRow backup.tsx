@@ -1,13 +1,12 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import React, { useCallback, useMemo, useState, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import useBoodschap from "../../hooks/useBoodschap";
 import useUpdateBoodschapText from "../../hooks/useChangeBoodschap";
 import useDeleteBoodschap from "../../hooks/useDeleteBoodschap";
 import useToggleBoodschapDone from "../../hooks/useToggleBoodschapDone";
 import useChangeStore from "../../store";
 import transformDate from "../../utils/transformDate";
 import styles from "./BoodschapRow.module.scss";
-import useBoodschap from "../../hooks/useBoodschap";
-import useBoodschappen from "../../hooks/useBoodschappen";
 
 interface BoodschapRowProps {
   boodschapId: string;

@@ -17,6 +17,7 @@ const BoodschapCheckbox: React.FC<BoodschapCheckboxProps> = ({
   const { user } = useAuth0();
 
   const handleCheckboxChange = () => {
+    console.log("Checkbox clicked");
     if (boodschap) {
       toggleBoodschapDone({
         id: boodschap.id,

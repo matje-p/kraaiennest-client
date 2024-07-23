@@ -31,6 +31,7 @@ const BoodschapItem: React.FC<BoodschapItemProps> = ({ boodschapId }) => {
   );
 
   const handleBlur = useCallback(() => {
+    console.log("Text changed");
     if (boodschap && localText !== boodschap.item) {
       updateBoodschapText({ id: boodschap.id, text: localText });
     }
