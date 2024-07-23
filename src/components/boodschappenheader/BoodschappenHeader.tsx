@@ -1,23 +1,31 @@
 import { LogoutOptions, useAuth0 } from "@auth0/auth0-react";
 import styles from "./BoodschappenHeader.module.scss";
+import useAddBoodschap from "../../hooks/useAddBoodschap";
+import useChangeStore from "../../store";
 
-type HeaderProps = {
-  handleAdd: () => void;
-  // handleUndo: () => void;
-  // handleSort: () => void;
-};
-
-const BoodschappenHeader = ({
-  handleAdd,
-}: // handleUndo,
-// handleSort,
-HeaderProps) => {
+const BoodschappenHeader = () => {
   console.log("Rendering BoodschappenHeader");
+
   const { logout, user } = useAuth0();
   const handleLogout = () =>
     logout({
       returnTo: window.location.origin,
     } as LogoutOptions);
+  const addBoodschap = useAddBoodschap();
+  const newBoodschap = {
+    item: "Voer boodschap in", // Customize as needed
+    userAdded: String(user?.name), // Customize as needed
+    userDone: "", // Customize as needed
+    dateAdded: new Date(), // Assuming randDate() generates a date
+    dateDone: new Date(), // Assuming randDate() generates a date
+    done: false,
+    id: Math.random().toString(36).substr(2, 9),
+  };
+  const handleAdd = () => {
+    addBoodschap.mutate(newBoodschap);
+  };
+
+  // console.log(changeLog);
 
   return (
     <header
@@ -36,16 +44,7 @@ HeaderProps) => {
             <button onClick={handleAdd} className="btn btn-primary btn-sm me-2">
               <i className="bi bi-plus"></i>
             </button>
-            <button
-              className="btn btn-primary btn-sm me-2"
-              // onClick={handleUndo}
-            >
-              <i className="bi bi-sort-down"></i>
-            </button>
-            <button
-              className="btn btn-primary btn-sm me-2"
-              // onClick={handleUndo}
-            >
+            <button className="btn btn-primary btn-sm me-2">
               <i className="bi bi-arrow-counterclockwise"></i>
             </button>
           </div>
@@ -70,19 +69,9 @@ HeaderProps) => {
               <li>
                 <button className="dropdown-item">{user?.name}</button>
               </li>
+
               <li>
-                <button
-                  className="dropdown-item"
-                  // onClick={handleSort}
-                >
-                  <i className="bi bi-sort-down"></i> Sorteer
-                </button>
-              </li>
-              <li>
-                <button
-                  className="dropdown-item"
-                  // onClick={handleUndo}
-                >
+                <button className="dropdown-item">
                   <i className="bi bi-arrow-counterclockwise"></i> Maak ongedaan
                 </button>
               </li>

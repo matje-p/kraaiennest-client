@@ -14,7 +14,7 @@ const useToggleBoodschapDone = () => {
         mutationFn: ({ id, done, userDone }) => boodschapService.toggleDone(id, done, userDone),
         
         onMutate: async ({ id, done, userDone }) => {
-            await queryClient.cancelQueries({ queryKey: CACHE_KEY_BOODSCHAPPEN });
+            // await queryClient.cancelQueries({ queryKey: CACHE_KEY_BOODSCHAPPEN });
 
             const previousBoodschappen = queryClient.getQueryData<Boodschap[]>(CACHE_KEY_BOODSCHAPPEN) ?? [];
 
@@ -25,7 +25,6 @@ const useToggleBoodschapDone = () => {
                         : boodschap
                 ) ?? []
             );
-
             return { previousBoodschappen };
         },
         

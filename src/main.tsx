@@ -7,6 +7,7 @@ import ReactDOM from "react-dom/client";
 import router from "./routing/routes.tsx";
 import { RouterProvider } from "react-router-dom";
 import AuthProvider from "./auth/AuthProvider.tsx";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -20,6 +21,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <AuthProvider>
         <RouterProvider router={router} />
       </AuthProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </React.StrictMode>
 );

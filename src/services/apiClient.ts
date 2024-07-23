@@ -15,6 +15,13 @@ class APIClient<T> {
             .get<T[]>(this.endpoint);
         return res.data;
     }
+
+    getOne = async (id: string) => {
+        const res = await axiosInstance
+            .get<T>(`${this.endpoint}${id}`);
+        return res.data;
+    }
+
     post = async (data: T) => {
 
         const res = await axiosInstance

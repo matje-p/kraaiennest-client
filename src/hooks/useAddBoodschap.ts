@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Boodschap } from "../types/Props";
-import boodschapService from "../services/boodschapService";
 import { CACHE_KEY_BOODSCHAPPEN } from "../constants";
+import boodschapService from "../services/boodschapService";
+import { Boodschap } from "../types/Props";
 
 interface AddBoodschapContext {
     previousBoodschaps: Boodschap[];
@@ -19,10 +19,8 @@ const useAddBoodschap = () => {
         ]);
         return { previousBoodschaps };
       },
-      onSuccess: (savedBoodschap, newBoodschap) => {
-        queryClient.setQueryData<Boodschap[]>(CACHE_KEY_BOODSCHAPPEN, (boodschappen) =>
-          boodschappen?.map((todo) => (todo === newBoodschap ? savedBoodschap : todo))
-        );
+      onSettled: () => {
+        queryClient.invalidateQueries({queryKey: CACHE_KEY_BOODSCHAPPEN});
       },
       onError: (error, _, context) => {
         console.log(error)

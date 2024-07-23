@@ -7,7 +7,7 @@ interface UpdateBoodschapTextContext {
     previousBoodschappen: Boodschap[];
 }
 
-const useUpdateBoodschapText = () => {
+const useChangeBoodschap = () => {
     const queryClient = useQueryClient();
 
     return useMutation<void, Error, { id: string; text: string }, UpdateBoodschapTextContext>({
@@ -42,4 +42,4 @@ const useUpdateBoodschapText = () => {
     });
 };
 
-export default useUpdateBoodschapText;
+export default useChangeBoodschap;
