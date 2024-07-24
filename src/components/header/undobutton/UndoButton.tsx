@@ -1,5 +1,5 @@
-import useUpsertBoodschap from "../../hooks/useUpsertBoodschap";
-import useChangeStore from "../../store";
+import useUpsertBoodschap from "../../../hooks/useUpsertBoodschap";
+import useChangeStore from "../../../store";
 
 interface UndoButtonProps {
   buttonType: "full" | "mobile";

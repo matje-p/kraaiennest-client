@@ -1,9 +1,10 @@
 import React from "react";
-import BoodschapCheckbox from "../boodschapcheckbox/BoodschapCheckbox";
-import BoodschapCloseButton from "../boodschapclosebutton/BoodschapCloseButton";
-import BoodschapDetails from "../boodschapdetails/BoodschapDetails";
-import BoodschapItem from "../boodschapitem/BoodschapItem";
+
 import styles from "./BoodschapRow.module.scss";
+import BoodschapCheckbox from "../boodschapcheckbox/BoodschapCheckbox";
+import BoodschapItem from "../boodschapitem/BoodschapItem";
+import BoodschapDetails from "../boodschapdetails/BoodschapDetails";
+import BoodschapCloseButton from "../boodschapclosebutton/BoodschapCloseButton";
 
 interface BoodschapRowProps {
   boodschapId: string;

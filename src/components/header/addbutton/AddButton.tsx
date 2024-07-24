@@ -1,5 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import useAddBoodschap from "../../hooks/useAddBoodschap";
+import useAddBoodschap from "../../../hooks/useAddBoodschap";
 
 const AddButton = () => {
   const addBoodschap = useAddBoodschap();
