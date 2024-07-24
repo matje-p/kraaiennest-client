@@ -1,9 +1,11 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import useAddBoodschap from "../../../hooks/useAddBoodschap";
+import useChangeStore from "../../../store";
 
 const AddButton = () => {
   const addBoodschap = useAddBoodschap();
   const { user } = useAuth0();
+  const { appendChangeLog } = useChangeStore();
   const newBoodschap = {
     item: "", // Customize as needed
     userAdded: String(user?.name), // Customize as needed
@@ -16,6 +18,7 @@ const AddButton = () => {
   };
   const handleAdd = () => {
     addBoodschap.mutate(newBoodschap);
+    appendChangeLog(newBoodschap);
   };
 
   return (

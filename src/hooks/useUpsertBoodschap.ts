@@ -14,12 +14,9 @@ const useUpsertBoodschap = () => {
     mutationFn: boodschapService.undo,
     onMutate: async (updatedBoodschap: Boodschap) => {
       await queryClient.cancelQueries({ queryKey: CACHE_KEY_BOODSCHAPPEN });
-
       const previousBoodschaps = queryClient.getQueryData<Boodschap[]>(CACHE_KEY_BOODSCHAPPEN) || [];
-
       queryClient.setQueryData<Boodschap[]>(CACHE_KEY_BOODSCHAPPEN, (boodschappen) => {
         if (!boodschappen) return [updatedBoodschap];
-
         const index = boodschappen.findIndex(b => b.id === updatedBoodschap.id);
         if (index !== -1) {
           const newBoodschappen = [...boodschappen];
