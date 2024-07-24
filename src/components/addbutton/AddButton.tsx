@@ -5,7 +5,7 @@ const AddButton = () => {
   const addBoodschap = useAddBoodschap();
   const { user } = useAuth0();
   const newBoodschap = {
-    item: "Voer boodschap in", // Customize as needed
+    item: "", // Customize as needed
     userAdded: String(user?.name), // Customize as needed
     userDone: "", // Customize as needed
     dateAdded: new Date(), // Assuming randDate() generates a date

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import useBoodschappen from "../../hooks/useBoodschappen";
 import useChangeBoodschap from "../../hooks/useChangeBoodschap";
 import styles from "./BoodschapItem.module.scss";
@@ -16,6 +16,7 @@ const BoodschapItem: React.FC<BoodschapItemProps> = ({ boodschapId }) => {
   const { mutate: updateBoodschapText } = useChangeBoodschap();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [localText, setLocalText] = useState<string>("");
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
     if (boodschap) {
@@ -23,7 +24,18 @@ const BoodschapItem: React.FC<BoodschapItemProps> = ({ boodschapId }) => {
     }
   }, [boodschap]);
 
-  const handleTextClick = useCallback(() => setIsEditing(true), []);
+  const handleTextClick = useCallback(() => {
+    if (localText === "Voer boodschap in") {
+      setLocalText("");
+    }
+    setIsEditing(true);
+  }, [localText]);
+
+  useEffect(() => {
+    if (isEditing && textareaRef.current) {
+      textareaRef.current.focus();
+    }
+  }, [isEditing]);
 
   const handleTextChange = useCallback(
     (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -42,17 +54,40 @@ const BoodschapItem: React.FC<BoodschapItemProps> = ({ boodschapId }) => {
       setLocalText(localText);
     }
     setIsEditing(false);
-  }, [updateBoodschapText, boodschap, localText]);
+  }, [updateBoodschapText, boodschap, localText, user?.name]);
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-      if (event.key === "Enter") {
+      if (event.key === "Escape") {
+        setIsEditing(false);
+      } else if (event.key === "Enter") {
         event.preventDefault();
         handleBlur();
       }
     },
     [handleBlur]
   );
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        textareaRef.current &&
+        !textareaRef.current.contains(event.target as Node)
+      ) {
+        handleBlur();
+      }
+    };
+
+    if (isEditing) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isEditing, handleBlur]);
 
   if (isLoading) {
     return <Spinner />;
@@ -67,6 +102,7 @@ const BoodschapItem: React.FC<BoodschapItemProps> = ({ boodschapId }) => {
       <div className="me-1">
         {isEditing ? (
           <textarea
+            ref={textareaRef}
             className={`form-control ${styles.boodschapItemInput}`}
             value={localText}
             onChange={handleTextChange}
@@ -80,7 +116,7 @@ const BoodschapItem: React.FC<BoodschapItemProps> = ({ boodschapId }) => {
             }`}
             onClick={handleTextClick}
           >
-            {localText}
+            {localText.trim() === "" ? "Voer boodschap in" : localText}
           </span>
         )}
       </div>
