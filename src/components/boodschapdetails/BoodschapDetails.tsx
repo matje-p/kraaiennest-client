@@ -31,6 +31,8 @@ const BoodschapDetails: React.FC<BoodschapDetailsProps> = ({ boodschapId }) => {
       <span id="meta" className="text-muted">
         {boodschap?.done
           ? `Afgevinkt door ${user?.name} op ${dateDoneString}`
+          : boodschap?.userLastChange
+          ? `Gewijzigd door ${boodschap?.userLastChange} op ${dateAddedString}`
           : `Toegevoegd door ${boodschap?.userAdded} op ${dateAddedString}`}
       </span>
     </div>

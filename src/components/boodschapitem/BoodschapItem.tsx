@@ -3,12 +3,14 @@ import useBoodschappen from "../../hooks/useBoodschappen";
 import useChangeBoodschap from "../../hooks/useChangeBoodschap";
 import styles from "./BoodschapItem.module.scss";
 import Spinner from "../spinner/Spinner";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface BoodschapItemProps {
   boodschapId: string;
 }
 
 const BoodschapItem: React.FC<BoodschapItemProps> = ({ boodschapId }) => {
+  const { user } = useAuth0();
   const { data: boodschappen, error, isLoading } = useBoodschappen();
   const boodschap = boodschappen?.find((b) => b.id === boodschapId);
   const { mutate: updateBoodschapText } = useChangeBoodschap();
@@ -32,7 +34,11 @@ const BoodschapItem: React.FC<BoodschapItemProps> = ({ boodschapId }) => {
 
   const handleBlur = useCallback(() => {
     if (boodschap && localText !== boodschap.item) {
-      updateBoodschapText({ id: boodschap.id, item: localText });
+      updateBoodschapText({
+        id: boodschap.id,
+        item: localText,
+        userLastChange: user?.name || "unknown",
+      });
       setLocalText(localText);
     }
     setIsEditing(false);

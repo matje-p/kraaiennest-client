@@ -5,5 +5,6 @@ export interface Boodschap {
   userDone: string;
   dateDone: Date;
   done: boolean;
+  userLastChange:string;
   id: string;
 }

@@ -45,9 +45,10 @@ class APIClient<T> {
     }
     
 
-    changeText = async (id: string, item: string) => {
-        const res = await axiosInstance.patch(`${this.endpoint}${id}/item`, {
+    changeText = async (id: string, item: string,  userLastChange: string) => {
+        const res = await axiosInstance.patch(`${this.endpoint}${id}`, {
             item: item,
+            userLastChange: userLastChange
         });
         return res.data;
     }

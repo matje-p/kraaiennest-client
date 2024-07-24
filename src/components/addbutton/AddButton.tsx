@@ -11,6 +11,7 @@ const AddButton = () => {
     dateAdded: new Date(), // Assuming randDate() generates a date
     dateDone: new Date(), // Assuming randDate() generates a date
     done: false,
+    userLastChange: "",
     id: Math.random().toString(36).substr(2, 9),
   };
   const handleAdd = () => {
