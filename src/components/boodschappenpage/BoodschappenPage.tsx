@@ -1,6 +1,6 @@
 import React from "react";
 import useBoodschappen from "../../hooks/useBoodschappen";
-import BoodschapRow from "../boodschaprow/BoodschapRow";
+import BoodschapRow from "./boodschaprow/BoodschapRow";
 import Header from "../header/Header";
 import Spinner from "../spinner/Spinner";
 

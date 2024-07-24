@@ -1,8 +1,8 @@
 import React, { useCallback } from "react";
-import useBoodschappen from "../../hooks/useBoodschappen";
-import useDeleteBoodschap from "../../hooks/useDeleteBoodschap";
-import useChangeStore from "../../store";
-import Spinner from "../spinner/Spinner";
+import useBoodschappen from "../../../hooks/useBoodschappen";
+import useChangeStore from "../../../store";
+import useDeleteBoodschap from "../../../hooks/useDeleteBoodschap";
+import Spinner from "../../spinner/Spinner";
 
 interface BoodschapCloseButtonProps {
   boodschapId: string;

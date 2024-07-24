@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState, useRef } from "react";
-import useBoodschappen from "../../hooks/useBoodschappen";
-import useChangeBoodschap from "../../hooks/useChangeBoodschap";
 import styles from "./BoodschapItem.module.scss";
-import Spinner from "../spinner/Spinner";
 import { useAuth0 } from "@auth0/auth0-react";
+import useBoodschappen from "../../../hooks/useBoodschappen";
+import useChangeBoodschap from "../../../hooks/useChangeBoodschap";
+import useChangeStore from "../../../store";
+import Spinner from "../../spinner/Spinner";
 
 interface BoodschapItemProps {
   boodschapId: string;
@@ -16,6 +17,7 @@ const BoodschapItem: React.FC<BoodschapItemProps> = ({ boodschapId }) => {
   const { mutate: updateBoodschapText } = useChangeBoodschap();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [localText, setLocalText] = useState<string>("");
+  const { appendChangeLog } = useChangeStore();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
@@ -47,6 +49,7 @@ const BoodschapItem: React.FC<BoodschapItemProps> = ({ boodschapId }) => {
 
   const handleBlur = useCallback(() => {
     if (boodschap && localText !== boodschap.item) {
+      appendChangeLog(boodschap);
       updateBoodschapText({
         id: boodschap.id,
         item: localText,

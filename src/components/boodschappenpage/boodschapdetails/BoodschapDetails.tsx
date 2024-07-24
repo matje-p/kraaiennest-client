@@ -1,8 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
-import useBoodschappen from "../../hooks/useBoodschappen";
-import transformDate from "../../utils/transformDate";
-import Spinner from "../spinner/Spinner";
+import useBoodschappen from "../../../hooks/useBoodschappen";
+import transformDate from "../../../utils/transformDate";
+import Spinner from "../../spinner/Spinner";
 
 interface BoodschapDetailsProps {
   boodschapId: string;
