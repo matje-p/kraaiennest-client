@@ -34,8 +34,9 @@ const BoodschapItem: React.FC<BoodschapItemProps> = ({ boodschapId }) => {
   useEffect(() => {
     if (isEditing && textareaRef.current) {
       textareaRef.current.focus();
+      textareaRef.current.setSelectionRange(localText.length, localText.length);
     }
-  }, [isEditing]);
+  }, [isEditing, localText]);
 
   const handleTextChange = useCallback(
     (event: React.ChangeEvent<HTMLTextAreaElement>) => {
