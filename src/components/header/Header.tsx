@@ -52,27 +52,22 @@ const Header = () => {
                 <li>
                   <LogoutButton />
                 </li>
-                <li>
-                  <hr className="dropdown-divider"></hr>
-                </li>
-                <li>
-                  <span>Hello</span>
-                </li>
               </ul>
             </div>
+
+            <div className="d-block d-md-none">
+              <AddButton />
+            </div>
             <div className="dropdown d-block d-md-none ">
-              <div className="d-flex align-items-sm-center ">
-                <AddButton />
-                <button
-                  className="btn btn-primary dropdown-toggle btn-sm"
-                  type="button"
-                  id="mobileDropdownMenuButton"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  <i className="bi bi-three-dots-vertical"></i>
-                </button>
-              </div>
+              <button
+                className="btn btn-primary dropdown-toggle btn-sm"
+                type="button"
+                id="mobileDropdownMenuButton"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i className="bi bi-three-dots-vertical"></i>
+              </button>
               <ul
                 className="dropdown-menu dropdown-menu-end"
                 aria-labelledby="mobileDropdownMenuButton"
