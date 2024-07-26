@@ -14,7 +14,7 @@ const BoodschapCheckbox: React.FC<BoodschapCheckboxProps> = ({
   boodschapId,
 }) => {
   // const household = "masdeslucioles";
-  const { household, sethousehold } = usehouseholdStore();
+  const { household } = usehouseholdStore();
   const {
     data: boodschappen,
     error,
