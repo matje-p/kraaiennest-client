@@ -8,7 +8,7 @@ import usehouseholdStore from "../header/householdselector/householdStore";
 const BoodschappenPage: React.FC = () => {
   console.log("BoodschappenPage rendered");
   // const { household } = usehouseholdStore();
-  const { household, sethousehold } = usehouseholdStore();
+  const { household } = usehouseholdStore();
 
   const {
     data: boodschappen,

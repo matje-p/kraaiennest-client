@@ -12,7 +12,7 @@ interface BoodschapCloseButtonProps {
 const BoodschapCloseButton: React.FC<BoodschapCloseButtonProps> = ({
   boodschapId,
 }) => {
-  const { household, sethousehold } = usehouseholdStore();
+  const { household } = usehouseholdStore();
   const {
     data: boodschappen,
     error,

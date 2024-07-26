@@ -4,7 +4,7 @@ import useChangeStore from "../undobutton/changeLogStore";
 import usehouseholdStore from "../householdselector/householdStore";
 
 const AddButton = () => {
-  const { household, sethousehold } = usehouseholdStore();
+  const { household } = usehouseholdStore();
   const addBoodschap = useAddBoodschap(household.name);
   const { user } = useAuth0();
   const { appendChangeLog } = useChangeStore();

@@ -10,7 +10,7 @@ interface BoodschapDetailsProps {
 }
 
 const BoodschapDetails: React.FC<BoodschapDetailsProps> = ({ boodschapId }) => {
-  const { household, sethousehold } = usehouseholdStore();
+  const { household } = usehouseholdStore();
   const { user } = useAuth0();
   const {
     data: boodschappen,
