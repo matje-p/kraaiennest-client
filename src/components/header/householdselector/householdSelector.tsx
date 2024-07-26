@@ -5,11 +5,11 @@ import { households } from "../../../constants";
 import usehouseholdStore from "./householdStore";
 
 const HouseholdSelector: React.FC = () => {
-  const { household, sethousehold } = usehouseholdStore();
+  const { household, setHousehold } = usehouseholdStore();
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const selectedKey = event.target.value;
-    sethousehold(households[selectedKey]);
+    setHousehold(households[selectedKey]);
   };
 
   return (

@@ -9,7 +9,7 @@ interface household {
 
 interface householdStore {
   household: household;
-  sethousehold: (household: household) => void;
+  setHousehold: (household: household) => void;
 }
 
 const usehouseholdStore = create<householdStore>((set) => ({
@@ -19,7 +19,7 @@ const usehouseholdStore = create<householdStore>((set) => ({
     fullname: "Mas des Lucioles",
     // Add more default values for other properties if needed
   },
-  sethousehold: (household: household) => set({ household }),
+  setHousehold: (household: household) => set({ household }),
 }));
 
 export default usehouseholdStore;
