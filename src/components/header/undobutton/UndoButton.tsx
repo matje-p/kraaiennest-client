@@ -1,16 +1,18 @@
 import useDeleteBoodschap from "../../../hooks/useDeleteBoodschap";
 import useUpsertBoodschap from "../../../hooks/useUpsertBoodschap";
-import useChangeStore from "../../../store";
+import useChangeStore from "./changeLogStore";
+import usehouseholdStore from "../householdselector/householdStore";
 
 interface UndoButtonProps {
   buttonType: "full" | "mobile";
 }
 
 const UndoButton = ({ buttonType }: UndoButtonProps) => {
+  const { household } = usehouseholdStore();
   const { changeLog, removeLastChange } = useChangeStore();
-  const upsertBoodschap = useUpsertBoodschap();
+  const upsertBoodschap = useUpsertBoodschap(household.name);
   const lastBoodschap = changeLog[changeLog.length - 1]; // Get the most recent Boodschap
-  const { mutate: deleteBoodschap } = useDeleteBoodschap();
+  const { mutate: deleteBoodschap } = useDeleteBoodschap(household.name);
 
   const handleUndo = () => {
     console.log("Undoing changes to boodschappen");
@@ -36,7 +38,7 @@ const UndoButton = ({ buttonType }: UndoButtonProps) => {
     <>
       {buttonType === "full" && (
         <button
-          className="btn btn-primary btn-sm me-2"
+          className="btn btn-primary btn-sm"
           onClick={handleUndo}
           disabled={!lastBoodschap}
         >

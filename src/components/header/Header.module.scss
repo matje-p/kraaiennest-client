@@ -3,4 +3,10 @@
 
 .header {
     min-height: 60px;
+    color: $blue-700;
+    background-color: $gray-200;
   }
+
+.dropdownFullscreen {
+  border: none;
+}

@@ -1,4 +1,4 @@
-import { Boodschap } from "./types/Props";
+import { Boodschap } from "../../../types/Props";
 import { create } from "zustand";
 
 interface ChangeStore {

@@ -3,18 +3,24 @@ import styles from "./BoodschapItem.module.scss";
 import { useAuth0 } from "@auth0/auth0-react";
 import useBoodschappen from "../../../hooks/useBoodschappen";
 import useChangeBoodschap from "../../../hooks/useChangeBoodschap";
-import useChangeStore from "../../../store";
+import useChangeStore from "../../header/undobutton/changeLogStore";
 import Spinner from "../../spinner/Spinner";
+import usehouseholdStore from "../../header/householdselector/householdStore";
 
 interface BoodschapItemProps {
   boodschapId: string;
 }
 
 const BoodschapItem: React.FC<BoodschapItemProps> = ({ boodschapId }) => {
+  const { household, sethousehold } = usehouseholdStore();
   const { user } = useAuth0();
-  const { data: boodschappen, error, isLoading } = useBoodschappen();
+  const {
+    data: boodschappen,
+    error,
+    isLoading,
+  } = useBoodschappen(household.name);
   const boodschap = boodschappen?.find((b) => b.id === boodschapId);
-  const { mutate: updateBoodschapText } = useChangeBoodschap();
+  const { mutate: updateBoodschapText } = useChangeBoodschap(household.name);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [localText, setLocalText] = useState<string>("");
   const { appendChangeLog } = useChangeStore();

@@ -1,8 +1,9 @@
 import React, { useCallback } from "react";
 import useBoodschappen from "../../../hooks/useBoodschappen";
-import useChangeStore from "../../../store";
+import useChangeStore from "../../header/undobutton/changeLogStore";
 import useDeleteBoodschap from "../../../hooks/useDeleteBoodschap";
 import Spinner from "../../spinner/Spinner";
+import usehouseholdStore from "../../header/householdselector/householdStore";
 
 interface BoodschapCloseButtonProps {
   boodschapId: string;
@@ -11,10 +12,15 @@ interface BoodschapCloseButtonProps {
 const BoodschapCloseButton: React.FC<BoodschapCloseButtonProps> = ({
   boodschapId,
 }) => {
-  const { data: boodschappen, error, isLoading } = useBoodschappen();
+  const { household, sethousehold } = usehouseholdStore();
+  const {
+    data: boodschappen,
+    error,
+    isLoading,
+  } = useBoodschappen(household.name);
   const boodschap = boodschappen?.find((b) => b.id === boodschapId);
   const { appendChangeLog } = useChangeStore();
-  const { mutate: deleteBoodschap } = useDeleteBoodschap();
+  const { mutate: deleteBoodschap } = useDeleteBoodschap(household.name);
   // console.log(b);
   console.log("BoodschapId", boodschapId);
 

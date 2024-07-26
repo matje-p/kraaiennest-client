@@ -7,17 +7,17 @@ interface DeleteBoodschapContext {
     previousBoodschappen: Boodschap[];
 }
 
-const useDeleteBoodschap = () => {
+const useDeleteBoodschap = (householdName:string) => {
     const queryClient = useQueryClient();
 
     return useMutation<void, Error, string, DeleteBoodschapContext>({
         mutationFn: boodschapService.delete,
         onMutate: async (id: string) => {
-            await queryClient.cancelQueries({ queryKey: CACHE_KEY_BOODSCHAPPEN });
+            await queryClient.cancelQueries({ queryKey: [CACHE_KEY_BOODSCHAPPEN, householdName] });
 
-            const previousBoodschappen = queryClient.getQueryData<Boodschap[]>(CACHE_KEY_BOODSCHAPPEN) || [];
+            const previousBoodschappen = queryClient.getQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName]) || [];
 
-            queryClient.setQueryData<Boodschap[]>(CACHE_KEY_BOODSCHAPPEN, (boodschappen) =>
+            queryClient.setQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName], (boodschappen) =>
                 (boodschappen || []).filter((boodschap) => boodschap.id !== id)
             );
 
@@ -25,11 +25,11 @@ const useDeleteBoodschap = () => {
         },
         onError: (error, _, context) => {
             if (!context) return;
-            queryClient.setQueryData<Boodschap[]>(CACHE_KEY_BOODSCHAPPEN, context.previousBoodschappen);
+            queryClient.setQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName], context.previousBoodschappen);
             console.log(error)
         },
         onSettled: () => {
-            queryClient.invalidateQueries({ queryKey: CACHE_KEY_BOODSCHAPPEN });
+            queryClient.invalidateQueries({ queryKey: [CACHE_KEY_BOODSCHAPPEN, householdName] });
         },
     });
 };

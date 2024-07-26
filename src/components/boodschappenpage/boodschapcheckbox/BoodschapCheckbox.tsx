@@ -2,8 +2,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
 import useBoodschappen from "../../../hooks/useBoodschappen";
 import useToggleBoodschapDone from "../../../hooks/useToggleBoodschapDone";
-import useChangeStore from "../../../store";
+import useChangeStore from "../../header/undobutton/changeLogStore";
 import Spinner from "../../spinner/Spinner";
+import usehouseholdStore from "../../header/householdselector/householdStore";
 
 interface BoodschapCheckboxProps {
   boodschapId: string;
@@ -12,9 +13,17 @@ interface BoodschapCheckboxProps {
 const BoodschapCheckbox: React.FC<BoodschapCheckboxProps> = ({
   boodschapId,
 }) => {
-  const { data: boodschappen, error, isLoading } = useBoodschappen();
+  // const household = "masdeslucioles";
+  const { household, sethousehold } = usehouseholdStore();
+  const {
+    data: boodschappen,
+    error,
+    isLoading,
+  } = useBoodschappen(household.name);
   const boodschap = boodschappen?.find((b) => b.id === boodschapId);
-  const { mutate: toggleBoodschapDone } = useToggleBoodschapDone();
+  const { mutate: toggleBoodschapDone } = useToggleBoodschapDone(
+    household.name
+  );
   const { user } = useAuth0();
   const { appendChangeLog } = useChangeStore();
 

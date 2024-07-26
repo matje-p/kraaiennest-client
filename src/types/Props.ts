@@ -1,4 +1,5 @@
 export interface Boodschap {
+  householdName: string;
   item: string;
   userAdded: string;
   dateAdded: Date;

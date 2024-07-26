@@ -3,10 +3,18 @@ import useBoodschappen from "../../hooks/useBoodschappen";
 import BoodschapRow from "./boodschaprow/BoodschapRow";
 import Header from "../header/Header";
 import Spinner from "../spinner/Spinner";
+import usehouseholdStore from "../header/householdselector/householdStore";
 
 const BoodschappenPage: React.FC = () => {
   console.log("BoodschappenPage rendered");
-  const { data: boodschappen, error, isLoading } = useBoodschappen();
+  // const { household } = usehouseholdStore();
+  const { household, sethousehold } = usehouseholdStore();
+
+  const {
+    data: boodschappen,
+    error,
+    isLoading,
+  } = useBoodschappen(household.name);
   if (isLoading) return <Spinner />;
   if (error) return <p>{error.message}</p>;
 

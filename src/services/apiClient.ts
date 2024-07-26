@@ -11,11 +11,12 @@ class APIClient<T> {
         this.endpoint = endpoint;
 
     }
-    getAll = async () => {
-        const res = await axiosInstance
-            .get<T[]>(this.endpoint);
+    get = async (household: string) => {
+        console.log("Base URL: ", import.meta.env.VITE_API_URL) 
+        console.log("endpoint: ", this.endpoint)
+        const res = await axiosInstance.get<T[]>(`${this.endpoint}${household}`);
         return res.data;
-    }
+      }
 
     undo = async (boodschap : Boodschap) => {
         const res = await axiosInstance

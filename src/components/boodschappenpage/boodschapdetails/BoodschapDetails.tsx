@@ -3,14 +3,20 @@ import React from "react";
 import useBoodschappen from "../../../hooks/useBoodschappen";
 import transformDate from "../../../utils/transformDate";
 import Spinner from "../../spinner/Spinner";
+import usehouseholdStore from "../../header/householdselector/householdStore";
 
 interface BoodschapDetailsProps {
   boodschapId: string;
 }
 
 const BoodschapDetails: React.FC<BoodschapDetailsProps> = ({ boodschapId }) => {
+  const { household, sethousehold } = usehouseholdStore();
   const { user } = useAuth0();
-  const { data: boodschappen, error, isLoading } = useBoodschappen();
+  const {
+    data: boodschappen,
+    error,
+    isLoading,
+  } = useBoodschappen(household.name);
   const boodschap = boodschappen?.find((b) => b.id === boodschapId);
 
   const dateAddedString = boodschap

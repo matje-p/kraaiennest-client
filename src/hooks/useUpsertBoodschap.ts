@@ -7,15 +7,15 @@ interface UndoBoodschapContext {
   previousBoodschaps: Boodschap[];
 }
 
-const useUpsertBoodschap = () => {
+const useUpsertBoodschap = (householdName:string) => {
   const queryClient = useQueryClient();
 
   return useMutation<Boodschap, Error, Boodschap, UndoBoodschapContext>({
     mutationFn: boodschapService.undo,
     onMutate: async (updatedBoodschap: Boodschap) => {
-      await queryClient.cancelQueries({ queryKey: CACHE_KEY_BOODSCHAPPEN });
-      const previousBoodschaps = queryClient.getQueryData<Boodschap[]>(CACHE_KEY_BOODSCHAPPEN) || [];
-      queryClient.setQueryData<Boodschap[]>(CACHE_KEY_BOODSCHAPPEN, (boodschappen) => {
+      await queryClient.cancelQueries({ queryKey: [CACHE_KEY_BOODSCHAPPEN, householdName] });
+      const previousBoodschaps = queryClient.getQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName]) || [];
+      queryClient.setQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName], (boodschappen) => {
         if (!boodschappen) return [updatedBoodschap];
         const index = boodschappen.findIndex(b => b.id === updatedBoodschap.id);
         if (index !== -1) {
@@ -32,11 +32,11 @@ const useUpsertBoodschap = () => {
     onError: (error, _, context) => {
       console.error(error);
       if (context) {
-        queryClient.setQueryData<Boodschap[]>(CACHE_KEY_BOODSCHAPPEN, context.previousBoodschaps);
+        queryClient.setQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName], context.previousBoodschaps);
       }
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: CACHE_KEY_BOODSCHAPPEN });
+      queryClient.invalidateQueries({ queryKey: [CACHE_KEY_BOODSCHAPPEN, householdName] });
     },
   });
 };
