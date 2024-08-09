@@ -17,8 +17,8 @@ export const households: Households = {
       id: 1
     },
     barnfield: {
-      fullname: "Barnfield",
-      name: "barnfield",
+      fullname: "Sarah & Matthias",
+      name: "Sarah & Matthias",
       id: 2 
     }
   };
