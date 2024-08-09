@@ -11,38 +11,33 @@ class APIClient<T> {
         this.endpoint = endpoint;
     }
 
-    // getHouseholdsFromBackend = async () => {
-    //     const res = await axiosInstance.get<T[]>(`households/${this.endpoint}`);
-    //     return res.data;
-    // }
-
     getBoodschappenFromBackend = async (household: string) => {
-        console.log("Base URL: ", import.meta.env.VITE_API_URL) 
-        console.log("endpoint: ", this.endpoint)
-        const res = await axiosInstance.get<T[]>(`boodschappen/${this.endpoint}${household}`);
+        const API_URL = `boodschappen${this.endpoint}${household}`
+        console.log("Get api URL: ", API_URL)
+        const res = await axiosInstance.get<T[]>(API_URL);
         return res.data;
     }
 
     undoBoodschapInBackend = async (boodschap : Boodschap) => {
         const res = await axiosInstance
-        .put(`boodschappen/${this.endpoint}${boodschap.id}`, boodschap);
+        .put(`boodschappen${this.endpoint}${boodschap.id}`, boodschap);
         return res.data
     }
 
     postBoodschapToBackend = async (boodschap: Boodschap) => {
         const res = await axiosInstance
-            .post<T>(`boodschappen/${this.endpoint}`, boodschap);
+            .post<T>(`boodschappen${this.endpoint}`, boodschap);
         return res.data;
     }
 
     deleteBoodschapFromBackend = async (id: string) => {
         const res = await axiosInstance
-            .delete(`boodschappen/${this.endpoint}${id}`);
+            .delete(`boodschappen${this.endpoint}${id}`);
         return res.data;
     }
 
     toggleBoodschapDoneInBackend = async (id: string, done: boolean, userDone: string) => {
-        const res = await axiosInstance.patch(`boodschappen/${this.endpoint}${id}/done`, {
+        const res = await axiosInstance.patch(`boodschappen${this.endpoint}${id}/done`, {
             done: done,
             userDone: userDone
         });
@@ -50,7 +45,7 @@ class APIClient<T> {
     }
 
     changeText = async (id: string, item: string,  userLastChange: string) => {
-        const res = await axiosInstance.patch(`boodschappen/${this.endpoint}${id}`, {
+        const res = await axiosInstance.patch(`boodschappen${this.endpoint}${id}`, {
             item: item,
             userLastChange: userLastChange
         });
