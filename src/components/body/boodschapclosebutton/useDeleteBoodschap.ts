@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Boodschap } from '../types/Props';
-import boodschapService from '../services/boodschapService';
-import { CACHE_KEY_BOODSCHAPPEN } from '../constants';
+import { Boodschap } from '../../../types/Props';
+import boodschapService from '../../../services/boodschapService';
+import { CACHE_KEY_BOODSCHAPPEN } from '../../../constants';
 
 interface DeleteBoodschapContext {
     previousBoodschappen: Boodschap[];
@@ -11,7 +11,7 @@ const useDeleteBoodschap = (householdName:string) => {
     const queryClient = useQueryClient();
 
     return useMutation<void, Error, string, DeleteBoodschapContext>({
-        mutationFn: boodschapService.delete,
+        mutationFn: boodschapService.deleteBoodschapFromBackend,
         onMutate: async (id: string) => {
             await queryClient.cancelQueries({ queryKey: [CACHE_KEY_BOODSCHAPPEN, householdName] });
 

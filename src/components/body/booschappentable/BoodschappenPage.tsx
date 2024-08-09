@@ -1,13 +1,12 @@
 import React from "react";
-import useBoodschappen from "../../hooks/useBoodschappen";
-import BoodschapRow from "./boodschaprow/BoodschapRow";
-import Header from "../header/Header";
-import Spinner from "../spinner/Spinner";
-import usehouseholdStore from "../header/householdselector/householdStore";
+import BoodschapRow from "../boodschaprow/BoodschapRow";
+import Spinner from "../../spinner/Spinner";
+import usehouseholdStore from "../../header/householdselector/householdStore";
+import useBoodschappen from "./useBoodschappen";
+import Header from "../../header/headergrid/Header";
 
 const BoodschappenPage: React.FC = () => {
   console.log("BoodschappenPage rendered");
-  // const { household } = usehouseholdStore();
   const { household } = usehouseholdStore();
 
   const {

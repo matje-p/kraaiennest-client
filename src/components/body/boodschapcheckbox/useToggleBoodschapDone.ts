@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Boodschap } from "../types/Props";
-import boodschapService from "../services/boodschapService";
-import { CACHE_KEY_BOODSCHAPPEN } from "../constants";
+import { Boodschap } from "../../../types/Props";
+import boodschapService from "../../../services/boodschapService";
+import { CACHE_KEY_BOODSCHAPPEN } from "../../../constants";
 
 interface ToggleBoodschapDoneContext {
     previousBoodschappen: Boodschap[];
@@ -11,7 +11,7 @@ const useToggleBoodschapDone = (householdName:string) => {
     const queryClient = useQueryClient();
     
     return useMutation<void, Error, { id: string; done: boolean; userDone: string }, ToggleBoodschapDoneContext>({
-        mutationFn: ({ id, done, userDone }) => boodschapService.toggleDone(id, done, userDone),
+        mutationFn: ({ id, done, userDone }) => boodschapService.toggleBoodschapDoneInBackend(id, done, userDone),
         
         onMutate: async ({ id, done, userDone }) => {
             // await queryClient.cancelQueries({ queryKey: CACHE_KEY_BOODSCHAPPEN });

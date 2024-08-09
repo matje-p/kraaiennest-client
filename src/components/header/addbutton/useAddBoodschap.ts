@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CACHE_KEY_BOODSCHAPPEN } from "../constants";
-import boodschapService from "../services/boodschapService";
-import { Boodschap } from "../types/Props";
+import { CACHE_KEY_BOODSCHAPPEN } from "../../../constants";
+import boodschapService from "../../../services/boodschapService";
+import { Boodschap } from "../../../types/Props";
 
 interface AddBoodschapContext {
     previousBoodschaps: Boodschap[];
@@ -11,7 +11,7 @@ const useAddBoodschap = (householdName: string) => {
     const queryClient = useQueryClient();
 
     return useMutation<Boodschap, Error, Boodschap, AddBoodschapContext>({
-        mutationFn: boodschapService.post,
+        mutationFn: boodschapService.postBoodschapToBackend,
         onMutate: async (newBoodschap: Boodschap) => {
             // Save previous data and update the cache optimistically
             const previousBoodschaps = queryClient.getQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName]) || [];

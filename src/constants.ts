@@ -14,11 +14,11 @@ export const households: Households = {
     masdeslucioles: {
       fullname: "Mas des Lucioles",
       name: "masdeslucioles",
-      id: 1
+      id: 0
     },
     barnfield: {
-      fullname: "Sarah & Matthias",
-      name: "Sarah & Matthias",
-      id: 2 
+      fullname: "Sarah en Matthias",
+      name: "barnfield",
+      id: 1
     }
   };

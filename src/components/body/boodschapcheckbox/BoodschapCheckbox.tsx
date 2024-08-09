@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
-import useBoodschappen from "../../../hooks/useBoodschappen";
-import useToggleBoodschapDone from "../../../hooks/useToggleBoodschapDone";
+import useBoodschappen from "../booschappentable/useBoodschappen";
+import useToggleBoodschapDone from "./useToggleBoodschapDone";
 import useChangeStore from "../../header/undobutton/changeLogStore";
 import Spinner from "../../spinner/Spinner";
 import usehouseholdStore from "../../header/householdselector/householdStore";

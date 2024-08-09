@@ -1,4 +1,4 @@
-import BoodschappenPage from "./components/boodschappenpage/BoodschappenPage";
+import BoodschappenPage from "./components/body/booschappentable/BoodschappenPage";
 
 const BoodschappenPageOverall = () => {
   console.log("Rendering BoodschappenPageOverall");

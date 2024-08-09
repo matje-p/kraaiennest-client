@@ -1,7 +1,7 @@
-import useDeleteBoodschap from "../../../hooks/useDeleteBoodschap";
-import useUpsertBoodschap from "../../../hooks/useUpsertBoodschap";
+import useUpsertBoodschap from "./useUpsertBoodschap";
 import useChangeStore from "./changeLogStore";
 import usehouseholdStore from "../householdselector/householdStore";
+import useDeleteBoodschap from "../../body/boodschapclosebutton/useDeleteBoodschap";
 
 interface UndoButtonProps {
   buttonType: "full" | "mobile";

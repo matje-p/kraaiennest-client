@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Boodschap } from '../types/Props';
-import boodschapService from '../services/boodschapService';
-import { CACHE_KEY_BOODSCHAPPEN } from '../constants';
+import { Boodschap } from '../../../types/Props';
+import boodschapService from '../../../services/boodschapService';
+import { CACHE_KEY_BOODSCHAPPEN } from '../../../constants';
 
 interface UpdateBoodschapTextContext {
     previousBoodschappen: Boodschap[];

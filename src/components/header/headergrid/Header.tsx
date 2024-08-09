@@ -1,9 +1,9 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import styles from "./Header.module.scss";
-import AddButton from "./addbutton/AddButton";
-import UndoButton from "./undobutton/UndoButton";
-import LogoutButton from "./logoutbutton/LogoutButton";
-import HouseholdSelector from "./householdselector/householdSelector";
+import HouseholdSelector from "../householdselector/householdSelector";
+import AddButton from "../addbutton/AddButton";
+import UndoButton from "../undobutton/UndoButton";
+import LogoutButton from "../../../auth/logoutbutton/LogoutButton";
 
 const Header = () => {
   console.log("Rendering BoodschappenHeader");

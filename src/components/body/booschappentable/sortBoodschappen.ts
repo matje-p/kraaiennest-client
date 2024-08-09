@@ -1,4 +1,4 @@
-import { Boodschap } from "../types/Props";
+import { Boodschap } from "../../../types/Props";
 
 const sort = (boodschappen: Boodschap[]): Boodschap[] => {
     return boodschappen.sort((a: Boodschap, b: Boodschap) => {

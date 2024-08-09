@@ -1,5 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import useAddBoodschap from "../../../hooks/useAddBoodschap";
+import useAddBoodschap from "./useAddBoodschap";
 import useChangeStore from "../undobutton/changeLogStore";
 import usehouseholdStore from "../householdselector/householdStore";
 

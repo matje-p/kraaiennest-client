@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState, useRef } from "react";
 import styles from "./BoodschapItem.module.scss";
 import { useAuth0 } from "@auth0/auth0-react";
-import useBoodschappen from "../../../hooks/useBoodschappen";
-import useChangeBoodschap from "../../../hooks/useChangeBoodschap";
+import useBoodschappen from "../booschappentable/useBoodschappen";
+import useChangeBoodschap from "./useChangeBoodschap";
 import useChangeStore from "../../header/undobutton/changeLogStore";
 import Spinner from "../../spinner/Spinner";
 import usehouseholdStore from "../../header/householdselector/householdStore";

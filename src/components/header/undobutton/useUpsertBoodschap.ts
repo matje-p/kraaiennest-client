@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CACHE_KEY_BOODSCHAPPEN } from "../constants";
-import boodschapService from "../services/boodschapService";
-import { Boodschap } from "../types/Props";
+import { CACHE_KEY_BOODSCHAPPEN } from "../../../constants";
+import boodschapService from "../../../services/boodschapService";
+import { Boodschap } from "../../../types/Props";
 
 interface UndoBoodschapContext {
   previousBoodschaps: Boodschap[];
@@ -11,7 +11,7 @@ const useUpsertBoodschap = (householdName:string) => {
   const queryClient = useQueryClient();
 
   return useMutation<Boodschap, Error, Boodschap, UndoBoodschapContext>({
-    mutationFn: boodschapService.undo,
+    mutationFn: boodschapService.undoBoodschapInBackend,
     onMutate: async (updatedBoodschap: Boodschap) => {
       await queryClient.cancelQueries({ queryKey: [CACHE_KEY_BOODSCHAPPEN, householdName] });
       const previousBoodschaps = queryClient.getQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName]) || [];

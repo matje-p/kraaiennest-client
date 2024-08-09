@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
-import useBoodschappen from "../../../hooks/useBoodschappen";
-import transformDate from "../../../utils/transformDate";
+import useBoodschappen from "../booschappentable/useBoodschappen";
+import transformDate from "./transformDate";
 import Spinner from "../../spinner/Spinner";
 import usehouseholdStore from "../../header/householdselector/householdStore";
 
@@ -37,7 +37,8 @@ const BoodschapDetails: React.FC<BoodschapDetailsProps> = ({ boodschapId }) => {
       <span id="meta" className="text-muted">
         {boodschap?.done
           ? `Afgevinkt door ${user?.name} op ${dateDoneString}`
-          : boodschap?.userLastChange
+          : boodschap?.userLastChange &&
+            boodschap?.userLastChange !== boodschap?.userAdded
           ? `Gewijzigd door ${boodschap?.userLastChange} op ${dateAddedString}`
           : `Toegevoegd door ${boodschap?.userAdded} op ${dateAddedString}`}
       </span>

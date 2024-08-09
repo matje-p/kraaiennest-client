@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
-import useBoodschappen from "../../../hooks/useBoodschappen";
+import useBoodschappen from "../booschappentable/useBoodschappen";
 import useChangeStore from "../../header/undobutton/changeLogStore";
-import useDeleteBoodschap from "../../../hooks/useDeleteBoodschap";
+import useDeleteBoodschap from "./useDeleteBoodschap";
 import Spinner from "../../spinner/Spinner";
 import usehouseholdStore from "../../header/householdselector/householdStore";
 

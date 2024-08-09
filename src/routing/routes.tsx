@@ -1,7 +1,7 @@
 // routing/routes.tsx
 import { createBrowserRouter, RouteObject } from "react-router-dom";
 import BoodschappenPageOverall from "../App";
-import ProtectedRoute from "../components/protectedroute/ProtectedRoute";
+import ProtectedRoute from "./ProtectedRoute";
 
 const routes: RouteObject[] = [
   {
