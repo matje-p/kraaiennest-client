@@ -1,25 +1,29 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import useAddBoodschap from "./useAddBoodschap";
 import useChangeStore from "../undobutton/changeLogStore";
-import usehouseholdStore from "../householdselector/householdStore";
+import useHouseholdStore from "../householdselector/householdStore";
+import { NewBoodschap } from "../../../types/Types";
+import { v4 as uuidv4 } from "uuid";
+import { useUser } from "../../../auth/userContext";
 
 const AddButton = () => {
-  const { household } = usehouseholdStore();
-  const addBoodschap = useAddBoodschap(household.name);
-  const { user } = useAuth0();
-  const { appendChangeLog } = useChangeStore();
+  const { household } = useHouseholdStore();
+  const addBoodschap = useAddBoodschap(household.householdName);
+  const { user } = useUser();
+  const { changeLog, appendChangeLog } = useChangeStore();
 
-  const newBoodschap = {
-    householdName: household.name,
-    item: "", // Customize as needed
-    userAdded: String(user?.name), // Customize as needed
-    userDone: "", // Customize as needed
-    dateAdded: new Date(), // Assuming randDate() generates a date
-    dateDone: new Date(), // Assuming randDate() generates a date
-    done: false,
-    userLastChange: "",
-    id: Math.random().toString(36).substr(2, 9),
+  console.log("Changelog", changeLog);
+  console.log("Max boodschapId", changeLog);
+
+  const newBoodschap: NewBoodschap = {
+    item: "", // Assuming you have an item to add
+    householdName: household.householdName,
+    userAdded: user?.firstName || "Unknown User",
+    dateAdded: new Date().toISOString(),
+    removed: false,
+    uuid: uuidv4(),
+    // boodschapId: maxBoodschapId + 1,
   };
+
   const handleAdd = () => {
     console.log("Adding new boodschap");
     addBoodschap.mutate(newBoodschap);

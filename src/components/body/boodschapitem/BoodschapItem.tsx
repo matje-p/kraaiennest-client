@@ -1,26 +1,28 @@
 import React, { useCallback, useEffect, useState, useRef } from "react";
 import styles from "./BoodschapItem.module.scss";
-import { useAuth0 } from "@auth0/auth0-react";
 import useBoodschappen from "../booschappentable/useBoodschappen";
 import useChangeBoodschap from "./useChangeBoodschap";
 import useChangeStore from "../../header/undobutton/changeLogStore";
 import Spinner from "../../spinner/Spinner";
-import usehouseholdStore from "../../header/householdselector/householdStore";
+import useHouseholdStore from "../../header/householdselector/householdStore";
+import { useUser } from "../../../auth/userContext";
 
 interface BoodschapItemProps {
-  boodschapId: string;
+  boodschapId: number;
 }
 
 const BoodschapItem: React.FC<BoodschapItemProps> = ({ boodschapId }) => {
-  const { household } = usehouseholdStore();
-  const { user } = useAuth0();
+  const { household } = useHouseholdStore();
+  const { user } = useUser();
   const {
     data: boodschappen,
     error,
     isLoading,
-  } = useBoodschappen(household.name);
-  const boodschap = boodschappen?.find((b) => b.id === boodschapId);
-  const { mutate: updateBoodschapText } = useChangeBoodschap(household.name);
+  } = useBoodschappen(household.householdName);
+  const boodschap = boodschappen?.find((b) => b.boodschapId === boodschapId);
+  const { mutate: updateBoodschapText } = useChangeBoodschap(
+    household.householdName
+  );
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [localText, setLocalText] = useState<string>("");
   const { appendChangeLog } = useChangeStore();
@@ -57,14 +59,14 @@ const BoodschapItem: React.FC<BoodschapItemProps> = ({ boodschapId }) => {
     if (boodschap && localText !== boodschap.item) {
       appendChangeLog(boodschap);
       updateBoodschapText({
-        id: boodschap.id,
+        boodschapId: boodschap.boodschapId,
         item: localText,
-        userLastChange: user?.name || "unknown",
+        userChanged: user?.firstName || "unknown",
       });
       setLocalText(localText);
     }
     setIsEditing(false);
-  }, [updateBoodschapText, boodschap, localText, user?.name]);
+  }, [updateBoodschapText, boodschap, localText, user?.firstName]);
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLTextAreaElement>) => {

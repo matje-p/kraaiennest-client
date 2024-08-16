@@ -7,31 +7,29 @@ interface UndoBoodschapContext {
   previousBoodschaps: Boodschap[];
 }
 
-const useUpsertBoodschap = (householdName:string) => {
+const useUnAddLatestBoodschap = (householdName: string) => {
   const queryClient = useQueryClient();
 
-  return useMutation<Boodschap, Error, Boodschap, UndoBoodschapContext>({
-    mutationFn: apiService.undoBoodschapInBackend,
-    onMutate: async (updatedBoodschap: Boodschap) => {
+  return useMutation<void, Error, void, UndoBoodschapContext>({
+    mutationFn: apiService.unAddLatestBoodschap,
+    onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: [CACHE_KEY_BOODSCHAPPEN, householdName] });
       const previousBoodschaps = queryClient.getQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName]) || [];
-      queryClient.setQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName], (boodschappen) => {
-        if (!boodschappen) return [updatedBoodschap];
-        const index = boodschappen.findIndex(b => b.boodschapId === updatedBoodschap.boodschapId);
-        if (index !== -1) {
-          const newBoodschappen = [...boodschappen];
-          newBoodschappen[index] = updatedBoodschap;
-          return newBoodschappen;
-        } else {
-          return [updatedBoodschap, ...boodschappen];
-        }
-      });
+      
+      queryClient.setQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName], (boodschappen) => 
+        boodschappen?.map(b => {
+          const maxTimestamp = Math.max(...boodschappen.filter(b => !b.removed).map(b => new Date(b.dateAdded).getTime()));
+          return new Date(b.dateAdded).getTime() === maxTimestamp 
+            ? { ...b, removed: true } 
+            : b;
+        }) || []
+      );
 
       return { previousBoodschaps };
     },
     onError: (error, _, context) => {
       console.error(error);
-      if (context) {
+      if (context?.previousBoodschaps) {
         queryClient.setQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName], context.previousBoodschaps);
       }
     },
@@ -41,4 +39,4 @@ const useUpsertBoodschap = (householdName:string) => {
   });
 };
 
-export default useUpsertBoodschap;
+export default useUnAddLatestBoodschap;

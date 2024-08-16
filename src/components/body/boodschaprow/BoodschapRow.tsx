@@ -7,7 +7,7 @@ import BoodschapDetails from "../boodschapdetails/BoodschapDetails";
 import BoodschapCloseButton from "../boodschapclosebutton/BoodschapCloseButton";
 
 interface BoodschapRowProps {
-  boodschapId: string;
+  boodschapId: any;
 }
 
 const BoodschapRow: React.FC<BoodschapRowProps> = ({ boodschapId }) => {

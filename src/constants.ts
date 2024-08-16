@@ -1,4 +1,6 @@
-export const CACHE_KEY_BOODSCHAPPEN = ['boodschappen'];
+export const CACHE_KEY_BOODSCHAPPEN = 'boodschappen';
+export const CACHE_KEY_HOUSEHOLDS = 'households';
+export const CACHE_KEY_USER = 'user';
 
 interface Household {
     fullname: string;

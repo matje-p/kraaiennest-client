@@ -1,16 +1,16 @@
-import { Boodschap } from "../../../types/Props";
+import { Boodschap, NewBoodschap } from "../../../types/Types";
 import { create } from "zustand";
 
 interface ChangeStore {
     changeLog: Boodschap[];
-    appendChangeLog: (boodschap: Boodschap) => void;
+    appendChangeLog: (boodschap: NewBoodschap | Boodschap) => void;
     removeLastChange: () => void;
 }
 
 const useChangeStore = create<ChangeStore>((set) => ({
     changeLog: [],
-    appendChangeLog: (boodschap: Boodschap) => set((state) => ({
-        changeLog: [...state.changeLog, boodschap]
+    appendChangeLog: (boodschap: NewBoodschap | Boodschap) => set((state) => ({
+        changeLog: [...state.changeLog, boodschap as Boodschap] // Ensure type compatibility
     })),
     removeLastChange: () => set((state) => ({
         changeLog: state.changeLog.slice(0, -1)

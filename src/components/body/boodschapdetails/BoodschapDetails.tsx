@@ -1,23 +1,23 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
 import useBoodschappen from "../booschappentable/useBoodschappen";
 import transformDate from "./transformDate";
 import Spinner from "../../spinner/Spinner";
-import usehouseholdStore from "../../header/householdselector/householdStore";
+import useHouseholdStore from "../../header/householdselector/householdStore";
+import { useUser } from "../../../auth/userContext";
 
 interface BoodschapDetailsProps {
-  boodschapId: string;
+  boodschapId: number;
 }
 
 const BoodschapDetails: React.FC<BoodschapDetailsProps> = ({ boodschapId }) => {
-  const { household } = usehouseholdStore();
-  const { user } = useAuth0();
+  const { household } = useHouseholdStore();
+  const { user } = useUser();
   const {
     data: boodschappen,
     error,
     isLoading,
-  } = useBoodschappen(household.name);
-  const boodschap = boodschappen?.find((b) => b.id === boodschapId);
+  } = useBoodschappen(household.householdName);
+  const boodschap = boodschappen?.find((b) => b.boodschapId === boodschapId);
 
   const dateAddedString = boodschap
     ? transformDate(boodschap.dateAdded)
@@ -36,10 +36,10 @@ const BoodschapDetails: React.FC<BoodschapDetailsProps> = ({ boodschapId }) => {
     <div className="col-12 col-md-8 col-lg-6">
       <span id="meta" className="text-muted">
         {boodschap?.done
-          ? `Afgevinkt door ${user?.name} op ${dateDoneString}`
-          : boodschap?.userLastChange &&
-            boodschap?.userLastChange !== boodschap?.userAdded
-          ? `Gewijzigd door ${boodschap?.userLastChange} op ${dateAddedString}`
+          ? `Afgevinkt door ${user?.firstName} op ${dateDoneString}`
+          : boodschap?.userChanged &&
+            boodschap?.userChanged !== boodschap?.userAdded
+          ? `Gewijzigd door ${boodschap?.userChanged} op ${dateAddedString}`
           : `Toegevoegd door ${boodschap?.userAdded} op ${dateAddedString}`}
       </span>
     </div>

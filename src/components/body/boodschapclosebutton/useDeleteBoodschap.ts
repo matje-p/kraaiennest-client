@@ -1,24 +1,29 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Boodschap } from '../../../types/Props';
-import boodschapService from '../../../services/boodschapService';
+import { Boodschap } from '../../../types/Types';
+import apiService from '../../../services/apiService';
 import { CACHE_KEY_BOODSCHAPPEN } from '../../../constants';
 
 interface DeleteBoodschapContext {
     previousBoodschappen: Boodschap[];
 }
 
-const useDeleteBoodschap = (householdName:string) => {
+interface DeleteBoodschapVariables {
+    boodschapId: number;
+    userRemoved: string;
+}
+
+const useDeleteBoodschap = (householdName: string) => {
     const queryClient = useQueryClient();
+    // const { user } = useAuth();
 
-    return useMutation<void, Error, string, DeleteBoodschapContext>({
-        mutationFn: boodschapService.deleteBoodschapFromBackend,
-        onMutate: async (id: string) => {
+    return useMutation<void, Error, DeleteBoodschapVariables, DeleteBoodschapContext>({
+        mutationFn: ({ boodschapId, userRemoved }) => apiService.markBoodschapAsRemoved(boodschapId, userRemoved),
+        onMutate: async ({ boodschapId }) => {
             await queryClient.cancelQueries({ queryKey: [CACHE_KEY_BOODSCHAPPEN, householdName] });
-
             const previousBoodschappen = queryClient.getQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName]) || [];
 
             queryClient.setQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName], (boodschappen) =>
-                (boodschappen || []).filter((boodschap) => boodschap.id !== id)
+                (boodschappen || []).filter((boodschap) => boodschap.boodschapId !== boodschapId)
             );
 
             return { previousBoodschappen };
@@ -26,7 +31,7 @@ const useDeleteBoodschap = (householdName:string) => {
         onError: (error, _, context) => {
             if (!context) return;
             queryClient.setQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName], context.previousBoodschappen);
-            console.log(error)
+            console.log(error);
         },
         onSettled: () => {
             queryClient.invalidateQueries({ queryKey: [CACHE_KEY_BOODSCHAPPEN, householdName] });
@@ -35,3 +40,7 @@ const useDeleteBoodschap = (householdName:string) => {
 };
 
 export default useDeleteBoodschap;
+function useAuth(): { user: any; } {
+    throw new Error('Function not implemented.');
+}
+

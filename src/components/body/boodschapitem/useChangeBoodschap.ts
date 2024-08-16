@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Boodschap } from '../../../types/Props';
-import boodschapService from '../../../services/boodschapService';
+import { Boodschap } from '../../../types/Types';
+import apiService from '../../../services/apiService';
 import { CACHE_KEY_BOODSCHAPPEN } from '../../../constants';
 
 interface UpdateBoodschapTextContext {
@@ -10,18 +10,17 @@ interface UpdateBoodschapTextContext {
 const useChangeBoodschap = (householdName:string) => {
     const queryClient = useQueryClient();
 
-    return useMutation<void, Error, { id: string; item: string, userLastChange: string }, UpdateBoodschapTextContext>({
-        mutationFn: ({ id, item, userLastChange }) => boodschapService.changeText(id, item, userLastChange),
-
-        onMutate: async ({ id, item, userLastChange }) => {
+    return useMutation<void, Error, { boodschapId: number; item: string, userChanged: string }, UpdateBoodschapTextContext>({
+        mutationFn: ({ boodschapId, item, userChanged }) => apiService.editBoodschapTextInBackend(boodschapId, item, userChanged),
+        onMutate: async ({ boodschapId, item, userChanged }) => {
             await queryClient.cancelQueries({ queryKey: [CACHE_KEY_BOODSCHAPPEN, householdName] });
 
             const previousBoodschappen = queryClient.getQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName]) ?? [];
 
             queryClient.setQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName], old =>
                 old?.map(boodschap =>
-                    boodschap.id === id
-                        ? { ...boodschap, item, userLastChange  }
+                    boodschap.boodschapId === boodschapId
+                        ? { ...boodschap, item, userChanged  }
                         : boodschap
                 ) ?? []
             );

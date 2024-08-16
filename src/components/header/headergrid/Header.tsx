@@ -1,14 +1,13 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import styles from "./Header.module.scss";
 import HouseholdSelector from "../householdselector/householdSelector";
 import AddButton from "../addbutton/AddButton";
 import UndoButton from "../undobutton/UndoButton";
 import LogoutButton from "../../../auth/logoutbutton/LogoutButton";
+import { useUser } from "../../../auth/userContext";
 
 const Header = () => {
   console.log("Rendering BoodschappenHeader");
-  const { user } = useAuth0();
-
+  const { user } = useUser();
   return (
     <header className={`${styles.header}`}>
       <nav className="navbar navbar-expand pe-2">
@@ -43,7 +42,7 @@ const Header = () => {
                 aria-expanded="false"
               >
                 <i className="bi bi-person-circle me-2"></i>
-                {user?.name}
+                {user?.firstName}
               </button>
               <ul
                 className="dropdown-menu"
@@ -73,7 +72,7 @@ const Header = () => {
                 aria-labelledby="mobileDropdownMenuButton"
               >
                 <li>
-                  <button className="dropdown-item">{user?.name}</button>
+                  <button className="dropdown-item">{user?.firstName}</button>
                 </li>
                 <li>
                   <UndoButton buttonType="mobile" />

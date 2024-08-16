@@ -1,4 +1,4 @@
-function transformDate(dateInput: Date | string): string {
+function transformDate(dateInput: Date | string | null | undefined): string {
   const daysOfWeek: string[] = ["Zo", "Ma", "Di", "Wo", "Do", "Vr", "Za"];
   const months: string[] = [
     "januari",
@@ -15,17 +15,24 @@ function transformDate(dateInput: Date | string): string {
     "december",
   ];
 
+  // Handle null or undefined input
+  if (dateInput === null || dateInput === undefined) {
+    return "Onbekende datum";
+  }
+
   // Convert to Date object if the input is a string
   let date: Date;
   if (typeof dateInput === "string") {
     date = new Date(dateInput);
-  } else {
+  } else if (dateInput instanceof Date) {
     date = dateInput;
+  } else {
+    return "Ongeldige datum";
   }
 
   // Check if the date is valid
   if (isNaN(date.getTime())) {
-    throw new Error("Invalid date");
+    return "Ongeldige datum";
   }
 
   const dayOfWeek: string = daysOfWeek[date.getDay()];

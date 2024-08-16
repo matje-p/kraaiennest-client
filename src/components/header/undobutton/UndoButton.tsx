@@ -1,32 +1,30 @@
 import useUpsertBoodschap from "./useUpsertBoodschap";
 import useChangeStore from "./changeLogStore";
-import usehouseholdStore from "../householdselector/householdStore";
-import useDeleteBoodschap from "../../body/boodschapclosebutton/useDeleteBoodschap";
+import useHouseholdStore from "../householdselector/householdStore";
+import useUnAddLatestBoodschap from "./useUnAddBoodschap";
 
 interface UndoButtonProps {
   buttonType: "full" | "mobile";
 }
 
 const UndoButton = ({ buttonType }: UndoButtonProps) => {
-  const { household } = usehouseholdStore();
+  const { household } = useHouseholdStore();
   const { changeLog, removeLastChange } = useChangeStore();
-  const upsertBoodschap = useUpsertBoodschap(household.name);
+  const upsertBoodschap = useUpsertBoodschap(household.householdName);
+  const unAddBoodschap = useUnAddLatestBoodschap(household.householdName);
   const lastBoodschap = changeLog[changeLog.length - 1]; // Get the most recent Boodschap
-  const { mutate: deleteBoodschap } = useDeleteBoodschap(household.name);
 
   const handleUndo = () => {
-    console.log("Undoing changes to boodschappen");
+    // console.log("Undoing changes to boodschappen");
     // check if there is anything to undo at all
     if (lastBoodschap) {
-      // Check if the last boodschap was the result of an add action
-      if (lastBoodschap.item === "") {
-        console.log("Undoing add action");
-        deleteBoodschap(lastBoodschap.id);
-      }
-      // Check if the last boodschap was the result of an text edit, check box,  action"
-      else if (lastBoodschap.item !== "") {
-        upsertBoodschap.mutate(lastBoodschap);
+      // If the boodschap has an Id, it is not a newly added one (boodschaps only get IDs on the backend)
+      if ("boodschapId" in lastBoodschap) {
         console.log("Undoing changes/deletion");
+        upsertBoodschap.mutate(lastBoodschap);
+      } else {
+        console.log("Undoing add action");
+        unAddBoodschap.mutate();
       }
       removeLastChange();
     } else {

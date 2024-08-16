@@ -1,30 +1,29 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
 import useBoodschappen from "../booschappentable/useBoodschappen";
 import useToggleBoodschapDone from "./useToggleBoodschapDone";
 import useChangeStore from "../../header/undobutton/changeLogStore";
 import Spinner from "../../spinner/Spinner";
-import usehouseholdStore from "../../header/householdselector/householdStore";
+import useHouseholdStore from "../../header/householdselector/householdStore";
+import { useUser } from "../../../auth/userContext";
 
 interface BoodschapCheckboxProps {
-  boodschapId: string;
+  boodschapId: number;
 }
 
 const BoodschapCheckbox: React.FC<BoodschapCheckboxProps> = ({
   boodschapId,
 }) => {
-  // const household = "masdeslucioles";
-  const { household } = usehouseholdStore();
+  const { household } = useHouseholdStore();
   const {
     data: boodschappen,
     error,
     isLoading,
-  } = useBoodschappen(household.name);
-  const boodschap = boodschappen?.find((b) => b.id === boodschapId);
+  } = useBoodschappen(household.householdName);
+  const boodschap = boodschappen?.find((b) => b.boodschapId === boodschapId);
   const { mutate: toggleBoodschapDone } = useToggleBoodschapDone(
-    household.name
+    household.householdName
   );
-  const { user } = useAuth0();
+  const { user } = useUser();
   const { appendChangeLog } = useChangeStore();
 
   const handleCheckboxChange = () => {
@@ -32,9 +31,9 @@ const BoodschapCheckbox: React.FC<BoodschapCheckboxProps> = ({
     if (boodschap) {
       appendChangeLog(boodschap);
       toggleBoodschapDone({
-        id: boodschap.id,
+        boodschapId: boodschap.boodschapId,
         done: !boodschap.done,
-        userDone: user?.name || "unknown",
+        userDone: user?.firstName || "unknown",
       });
     }
   };

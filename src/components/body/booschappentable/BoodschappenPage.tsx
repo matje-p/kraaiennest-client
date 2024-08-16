@@ -1,19 +1,21 @@
 import React from "react";
 import BoodschapRow from "../boodschaprow/BoodschapRow";
 import Spinner from "../../spinner/Spinner";
-import usehouseholdStore from "../../header/householdselector/householdStore";
+import useHouseholdStore from "../../header/householdselector/householdStore";
 import useBoodschappen from "./useBoodschappen";
 import Header from "../../header/headergrid/Header";
 
 const BoodschappenPage: React.FC = () => {
   console.log("BoodschappenPage rendered");
-  const { household } = usehouseholdStore();
+  const { household } = useHouseholdStore();
+  // const { refetch: refetchHouseholds } = useHouseholds();
 
   const {
     data: boodschappen,
     error,
     isLoading,
-  } = useBoodschappen(household.name);
+  } = useBoodschappen(household.householdName);
+  console.log("BoodschappenPage boodschappen", boodschappen);
   if (isLoading) return <Spinner />;
   if (error) return <p>{error.message}</p>;
 
@@ -24,11 +26,17 @@ const BoodschappenPage: React.FC = () => {
         <table className="table">
           <tbody>
             {boodschappen?.map((boodschap) => (
-              <BoodschapRow key={boodschap.id} boodschapId={boodschap.id} />
+              <BoodschapRow
+                key={boodschap.boodschapId}
+                boodschapId={boodschap.boodschapId}
+              />
             ))}
           </tbody>
         </table>
       </div>
+      {/* <button className="btn btn-primary" onClick={() => refetchHouseholds()}>
+        Fetch households
+      </button> */}
     </>
   );
 };
