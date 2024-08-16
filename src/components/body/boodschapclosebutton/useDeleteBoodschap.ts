@@ -14,7 +14,6 @@ interface DeleteBoodschapVariables {
 
 const useDeleteBoodschap = (householdName: string) => {
     const queryClient = useQueryClient();
-    // const { user } = useAuth();
 
     return useMutation<void, Error, DeleteBoodschapVariables, DeleteBoodschapContext>({
         mutationFn: ({ boodschapId, userRemoved }) => apiService.markBoodschapAsRemoved(boodschapId, userRemoved),
@@ -40,7 +39,5 @@ const useDeleteBoodschap = (householdName: string) => {
 };
 
 export default useDeleteBoodschap;
-function useAuth(): { user: any; } {
-    throw new Error('Function not implemented.');
-}
+
 
