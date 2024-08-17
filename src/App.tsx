@@ -3,6 +3,7 @@ import { useUser } from "./auth/userContext";
 import useHouseholds from "./components/header/householdselector/useHouseholds";
 import BoodschappenPage from "./components/body/booschappentable/BoodschappenPage";
 import useHouseholdStore from "./components/header/householdselector/householdStore"; // Ensure this import is correct
+import Spinner from "./components/spinner/Spinner";
 
 const App = () => {
   const { user } = useUser();
@@ -37,7 +38,7 @@ const App = () => {
   if (isLoading) return <p>Loading households...</p>;
   if (error) return <p>Error loading households: {error.message}</p>;
 
-  if (!isInitialized) return <p>Initializing...</p>;
+  if (!isInitialized) return <Spinner />;
 
   console.log("Rendering BoodschappenPageOverall");
   console.log("VITE_API_URL", import.meta.env.VITE_API_URL);
