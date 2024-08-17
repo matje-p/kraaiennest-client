@@ -1,8 +1,24 @@
 import axios from "axios";
 import { Boodschap, Household, NewBoodschap, User } from "../types/Types";
 
+// Create an Axios instance with the base URL
 const axiosInstance = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
+});
+
+// Intercept requests to add the API key header
+axiosInstance.interceptors.request.use((config) => {
+    const apiKey = import.meta.env.VITE_API_KEY; // Fetch the API key from environment variables
+
+    if (apiKey) {
+        config.headers['x-api-key'] = apiKey; // Set the API key in the request headers
+    } else {
+        console.error("API Key is missing in the environment variables.");
+    }
+
+    return config;
+}, (error) => {
+    return Promise.reject(error);
 });
 
 class APIClient {
