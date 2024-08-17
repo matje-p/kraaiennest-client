@@ -35,7 +35,7 @@ const App = () => {
     }
   }, [households, user?.defaultHousehold, isInitialized, setHousehold]);
 
-  if (isLoading) return <p>Loading households...</p>;
+  if (isLoading) return <Spinner />;
   if (error) return <p>Error loading households: {error.message}</p>;
 
   if (!isInitialized) return <Spinner />;
