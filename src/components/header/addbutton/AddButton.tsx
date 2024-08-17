@@ -12,7 +12,6 @@ const AddButton = () => {
   const { changeLog, appendChangeLog } = useChangeStore();
 
   console.log("Changelog", changeLog);
-  console.log("Max boodschapId", changeLog);
 
   const newBoodschap: NewBoodschap = {
     item: "", // Assuming you have an item to add
@@ -21,7 +20,6 @@ const AddButton = () => {
     dateAdded: new Date().toISOString(),
     removed: false,
     uuid: uuidv4(),
-    // boodschapId: maxBoodschapId + 1,
   };
 
   const handleAdd = () => {

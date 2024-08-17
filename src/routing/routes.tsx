@@ -1,6 +1,6 @@
 // routing/routes.tsx
 import { createBrowserRouter, RouteObject } from "react-router-dom";
-import BoodschappenPageOverall from "../App";
+import App from "../App";
 import ProtectedRoute from "./ProtectedRoute";
 
 const routes: RouteObject[] = [
@@ -8,7 +8,7 @@ const routes: RouteObject[] = [
     path: "/",
     element: (
       <ProtectedRoute>
-        <BoodschappenPageOverall />
+        <App />
       </ProtectedRoute>
     ),
   },

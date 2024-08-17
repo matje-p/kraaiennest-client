@@ -1,20 +1,18 @@
 import { create } from "zustand";
 import { Household } from "../../../types/Types";
 
-
-interface householdStore {
+interface HouseholdStore {
   household: Household;
   setHousehold: (household: Household) => void;
 }
 
-const usehouseholdStore = create<householdStore>((set) => ({
+const useHouseholdStore = create<HouseholdStore>((set) => ({
   household: {
     householdId: 0,
     householdName: "loading",
     householdFullName: "Loading",
-
   },
   setHousehold: (household: Household) => set({ household }),
 }));
 
-export default usehouseholdStore;
+export default useHouseholdStore;

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "./HouseholdSelector.module.scss";
 import useHouseholds from "./useHouseholds";
@@ -17,35 +17,6 @@ const HouseholdSelector: React.FC = () => {
 
   console.log("User's default household:", user?.defaultHousehold);
   console.log("Fetched households:", households);
-
-  // Find and set the default household once households data is available
-  useEffect(() => {
-    if (households && households.length > 0) {
-      let defaultHousehold;
-
-      if (households.length === 1 || !user?.defaultHousehold) {
-        // If there is only one household or defaultHousehold is null, select the first household
-        defaultHousehold = households[0];
-        console.log(
-          "Only one household or no defaultHousehold, selected:",
-          defaultHousehold
-        );
-      } else {
-        // Find the household matching the user's defaultHousehold
-        defaultHousehold = households.find(
-          (household) => household.householdName === user.defaultHousehold
-        );
-        console.log("Found default household:", defaultHousehold);
-      }
-
-      if (defaultHousehold) {
-        setHousehold(defaultHousehold);
-        console.log("Household set in store:", defaultHousehold);
-      } else {
-        console.log("Default household not found in the list of households.");
-      }
-    }
-  }, [households, user?.defaultHousehold, setHousehold]);
 
   if (isLoading) {
     console.log("Household data is loading...");
@@ -83,11 +54,7 @@ const HouseholdSelector: React.FC = () => {
         console.log("User selected household:", selectedHousehold);
 
         if (selectedHousehold) {
-          setHousehold({
-            householdId: selectedHousehold.householdId,
-            householdName: selectedHousehold.householdName,
-            householdFullName: selectedHousehold.householdFullName,
-          });
+          setHousehold(selectedHousehold);
           console.log("Updated household in store:", selectedHousehold);
         }
       }}
