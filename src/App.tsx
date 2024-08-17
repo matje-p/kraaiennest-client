@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { useUser } from "./auth/userContext";
-import useHouseholds from "./components/header/householdselector/useHouseholds";
-import BoodschappenPage from "./components/body/booschappentable/BoodschappenPage";
-import useHouseholdStore from "./components/header/householdselector/householdStore"; // Ensure this import is correct
+
+import BoodschappenPage from "./components/boodschappenpage/BoodschappenPage";
+
 import Spinner from "./components/spinner/Spinner";
+import useHouseholds from "./components/boodschappenpage/header/householdselector/useHouseholds";
+import useHouseholdStore from "./components/boodschappenpage/header/householdselector/householdStore";
 
 const App = () => {
   const { user } = useUser();
