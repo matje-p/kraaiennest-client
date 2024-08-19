@@ -7,7 +7,6 @@ import BoodschapRow from "./boodschaprow/BoodschapRow";
 const BoodschappenTable: React.FC = () => {
   console.log("BoodschappenTable rendered");
   const { household } = useHouseholdStore();
-
   const {
     data: boodschappen,
     error,
