@@ -1,6 +1,6 @@
 import React from "react";
 import useToggleBoodschapDone from "./useToggleBoodschapDone";
-import useChangeStore from "../../header/undobutton/changeLogStore";
+import useChangeStore from "../../header/dropdownmenu/undobutton/changeLogStore";
 import useHouseholdStore from "../../header/householdselector/householdStore";
 import useBoodschappen from "../../useBoodschappen";
 import { useUser } from "../../../../auth/userContext";

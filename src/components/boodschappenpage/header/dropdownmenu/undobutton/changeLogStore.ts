@@ -1,6 +1,6 @@
 
 import { create } from "zustand";
-import { Boodschap, NewBoodschap } from "../../../../types/Types";
+import { Boodschap, NewBoodschap } from "../../../../../types/Types";
 
 interface ChangeStore {
     changeLog: Boodschap[];

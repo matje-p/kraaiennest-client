@@ -1,13 +1,9 @@
 import useUpsertBoodschap from "./useUpsertBoodschap";
 import useChangeStore from "./changeLogStore";
-import useHouseholdStore from "../householdselector/householdStore";
 import useUnAddLatestBoodschap from "./useUnAddBoodschap";
+import useHouseholdStore from "../../householdselector/householdStore";
 
-interface UndoButtonProps {
-  buttonType: "full" | "mobile";
-}
-
-const UndoButton = ({ buttonType }: UndoButtonProps) => {
+const UndoButton = () => {
   const { household } = useHouseholdStore();
   const { changeLog, removeLastChange } = useChangeStore();
   const upsertBoodschap = useUpsertBoodschap(household.householdName);
@@ -34,24 +30,13 @@ const UndoButton = ({ buttonType }: UndoButtonProps) => {
 
   return (
     <>
-      {buttonType === "full" && (
-        <button
-          className="btn btn-primary btn-sm"
-          onClick={handleUndo}
-          disabled={!lastBoodschap}
-        >
-          <i className="bi bi-arrow-counterclockwise"></i>
-        </button>
-      )}
-      {buttonType === "mobile" && (
-        <button
-          className="dropdown-item"
-          onClick={handleUndo}
-          disabled={!lastBoodschap}
-        >
-          <i className="bi bi-arrow-counterclockwise"></i> Maak ongedaan
-        </button>
-      )}
+      <button
+        className="dropdown-item"
+        onClick={handleUndo}
+        disabled={!lastBoodschap}
+      >
+        <i className="bi bi-arrow-counterclockwise"></i> Maak ongedaan
+      </button>
     </>
   );
 };

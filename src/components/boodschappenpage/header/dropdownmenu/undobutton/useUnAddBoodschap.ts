@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Boodschap } from "../../../../types/Types";
-import { CACHE_KEY_BOODSCHAPPEN } from "../../../../constants";
-import apiService from "../../../../services/apiService";
+import { Boodschap } from "../../../../../types/Types";
+import { CACHE_KEY_BOODSCHAPPEN } from "../../../../../constants";
+import apiService from "../../../../../services/apiService";
 
 
 interface UndoBoodschapContext {

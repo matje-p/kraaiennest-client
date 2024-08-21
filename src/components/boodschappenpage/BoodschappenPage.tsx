@@ -1,4 +1,4 @@
-import Header from "./header/headergrid/Header";
+import Header from "./header/Header";
 import BoodschappenTable from "./boodschappentable/BoodschappenTable";
 import useBoodschappen from "./useBoodschappen";
 import useHouseholdStore from "./header/householdselector/householdStore";

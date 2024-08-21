@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState, useRef } from "react";
 import styles from "./BoodschapItem.module.scss";
 import useChangeBoodschap from "./useChangeBoodschap";
-import useChangeStore from "../../header/undobutton/changeLogStore";
+import useChangeStore from "../../header/dropdownmenu/undobutton/changeLogStore";
 import useHouseholdStore from "../../header/householdselector/householdStore";
 import { useUser } from "../../../../auth/userContext";
 import useBoodschappen from "../../useBoodschappen";

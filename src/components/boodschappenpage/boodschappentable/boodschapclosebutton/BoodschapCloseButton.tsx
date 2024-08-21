@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import useChangeStore from "../../header/undobutton/changeLogStore";
+import useChangeStore from "../../header/dropdownmenu/undobutton/changeLogStore";
 import useDeleteBoodschap from "./useDeleteBoodschap";
 import useHouseholdStore from "../../header/householdselector/householdStore";
 import { useUser } from "../../../../auth/userContext";
