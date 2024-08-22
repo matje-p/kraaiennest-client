@@ -1,13 +1,14 @@
 import { useUser } from "../../../../auth/userContext";
 import LogoutButton from "./logoutbutton/LogoutButton";
 import UndoButton from "./undobutton/UndoButton";
+import styles from "./DropdownMenu.module.scss";
 
 const DropdownMenu = () => {
   const { user } = useUser();
   return (
     <div className="dropdown">
       <button
-        className="btn btn-primary btn-sm"
+        className={`btn btn-primary btn-sm ${styles.dropdownButton}`}
         type="button"
         id="mobileDropdownMenuButton"
         data-bs-toggle="dropdown"

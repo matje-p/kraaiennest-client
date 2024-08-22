@@ -59,6 +59,7 @@ const HouseholdSelector: React.FC = () => {
         }
       }}
       className={`form-select ${styles.HouseholdSelector}`}
+      style={{ color: "black" }}
     >
       {households?.map(({ householdName, householdFullName }) => (
         <option key={householdName} value={householdName}>

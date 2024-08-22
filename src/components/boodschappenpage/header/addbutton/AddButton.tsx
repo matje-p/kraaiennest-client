@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useUser } from "../../../../auth/userContext";
 import { NewBoodschap } from "../../../../types/Types";
 import useChangeStore from "../dropdownmenu/undobutton/changeLogStore";
+import styles from "./AddButton.module.scss";
 
 const AddButton = () => {
   const { household } = useHouseholdStore();
@@ -29,7 +30,10 @@ const AddButton = () => {
   };
 
   return (
-    <button onClick={handleAdd} className="btn btn-primary btn-sm me-2">
+    <button
+      onClick={handleAdd}
+      className={`btn btn-primary btn-sm me-2 ${styles.addButton}`}
+    >
       <i className="bi bi-plus"></i>
     </button>
   );

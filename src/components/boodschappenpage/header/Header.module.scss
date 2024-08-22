@@ -4,7 +4,8 @@
 .header {
     min-height: 60px;
     color: $blue-700;
-    background-color: $gray-200;
+    // background-color: $gray-200;
+    background-image: linear-gradient(to bottom right, #084298, #6685D6);
   }
 
 .dropdownFullscreen {
@@ -12,9 +13,14 @@
 }
 
 .selectorSpacer {
-  width: 33px;
+  width: 56px;
 }
 
-.iconWidth {
+.brandIcon {
   width: 20px;
+  color: white;
+}
+
+.brandText {
+  color: white;
 }
