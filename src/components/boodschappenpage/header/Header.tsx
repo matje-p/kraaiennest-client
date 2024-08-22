@@ -12,7 +12,7 @@ const Header = () => {
         <div className="container align-items-center">
           <div className="d-flex flex-column">
             <div className="d-flex flex-row align-items-center">
-              <i className={`bi bi-cart4 fs-3 me-4 ${styles.brandIcon}`}> </i>
+              <i className={`bi bi-cart4 fs-3 me-3 ${styles.brandIcon}`}> </i>
               <strong className={`fs-5 me-2 ${styles.brandText}`}>
                 Boodschappenlijstje
               </strong>
