@@ -9,7 +9,6 @@ const axiosInstance = axios.create({
 // Intercept requests to add the API key header
 axiosInstance.interceptors.request.use((config) => {
     const apiKey = import.meta.env.VITE_API_KEY; // Fetch the API key from environment variables
-
     if (apiKey) {
         config.headers['x-api-key'] = apiKey; // Set the API key in the request headers
     } else {
