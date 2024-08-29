@@ -1,5 +1,3 @@
-import React from "react";
-
 const profileTable = () => {
   const userDetails = {
     1: { name: "Matthias" },
