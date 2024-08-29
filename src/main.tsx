@@ -11,14 +11,11 @@ import { UserProvider } from "./auth/userContext.tsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import ProfilePage from "./components/profilepage/ProfilePage.tsx";
 
 const queryClient = new QueryClient();
 
 const MainApp = () => {
-  // useEffect(() => {
-  //   setupAxiosInterceptors(); // Set up Axios interceptors
-  // }, []);
-
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
@@ -33,6 +30,7 @@ const MainApp = () => {
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
+    {/* <ProfilePage /> */}
     <MainApp />
   </React.StrictMode>
 );
