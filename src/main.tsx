@@ -11,7 +11,7 @@ import { UserProvider } from "./auth/userContext.tsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import ProfilePage from "./components/profilepage/ProfilePage.tsx";
+// import ProfilePage from "./components/profilepage/ProfilePage.tsx";
 
 const queryClient = new QueryClient();
 
