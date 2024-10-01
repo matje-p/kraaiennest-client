@@ -35,7 +35,7 @@ const UndoButton = () => {
         onClick={handleUndo}
         disabled={!lastBoodschap}
       >
-        <i className="bi bi-arrow-counterclockwise"></i> Maak ongedaan
+        <i className="bi bi-arrow-counterclockwise me-1"></i> Maak ongedaan
       </button>
     </>
   );

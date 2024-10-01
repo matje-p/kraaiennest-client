@@ -2,16 +2,6 @@
     width: 10px;
   }
 
-.boodschapItemText {
-    border: none; // Remove border
-    width: 100%; // Full width
-    display: block; // Block to match text area dimensions
-    background-color: transparent; // Optional: Match background if needed
-    font-size: 1rem; // Match font size
-    line-height: 1.5; // Match line height
-  }
-
-  /* Boodschap.module.css or similar */
 .strikedText {
     text-decoration: line-through;
   }

@@ -12,7 +12,6 @@ const BoodschappenPage = () => {
   return (
     <>
       <Header />
-
       {boodschappen?.length === 0 ? (
         <p className={`${styles.geenBoodschappen}`}>
           Geen boodschappen te doen voor dit huishouden

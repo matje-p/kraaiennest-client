@@ -16,3 +16,21 @@
 
 // // Import Bootstrap
 // @import "~bootstrap/scss/bootstrap"; */
+
+.body {
+    max-width: 450px;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+.root {
+    display: flex;
+    justify-content: center;
+    // align-items: center;
+    min-height: 100vh;
+  }
+  
+  .body > * {
+    width: 100%;
+  }

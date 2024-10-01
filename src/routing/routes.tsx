@@ -1,7 +1,9 @@
-// routing/routes.tsx
 import { createBrowserRouter, RouteObject } from "react-router-dom";
 import App from "../App";
+import BoodschappenPage from "../components/boodschappenpage/BoodschappenPage";
 import ProtectedRoute from "./ProtectedRoute";
+import ProfilePage from "../components/profilepage/ProfilePage";
+import HouseholdPage from "../components/householdpage/HouseholdPage";
 
 const routes: RouteObject[] = [
   {
@@ -11,6 +13,20 @@ const routes: RouteObject[] = [
         <App />
       </ProtectedRoute>
     ),
+    children: [
+      {
+        index: true,
+        element: <BoodschappenPage />,
+      },
+      {
+        path: "account",
+        element: <ProfilePage />,
+      },
+      {
+        path: "household",
+        element: <HouseholdPage />,
+      },
+    ],
   },
 ];
 

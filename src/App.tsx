@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useUser } from "./auth/userContext";
-
-import BoodschappenPage from "./components/boodschappenpage/BoodschappenPage";
-
+import { Outlet } from "react-router-dom";
+import styles from "./App.module.scss";
+// import BoodschappenPage from "./components/boodschappenpage/BoodschappenPage";
 import Spinner from "./components/spinner/Spinner";
 import useHouseholds from "./components/boodschappenpage/header/householdselector/useHouseholds";
 import useHouseholdStore from "./components/boodschappenpage/header/householdselector/householdStore";
@@ -17,6 +17,14 @@ const App = () => {
     isLoading,
     error,
   } = useHouseholds(user?.emailAddress || "No email found");
+
+  useEffect(() => {
+    let baseTitle = "Boodschappenlijstje";
+    if (process.env.NODE_ENV === "development") {
+      baseTitle += " [dev]";
+    }
+    document.title = baseTitle;
+  }, []);
 
   useEffect(() => {
     if (!isInitialized && households && households.length > 0) {
@@ -42,10 +50,14 @@ const App = () => {
 
   if (!isInitialized) return <Spinner />;
 
-  console.log("Rendering BoodschappenPageOverall");
+  console.log("Rendering App");
   console.log("VITE_API_URL", import.meta.env.VITE_API_URL);
 
-  return <BoodschappenPage />;
+  return (
+    <>
+      <Outlet />
+    </>
+  );
 };
 
 export default App;

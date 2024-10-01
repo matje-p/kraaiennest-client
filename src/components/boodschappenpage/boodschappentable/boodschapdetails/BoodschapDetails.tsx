@@ -33,7 +33,8 @@ const BoodschapDetails: React.FC<BoodschapDetailsProps> = ({ boodschapId }) => {
   }
 
   return (
-    <div className="col-12 col-md-8 col-lg-6">
+    <div className="col-12">
+      {/* <div className="col-12 col-md-8 col-lg-6"> */}
       <span id="meta" className="text-muted">
         {boodschap?.done
           ? `Afgevinkt door ${user?.firstName} op ${dateDoneString}`

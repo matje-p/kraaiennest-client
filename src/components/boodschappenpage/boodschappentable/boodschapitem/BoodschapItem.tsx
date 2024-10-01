@@ -110,12 +110,13 @@ const BoodschapItem: React.FC<BoodschapItemProps> = ({ boodschapId }) => {
   }
 
   return (
-    <div className="col-12 col-md-4 col-lg-6">
+    <div className="col-12">
+      {/* <div className="col-12 col-md-8 col-lg-6"> */}
       <div className="me-1">
         {isEditing ? (
           <textarea
             ref={textareaRef}
-            className={`form-control ${styles.boodschapItemInput}`}
+            className={`form-control`}
             value={localText}
             onChange={handleTextChange}
             onBlur={handleBlur}

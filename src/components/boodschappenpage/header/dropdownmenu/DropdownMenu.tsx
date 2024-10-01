@@ -2,9 +2,9 @@ import { useUser } from "../../../../auth/userContext";
 import LogoutButton from "./logoutbutton/LogoutButton";
 import UndoButton from "./undobutton/UndoButton";
 import styles from "./DropdownMenu.module.scss";
+import AccountButton from "./accountbutton/AccountButton";
 
 const DropdownMenu = () => {
-  const { user } = useUser();
   return (
     <div className="dropdown">
       <button
@@ -14,14 +14,14 @@ const DropdownMenu = () => {
         data-bs-toggle="dropdown"
         aria-expanded="false"
       >
-        <i className="bi bi-three-dots-vertical"></i>
+        <i className="bi bi-list"></i>
       </button>
       <ul
         className="dropdown-menu dropdown-menu-end"
         aria-labelledby="mobileDropdownMenuButton"
       >
         <li>
-          <button className="dropdown-item">{user?.firstName}</button>
+          <AccountButton />
         </li>
         <li>
           <UndoButton />

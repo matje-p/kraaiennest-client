@@ -34,6 +34,7 @@ export interface Household {
 export interface User {
   emailAddress: string;
   firstName: string;
+  lastName?: string; // Adding lastName as optional
   households: string[];
   defaultHousehold?: string;
 }
