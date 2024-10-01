@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useUser } from "./auth/userContext";
 import { Outlet } from "react-router-dom";
-import styles from "./App.module.scss";
 // import BoodschappenPage from "./components/boodschappenpage/BoodschappenPage";
 import Spinner from "./components/spinner/Spinner";
 import useHouseholds from "./components/boodschappenpage/header/householdselector/useHouseholds";
