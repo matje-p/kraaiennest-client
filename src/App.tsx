@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 import Spinner from "./components/spinner/Spinner";
 import useHouseholds from "./components/boodschappenpage/header/householdselector/useHouseholds";
 import useHouseholdStore from "./components/boodschappenpage/header/householdselector/householdStore";
-
+/// triggering new build
 const App = () => {
   const { user } = useUser();
   const { setHousehold } = useHouseholdStore();
