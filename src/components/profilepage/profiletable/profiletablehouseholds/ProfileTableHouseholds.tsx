@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import { useUser } from "../../../../auth/userContext";
 import useHouseholds from "../../../boodschappenpage/header/householdselector/useHouseholds";
 

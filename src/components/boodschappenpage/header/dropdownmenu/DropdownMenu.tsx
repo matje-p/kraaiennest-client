@@ -1,4 +1,3 @@
-import { useUser } from "../../../../auth/userContext";
 import LogoutButton from "./logoutbutton/LogoutButton";
 import UndoButton from "./undobutton/UndoButton";
 import styles from "./DropdownMenu.module.scss";
