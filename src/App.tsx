@@ -9,6 +9,8 @@ const App = () => {
   const { setHousehold } = useHouseholdStore();
   const [isInitialized, setIsInitialized] = useState(false);
 
+  // Triggering a rebuild
+
   const {
     data: households,
     isLoading,
