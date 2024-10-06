@@ -8,9 +8,7 @@ const App = () => {
   const { user } = useUser();
   const { setHousehold } = useHouseholdStore();
   const [isInitialized, setIsInitialized] = useState(false);
-
-  // Now it should work
-
+  // Trigger new build
   const {
     data: households,
     isLoading,
