@@ -13,7 +13,7 @@ const App = () => {
     data: households,
     isLoading,
     error,
-  } = useHouseholds(user?.emailAddress || "No email found");
+  } = useHouseholds(user?.emailAddress || "");
 
   useEffect(() => {
     let baseTitle = "Boodschappenlijstje";
@@ -49,6 +49,7 @@ const App = () => {
 
   console.log("Rendering App");
   console.log("VITE_API_URL", import.meta.env.VITE_API_URL);
+  console.log("User", user);
 
   return (
     <>

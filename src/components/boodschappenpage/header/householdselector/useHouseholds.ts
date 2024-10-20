@@ -9,6 +9,7 @@ const useHouseholds = (emailAddress: string): UseQueryResult<Household[] | null,
     queryKey: [CACHE_KEY_HOUSEHOLDS, emailAddress],
     queryFn: () => apiService.getUserHouseholds(emailAddress),
     staleTime: 10 * 1000, // Adjust as needed
+    enabled: !!emailAddress, // Only run the query if emailAddress is truthy
   });
 };
 

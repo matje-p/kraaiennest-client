@@ -13,7 +13,7 @@ const HouseholdSelector: React.FC = () => {
     data: households,
     isLoading,
     error,
-  } = useHouseholds(user?.emailAddress || "No email found");
+  } = useHouseholds(user?.emailAddress || "");
 
   console.log("User's default household:", user?.defaultHousehold);
   console.log("Fetched households:", households);

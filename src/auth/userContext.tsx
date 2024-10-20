@@ -28,6 +28,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   // Handle the case where user is loading or not authenticated yet
   const emailAddress = auth0User?.email || "";
+
   const {
     data: user,
     isLoading: userLoading,
