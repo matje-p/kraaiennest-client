@@ -9,8 +9,15 @@ const Avatar = () => {
   const firstNameLowercase = user?.firstName?.toLowerCase();
   const firstName = user?.firstName;
 
-  // Dynamically generating the image source
-  const src = `../../../public/profilepic_${firstNameLowercase}.png`;
+  // Check the environment
+  const isProduction = import.meta.env.MODE === "production";
+
+  // Conditionally setting the image source based on environment
+  const src = isProduction
+    ? `https://${
+        import.meta.env.VITE_S3_BUCKET_NAME
+      }.s3.amazonaws.com/profilepic_${firstNameLowercase}.png`
+    : `../../../public/images/profilepic_${firstNameLowercase}.png`;
 
   return (
     <div>
