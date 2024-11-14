@@ -10,7 +10,9 @@ export class APIClient {
         this.axiosInstance = axios.create({
             baseURL: import.meta.env.VITE_API_URL + baseUrl,
         });
-
+    
+        console.log('API Client initialized with baseURL:', import.meta.env.VITE_API_URL + baseUrl);
+    
         // Add API key to all requests
         this.axiosInstance.interceptors.request.use(async (config) => {
             // Add API key
@@ -18,15 +20,21 @@ export class APIClient {
             if (apiKey) {
                 config.headers['x-api-key'] = apiKey;
             }
-
+    
             // Add auth token
             try {
                 const token = await this.getToken();
                 config.headers.Authorization = `Bearer ${token}`;
+                
+                console.log('=== Request Details ===');
+                console.log('URL:', `${config.baseURL || ''}${config.url || ''}`);
+                console.log('Method:', config.method?.toUpperCase());
+                console.log('Token:', token);
+                console.log('====================');
             } catch (error) {
                 console.error('Error getting auth token:', error);
             }
-
+    
             return config;
         });
     }
