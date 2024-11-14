@@ -3,10 +3,7 @@ import { APIClient } from "./apiClient";
 export const createApiService = (getToken: () => Promise<string>) => {
     // Wrapper function to add logging and validation
     const getTokenWithLogging = async () => {
-        console.log('=== Token Request Started ===');
-        console.log('Environment:', process.env.NODE_ENV);
-        console.log('API URL:', import.meta.env.VITE_API_URL);
-        console.log('Auth0 Audience:', import.meta.env.VITE_AUTH0_AUDIENCE);
+
         
         try {
             const token = await getToken();
