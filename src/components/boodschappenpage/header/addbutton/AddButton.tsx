@@ -1,38 +1,48 @@
-import useAddBoodschap from "./useAddBoodschap";
-import useHouseholdStore from "../householdselector/householdStore";
-import { v4 as uuidv4 } from "uuid";
-import { useUser } from "../../../../auth/userContext";
+// AddButton.tsx
+import useUserData from "../../../../auth/useUserData";
 import { NewBoodschap } from "../../../../types/Types";
 import useChangeStore from "../dropdownmenu/undobutton/changeLogStore";
+import useHouseholdStore from "../householdselector/householdStore";
 import styles from "./AddButton.module.scss";
+import useAddBoodschap from "./useAddBoodschap";
 
 const AddButton = () => {
-  const { household } = useHouseholdStore();
-  const addBoodschap = useAddBoodschap(household.householdName);
-  const { user } = useUser();
+  const { household: currentHousehold } = useHouseholdStore();
+  const {
+    data: userData,
+    isLoading: userLoading,
+    error: userDataError,
+  } = useUserData();
   const { changeLog, appendChangeLog } = useChangeStore();
+  console.log("Changelog:", changeLog);
 
-  console.log("Changelog", changeLog);
-
-  const newBoodschap: NewBoodschap = {
-    item: "", // Assuming you have an item to add
-    householdName: household.householdName,
-    userAdded: user?.firstName || "Unknown User",
-    dateAdded: new Date().toISOString(),
-    removed: false,
-    uuid: uuidv4(),
-  };
+  const addBoodschap = useAddBoodschap();
 
   const handleAdd = () => {
-    console.log("Adding new boodschap");
+    console.log("Add button clicked");
+
+    if (!currentHousehold || !userData) {
+      console.error("Missing household or user data");
+      return;
+    }
+
+    const newBoodschap: NewBoodschap = {
+      householdUuid: currentHousehold.householdUuid, // Changed to use household's uuid
+      userAddedUuid: userData.userUuid,
+      userAddedFirstname: userData.firstName,
+    };
+
     addBoodschap.mutate(newBoodschap);
     appendChangeLog(newBoodschap);
   };
+
+  const isDisabled = !currentHousehold || !userData || userLoading;
 
   return (
     <button
       onClick={handleAdd}
       className={`btn btn-primary btn-sm me-2 ${styles.addButton}`}
+      disabled={isDisabled}
     >
       <i className="bi bi-plus"></i>
     </button>

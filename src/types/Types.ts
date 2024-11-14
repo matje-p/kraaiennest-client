@@ -1,40 +1,61 @@
 export interface NewBoodschap {
-  item: string;
-  householdName: string;
-  userAdded: string;
-  dateAdded: string;
-  removed: boolean;
-  uuid: string;
+  householdUuid: string;  // Changed from household to householdUuid
+  userAddedUuid: string;  // Changed from userAdded to userAddedUuid
+  userAddedFirstname: string;
 }
 
-// Extend the base interface for Boodschap
+
 export interface Boodschap extends NewBoodschap {
+  boodschapUuid: string;
   boodschapId: number;
-  householdId: number;
-  userIdAdded: number;
-  userDone: string;
-  userIdDone: number;
-  dateDone: string;
   done: boolean;
-  userChanged: string;
-  userChangedId: number;
   changed: boolean;
-  dateChanged: string;
-  userRemoved: string;
-  userRemovedId: number;
-  dateRemoved: string;
+  item: string;
+  removed: boolean;
+  
+  // Date fields
+  dateDone: string | null;
+  dateChanged: string | null;
+  dateRemoved: string | null;
+  dateAdded: string;
+  
+  // UUID fields
+  userDoneUuid: string | null;      // Changed from userDone
+  userChangedUuid: string | null;   // Changed from userChanged
+  userRemovedUuid: string | null;   // Changed from userRemoved
+
+  // Firstname fields
+  userDoneFirstname: string | null;
+  userChangedFirstname: string | null;
+  userRemovedFirstname: string | null;
 }
+
 
 export interface Household {
-  householdFullName: string;
-  householdName: string;
-  householdId: number;
+  name: string;
+  // householdName: string;
+  // householdId: number;
+  householdUuid: string;
 }
 
 export interface User {
   emailAddress: string;
+  sub:string;
+  userUuid: string;
   firstName: string;
   lastName?: string; // Adding lastName as optional
   households: string[];
   defaultHousehold?: string;
+}
+
+export interface UserData {
+  userUuid: string;
+  emailAddress: string;
+  firstName: string;
+  lastName: string;
+  sub: string;
+  households: string[]; // Array of household UUIDs
+  defaultHousehold: string;
+  householdData: Household[];
+  boodschapsData: Boodschap[];
 }

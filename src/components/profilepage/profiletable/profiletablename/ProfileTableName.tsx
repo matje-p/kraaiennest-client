@@ -1,14 +1,20 @@
-import { useUser } from "../../../../auth/userContext";
+import useUserData from "../../../../auth/useUserData";
 
 const ProfileTableName = () => {
-  const { user } = useUser();
+  const {
+    data: userData,
+    isLoading: userLoading,
+    error: userDataError,
+  } = useUserData();
   return (
     <tr>
       <td>
         <i className={`bi bi-lg bi-person`}></i>
       </td>
       <td>
-        <div>{user?.firstName?.concat(" ", user?.lastName || "") || ""}</div>
+        <div>
+          {userData?.firstName?.concat(" ", userData?.lastName || "") || ""}
+        </div>
       </td>
     </tr>
   );

@@ -1,8 +1,7 @@
 import React from "react";
 import transformDate from "./transformDate";
 import useHouseholdStore from "../../header/householdselector/householdStore";
-import { useUser } from "../../../../auth/userContext";
-import useBoodschappen from "../../useBoodschappen";
+import useUserData from "../../../../auth/useUserData";
 import Spinner from "../../../spinner/Spinner";
 
 interface BoodschapDetailsProps {
@@ -10,13 +9,23 @@ interface BoodschapDetailsProps {
 }
 
 const BoodschapDetails: React.FC<BoodschapDetailsProps> = ({ boodschapId }) => {
-  const { household } = useHouseholdStore();
-  const { user } = useUser();
+  const { household: currentHousehold } = useHouseholdStore();
   const {
-    data: boodschappen,
-    error,
-    isLoading,
-  } = useBoodschappen(household.householdName);
+    data: userData,
+    isLoading: userDataLoading,
+    error: userDataError,
+  } = useUserData();
+
+  if (!currentHousehold) {
+    return <div>No household selected</div>;
+  }
+
+  // Filter boodschappen for current household
+  const boodschappen = userData?.boodschapsData?.filter(
+    (boodschap) => boodschap.householdUuid === currentHousehold.householdUuid
+  );
+
+  // Find specific boodschap
   const boodschap = boodschappen?.find((b) => b.boodschapId === boodschapId);
 
   const dateAddedString = boodschap
@@ -24,24 +33,23 @@ const BoodschapDetails: React.FC<BoodschapDetailsProps> = ({ boodschapId }) => {
     : "Date unknown";
   const dateDoneString = transformDate(new Date());
 
-  if (isLoading) {
+  if (userDataLoading) {
     return <Spinner />;
   }
 
-  if (error) {
+  if (userDataError) {
     return <div>Error loading boodschap.</div>;
   }
 
   return (
     <div className="col-12">
-      {/* <div className="col-12 col-md-8 col-lg-6"> */}
       <span id="meta" className="text-muted">
         {boodschap?.done
-          ? `Afgevinkt door ${user?.firstName} op ${dateDoneString}`
-          : boodschap?.userChanged &&
-            boodschap?.userChanged !== boodschap?.userAdded
-          ? `Gewijzigd door ${boodschap?.userChanged} op ${dateAddedString}`
-          : `Toegevoegd door ${boodschap?.userAdded} op ${dateAddedString}`}
+          ? `Afgevinkt door ${userData?.firstName} op ${dateDoneString}`
+          : boodschap?.userChangedUuid &&
+            boodschap?.userChangedUuid !== boodschap?.userAddedUuid
+          ? `Gewijzigd door ${boodschap?.userChangedFirstname} op ${dateAddedString}`
+          : `Toegevoegd door ${boodschap?.userAddedFirstname} op ${dateAddedString}`}
       </span>
     </div>
   );

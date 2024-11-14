@@ -2,8 +2,7 @@ import React, { useCallback } from "react";
 import useChangeStore from "../../header/dropdownmenu/undobutton/changeLogStore";
 import useDeleteBoodschap from "./useDeleteBoodschap";
 import useHouseholdStore from "../../header/householdselector/householdStore";
-import { useUser } from "../../../../auth/userContext";
-import useBoodschappen from "../../useBoodschappen";
+import useUserData from "../../../../auth/useUserData";
 import Spinner from "../../../spinner/Spinner";
 
 interface BoodschapCloseButtonProps {
@@ -13,20 +12,27 @@ interface BoodschapCloseButtonProps {
 const BoodschapCloseButton: React.FC<BoodschapCloseButtonProps> = ({
   boodschapId,
 }) => {
-  const { household } = useHouseholdStore();
-  const { user } = useUser();
+  const { household: currentHousehold } = useHouseholdStore();
   const {
-    data: boodschappen,
-    error,
-    isLoading,
-  } = useBoodschappen(household.householdName);
-  const boodschap = boodschappen?.find((b) => b.boodschapId === boodschapId);
-  const { appendChangeLog } = useChangeStore();
-  const { mutate: deleteBoodschap } = useDeleteBoodschap(
-    household.householdName
+    data: userData,
+    isLoading: userDataLoading,
+    error: userDataError,
+  } = useUserData();
+
+  if (!currentHousehold) {
+    return <div>No household selected</div>;
+  }
+
+  // Filter boodschappen for current household
+  const boodschappen = userData?.boodschapsData?.filter(
+    (boodschap) => boodschap.householdUuid === currentHousehold.householdUuid
   );
-  // console.log(b);
-  console.log("BoodschapId", boodschapId);
+
+  // Find specific boodschap
+  const boodschap = boodschappen?.find((b) => b.boodschapId === boodschapId);
+
+  const { appendChangeLog } = useChangeStore();
+  const { mutate: deleteBoodschap } = useDeleteBoodschap();
 
   const handleDeleteClick = useCallback(() => {
     console.log("Close button clicked");
@@ -34,16 +40,17 @@ const BoodschapCloseButton: React.FC<BoodschapCloseButtonProps> = ({
       appendChangeLog(boodschap);
       deleteBoodschap({
         boodschapId: boodschap.boodschapId,
-        userRemoved: user?.firstName || "Unknown user",
+        userRemovedUuid: userData?.userUuid || "Unknown user",
+        userRemovedFirstname: userData?.firstName || "Unknown user",
       });
     }
-  }, [boodschap, deleteBoodschap, appendChangeLog]);
+  }, [boodschap, deleteBoodschap, appendChangeLog, userData?.firstName]);
 
-  if (isLoading) {
+  if (userDataLoading) {
     return <Spinner />;
   }
 
-  if (error) {
+  if (userDataError) {
     return <div>Error loading boodschap.</div>;
   }
 

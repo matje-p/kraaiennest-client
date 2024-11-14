@@ -1,44 +1,58 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useAuth0 } from '@auth0/auth0-react';
 import { Boodschap } from '../../../../types/Types';
-import apiService from '../../../../services/apiService';
+import { createApiService } from '../../../../services/apiService';
 import { CACHE_KEY_BOODSCHAPPEN } from '../../../../constants';
 
-
 interface DeleteBoodschapContext {
-    previousBoodschappen: Boodschap[];
+    previousUserData: any;
 }
 
 interface DeleteBoodschapVariables {
     boodschapId: number;
-    userRemoved: string;
+    userRemovedUuid: string;
+    userRemovedFirstname: string;
 }
 
-const useDeleteBoodschap = (householdName: string) => {
+const useDeleteBoodschap = () => {
     const queryClient = useQueryClient();
+    const { getAccessTokenSilently } = useAuth0();
+    const apiService = createApiService(getAccessTokenSilently);
 
     return useMutation<void, Error, DeleteBoodschapVariables, DeleteBoodschapContext>({
-        mutationFn: ({ boodschapId, userRemoved }) => apiService.markBoodschapAsRemoved(boodschapId, userRemoved),
+        mutationFn: ({ boodschapId, userRemovedUuid, userRemovedFirstname }) => 
+            apiService.markBoodschapAsRemoved(boodschapId, userRemovedUuid, userRemovedFirstname),
+
         onMutate: async ({ boodschapId }) => {
-            await queryClient.cancelQueries({ queryKey: [CACHE_KEY_BOODSCHAPPEN, householdName] });
-            const previousBoodschappen = queryClient.getQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName]) || [];
+            await queryClient.cancelQueries({ queryKey: ['userData'] });
 
-            queryClient.setQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName], (boodschappen) =>
-                (boodschappen || []).filter((boodschap) => boodschap.boodschapId !== boodschapId)
-            );
+            const previousUserData = queryClient.getQueryData(['userData']);
 
-            return { previousBoodschappen };
+            queryClient.setQueryData(['userData'], (oldData: any) => {
+                if (!oldData?.boodschapsData) return oldData;
+
+                return {
+                    ...oldData,
+                    boodschapsData: oldData.boodschapsData.filter(
+                        (boodschap: Boodschap) => boodschap.boodschapId !== boodschapId
+                    )
+                };
+            });
+
+            return { previousUserData };
         },
+
         onError: (error, _, context) => {
-            if (!context) return;
-            queryClient.setQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName], context.previousBoodschappen);
-            console.log(error);
+            console.error('Delete boodschap error:', error);
+            if (context?.previousUserData) {
+                queryClient.setQueryData(['userData'], context.previousUserData);
+            }
         },
+
         onSettled: () => {
-            queryClient.invalidateQueries({ queryKey: [CACHE_KEY_BOODSCHAPPEN, householdName] });
+            queryClient.invalidateQueries({ queryKey: ['userData'] });
         },
     });
 };
 
 export default useDeleteBoodschap;
-
-

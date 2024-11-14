@@ -3,16 +3,12 @@ import { Household } from "../../../../types/Types";
 
 
 interface HouseholdStore {
-  household: Household;
+  household: Household | null;  // Added null for initial state
   setHousehold: (household: Household) => void;
 }
 
 const useHouseholdStore = create<HouseholdStore>((set) => ({
-  household: {
-    householdId: 0,
-    householdName: "loading",
-    householdFullName: "Loading",
-  },
+  household: null,  // Changed initial state to null instead of dummy data
   setHousehold: (household: Household) => set({ household }),
 }));
 

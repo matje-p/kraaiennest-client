@@ -8,3 +8,7 @@
     line-height: 1.5; // Match line height
   }
 
+  .strikedText {
+    text-decoration: line-through;
+    // opacity: 0.8; // optional: makes the text appear faded
+  }

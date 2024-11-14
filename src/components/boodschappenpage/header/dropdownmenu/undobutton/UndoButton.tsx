@@ -4,10 +4,10 @@ import useUnAddLatestBoodschap from "./useUnAddBoodschap";
 import useHouseholdStore from "../../householdselector/householdStore";
 
 const UndoButton = () => {
-  const { household } = useHouseholdStore();
+  const { household: currentHousehold } = useHouseholdStore();
   const { changeLog, removeLastChange } = useChangeStore();
-  const upsertBoodschap = useUpsertBoodschap(household.householdName);
-  const unAddBoodschap = useUnAddLatestBoodschap(household.householdName);
+  const upsertBoodschap = useUpsertBoodschap();
+  const unAddBoodschap = useUnAddLatestBoodschap();
   const lastBoodschap = changeLog[changeLog.length - 1]; // Get the most recent Boodschap
 
   const handleUndo = () => {

@@ -3,8 +3,7 @@ import styles from "./BoodschapItem.module.scss";
 import useChangeBoodschap from "./useChangeBoodschap";
 import useChangeStore from "../../header/dropdownmenu/undobutton/changeLogStore";
 import useHouseholdStore from "../../header/householdselector/householdStore";
-import { useUser } from "../../../../auth/userContext";
-import useBoodschappen from "../../useBoodschappen";
+import useUserData from "../../../../auth/useUserData";
 import Spinner from "../../../spinner/Spinner";
 
 interface BoodschapItemProps {
@@ -12,17 +11,26 @@ interface BoodschapItemProps {
 }
 
 const BoodschapItem: React.FC<BoodschapItemProps> = ({ boodschapId }) => {
-  const { household } = useHouseholdStore();
-  const { user } = useUser();
+  const { household: currentHousehold } = useHouseholdStore();
   const {
-    data: boodschappen,
-    error,
-    isLoading,
-  } = useBoodschappen(household.householdName);
-  const boodschap = boodschappen?.find((b) => b.boodschapId === boodschapId);
-  const { mutate: updateBoodschapText } = useChangeBoodschap(
-    household.householdName
+    data: userData,
+    isLoading: userDataLoading,
+    error: userDataError,
+  } = useUserData();
+
+  if (!currentHousehold) {
+    return <div>No household selected</div>;
+  }
+
+  // Filter boodschappen for current household
+  const boodschappen = userData?.boodschapsData?.filter(
+    (boodschap) => boodschap.householdUuid === currentHousehold.householdUuid
   );
+
+  // Find specific boodschap
+  const boodschap = boodschappen?.find((b) => b.boodschapId === boodschapId);
+
+  const { mutate: updateBoodschapText } = useChangeBoodschap();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [localText, setLocalText] = useState<string>("");
   const { appendChangeLog } = useChangeStore();
@@ -30,7 +38,7 @@ const BoodschapItem: React.FC<BoodschapItemProps> = ({ boodschapId }) => {
 
   useEffect(() => {
     if (boodschap) {
-      setLocalText(boodschap.item); // Assuming `item` is the property containing the message
+      setLocalText(boodschap.item);
     }
   }, [boodschap]);
 
@@ -61,12 +69,13 @@ const BoodschapItem: React.FC<BoodschapItemProps> = ({ boodschapId }) => {
       updateBoodschapText({
         boodschapId: boodschap.boodschapId,
         item: localText,
-        userChanged: user?.firstName || "unknown",
+        userChangedUuid: userData?.userUuid || "unknown",
+        userChangedFirstname: userData?.firstName || "unknown",
       });
       setLocalText(localText);
     }
     setIsEditing(false);
-  }, [updateBoodschapText, boodschap, localText, user?.firstName]);
+  }, [updateBoodschapText, boodschap, localText, userData?.firstName]);
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -101,17 +110,16 @@ const BoodschapItem: React.FC<BoodschapItemProps> = ({ boodschapId }) => {
     };
   }, [isEditing, handleBlur]);
 
-  if (isLoading) {
+  if (userDataLoading) {
     return <Spinner />;
   }
 
-  if (error) {
+  if (userDataError) {
     return <div>Error loading boodschap.</div>;
   }
 
   return (
     <div className="col-12">
-      {/* <div className="col-12 col-md-8 col-lg-6"> */}
       <div className="me-1">
         {isEditing ? (
           <textarea

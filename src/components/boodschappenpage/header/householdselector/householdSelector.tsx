@@ -1,69 +1,90 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "./HouseholdSelector.module.scss";
-import useHouseholds from "./useHouseholds";
 import useHouseholdStore from "./householdStore";
-import { useUser } from "../../../../auth/userContext";
+import useUserData from "../../../../auth/useUserData";
+import { Household } from "../../../../types/Types";
 
 const HouseholdSelector: React.FC = () => {
-  const { user } = useUser();
+  const {
+    data: userData,
+    isLoading: userDataLoading,
+    error: userDataError,
+  } = useUserData();
   const { household, setHousehold } = useHouseholdStore();
 
-  const {
-    data: households,
-    isLoading,
-    error,
-  } = useHouseholds(user?.emailAddress || "");
+  // Initialize with default household when data is loaded
+  useEffect(() => {
+    if (userData?.defaultHousehold && !household && userData.householdData) {
+      const defaultHouseholdData = userData.householdData.find(
+        (h: Household) => h.householdUuid === userData.defaultHousehold
+      );
 
-  console.log("User's default household:", user?.defaultHousehold);
-  console.log("Fetched households:", households);
+      if (defaultHouseholdData) {
+        setHousehold({
+          householdUuid: defaultHouseholdData.householdUuid,
+          name: defaultHouseholdData.name,
+        });
+        console.log(
+          "Initialized with default household:",
+          defaultHouseholdData
+        );
+      }
+    }
+  }, [userData, household, setHousehold]);
 
-  if (isLoading) {
+  if (userDataLoading) {
     console.log("Household data is loading...");
     return <p>Loading...</p>;
   }
 
-  if (error) {
-    console.error("Error loading households:", error);
-    return <p>Error loading households: {error.message}</p>;
+  if (userDataError) {
+    console.error("Error loading households:", userDataError);
+    return <p>Error loading households: {userDataError.message}</p>;
   }
 
-  console.log("Selected household in store:", household);
-
-  if (households?.length === 0) {
+  if (!userData?.householdData || userData.householdData.length === 0) {
     return <p>No households found</p>;
   }
 
-  if (households?.length === 1) {
-    // Directly display the household name if there's only one household
+  if (userData.householdData.length === 1) {
     return (
       <p className={`${styles.HouseholdSingle}`}>
-        {household.householdFullName}
+        only one household
+        {userData.householdData[0].name}
       </p>
     );
   }
 
+  // Find currently selected household
+  const currentHousehold = userData.householdData.find(
+    (h: Household) => h.householdUuid === household?.householdUuid
+  );
+
   return (
     <select
       id="location-selector"
-      value={household.householdName}
+      value={currentHousehold?.householdUuid || ""}
       onChange={(e) => {
-        const selectedHousehold = households?.find(
-          (h) => h.householdName === e.target.value
+        const selectedHousehold = userData.householdData.find(
+          (h: Household) => h.householdUuid === e.target.value
         );
         console.log("User selected household:", selectedHousehold);
 
         if (selectedHousehold) {
-          setHousehold(selectedHousehold);
+          setHousehold({
+            householdUuid: selectedHousehold.householdUuid,
+            name: selectedHousehold.name,
+          });
           console.log("Updated household in store:", selectedHousehold);
         }
       }}
       className={`form-select ${styles.HouseholdSelector}`}
       style={{ color: "black" }}
     >
-      {households?.map(({ householdName, householdFullName }) => (
-        <option key={householdName} value={householdName}>
-          {householdFullName}
+      {userData.householdData.map((household: Household) => (
+        <option key={household.householdUuid} value={household.householdUuid}>
+          {household.name}
         </option>
       ))}
     </select>

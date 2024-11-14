@@ -1,44 +1,66 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAuth0 } from "@auth0/auth0-react";
 import { Boodschap } from "../../../../types/Types";
-import apiService from "../../../../services/apiService";
-import { CACHE_KEY_BOODSCHAPPEN } from "../../../../constants";
-
+import { createApiService } from "../../../../services/apiService";
 
 interface ToggleBoodschapDoneContext {
-    previousBoodschappen: Boodschap[];
+   previousUserData: any;
 }
 
-const useToggleBoodschapDone = (householdName:string) => {
-    const queryClient = useQueryClient();
-    
-    return useMutation<void, Error, { boodschapId: number; done: boolean; userDone: string }, ToggleBoodschapDoneContext>({
-        mutationFn: ({ boodschapId, done, userDone }) => apiService.toggleBoodschapDoneInBackend(boodschapId, done, userDone),
-        
-        onMutate: async ({ boodschapId, done, userDone }) => {
+interface ToggleBoodschapDoneVariables {
+   boodschapId: number;
+   done: boolean;
+   userDoneUuid: string;
+   userDoneFirstname: string;
+}
 
-            const previousBoodschappen = queryClient.getQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName]) ?? [];
+const useToggleBoodschapDone = () => {
+   const queryClient = useQueryClient();
+   const { getAccessTokenSilently } = useAuth0();
+   const apiService = createApiService(getAccessTokenSilently);
+   
+   return useMutation<void, Error, ToggleBoodschapDoneVariables, ToggleBoodschapDoneContext>({
+       mutationFn: ({ boodschapId, done, userDoneUuid, userDoneFirstname }) => 
+           apiService.toggleBoodschapDoneInBackend(boodschapId, done, userDoneUuid, userDoneFirstname),
+       
+       onMutate: async ({ boodschapId, done, userDoneUuid, userDoneFirstname }) => {
+           await queryClient.cancelQueries({ queryKey: ['userData'] });
 
-            queryClient.setQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName], old => 
-                old?.map(boodschap =>
-                    boodschap.boodschapId === boodschapId
-                        ? { ...boodschap, done: done, userDone: userDone, dateDone: new Date().toISOString() }
-                        : boodschap
-                ) ?? []
-            );
-            return { previousBoodschappen };
-        },
-        
-        onError: (err, _, context) => {
-            console.log(err);
-            if (context?.previousBoodschappen) {
-                queryClient.setQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName], context.previousBoodschappen);
-            }
-        },
-        
-        onSettled: () => {
-            queryClient.invalidateQueries({ queryKey: [CACHE_KEY_BOODSCHAPPEN, householdName] });
-        },
-    });
+           const previousUserData = queryClient.getQueryData(['userData']);
+
+           queryClient.setQueryData(['userData'], (oldData: any) => {
+               if (!oldData?.boodschapsData) return oldData;
+
+               return {
+                   ...oldData,
+                   boodschapsData: oldData.boodschapsData.map((boodschap: Boodschap) =>
+                       boodschap.boodschapId === boodschapId
+                           ? { 
+                               ...boodschap, 
+                               done: done, 
+                               userDoneUuid: userDoneUuid, 
+                               userDoneFirstname: userDoneFirstname,
+                               dateDone: new Date().toISOString() 
+                             }
+                           : boodschap
+                   )
+               };
+           });
+
+           return { previousUserData };
+       },
+       
+       onError: (err, _, context) => {
+           console.error('Toggle boodschap done error:', err);
+           if (context?.previousUserData) {
+               queryClient.setQueryData(['userData'], context.previousUserData);
+           }
+       },
+       
+       onSettled: () => {
+           queryClient.invalidateQueries({ queryKey: ['userData'] });
+       },
+   });
 };
 
 export default useToggleBoodschapDone;

@@ -1,15 +1,18 @@
-import { useUser } from "../../../../auth/userContext";
-import useHouseholds from "../../../boodschappenpage/header/householdselector/useHouseholds";
+import useUserData from "../../../../auth/useUserData";
 
 const ProfileTableHouseholds = () => {
-  const { user } = useUser();
-  const { data: households } = useHouseholds(user?.emailAddress || "");
+  const {
+    data: userData,
+    isLoading: userLoading,
+    error: userDataError,
+  } = useUserData();
+  // const { data: households } = useHouseholds(user?.emailAddress || "");
 
   // Extract householdFullName and householdId from households if data is available
   const householdNames =
-    households?.map((household) => ({
-      name: household.householdFullName,
-      id: household.householdId, // Assuming there is a householdId in your data
+    userData?.householdData?.map((household) => ({
+      name: household.name,
+      householdUuid: household.householdUuid,
     })) || [];
 
   // Determine the icon based on the number of households

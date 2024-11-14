@@ -1,4 +1,8 @@
-import APIClient from "./apiClient";
+import { APIClient } from "./apiClient";
+import { useAuth0 } from "@auth0/auth0-react";
 
-const apiService = new APIClient('/'); 
-export default apiService;
+export const createApiService = (getToken: () => Promise<string>) => {
+    return new APIClient('/', getToken);
+};
+
+export default createApiService;

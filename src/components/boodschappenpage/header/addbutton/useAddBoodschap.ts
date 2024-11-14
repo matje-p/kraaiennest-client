@@ -1,50 +1,61 @@
+// useAddBoodschap.ts
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Boodschap, NewBoodschap } from "../../../../types/Types";
-import apiService from "../../../../services/apiService";
-import { CACHE_KEY_BOODSCHAPPEN } from "../../../../constants";
-
+import { createApiService } from "../../../../services/apiService";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface AddBoodschapContext {
-    previousBoodschaps: Boodschap[];
+    previousUserData: any;
 }
 
-const useAddBoodschap = (householdName: string) => {
+const useAddBoodschap = () => { // Removed parameter since we'll get householdUuid from the NewBoodschap
     const queryClient = useQueryClient();
+    const { getAccessTokenSilently } = useAuth0();
+    const apiService = createApiService(getAccessTokenSilently);
 
     return useMutation<NewBoodschap, Error, NewBoodschap, AddBoodschapContext>({
         mutationFn: (newBoodschap) => apiService.postBoodschapToBackend(newBoodschap),
         onMutate: async (newBoodschap: NewBoodschap) => {
-            const previousBoodschaps = queryClient.getQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName]) || [];
-            queryClient.setQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName], (boodschappen = []) => [
-                {
+            const previousUserData = queryClient.getQueryData(['userData']);
+
+            queryClient.setQueryData(['userData'], (oldData: any) => {
+                if (!oldData?.boodschapsData) return oldData;
+
+                const newBoodschapData = {
                     ...newBoodschap,
+                    item: "",
                     boodschapId: 0,
-                    householdId: 0, // Provide default values
-                    userIdAdded: 0,
-                    userDone: "",
-                    userIdDone: 0,
-                    dateDone: "",
+                    boodschapUuid: '', // Will be set by server
                     done: false,
-                    userChanged: "",
-                    userChangedId: 0,
                     changed: false,
-                    dateChanged: "",
-                    userRemoved: "",
-                    userRemovedId: 0,
-                    dateRemoved: "",
+                    dateDone: null,
+                    dateChanged: null,
+                    dateRemoved: null,
+                    userDoneUuid: null,
+                    userChangedUuid: null,
+                    userRemovedUuid: null,
+                    userDoneFirstname: null,
+                    userChangedFirstname: null,
+                    userRemovedFirstname: null,
+                    dateAdded: new Date().toISOString(),
                     removed: false,
-                },
-                ...boodschappen,
-            ]);
-            return { previousBoodschaps };
+                };
+
+                return {
+                    ...oldData,
+                    boodschapsData: [newBoodschapData, ...oldData.boodschapsData]
+                };
+            });
+
+            return { previousUserData };
         },
         onSettled: () => {
-            queryClient.invalidateQueries({ queryKey: [CACHE_KEY_BOODSCHAPPEN, householdName] });
+            queryClient.invalidateQueries({ queryKey: ['userData'] });
         },
         onError: (error, _, context) => {
             console.error(error);
             if (context) {
-                queryClient.setQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName], context.previousBoodschaps);
+                queryClient.setQueryData(['userData'], context.previousUserData);
             }
         },
     });

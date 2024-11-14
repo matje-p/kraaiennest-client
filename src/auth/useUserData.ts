@@ -1,15 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
-import apiService from '../services/apiService';
-import { User } from '../types/Types';
-import { CACHE_KEY_USER } from '../constants';
+import { createApiService } from '../services/apiService';
+import { UserData } from '../types/Types';
+import { useAuth0 } from '@auth0/auth0-react';
 
-const useUserData = (emailAddress: string) => {
-  return useQuery<User | null, Error>({
-    queryKey: [CACHE_KEY_USER, emailAddress],
-    queryFn: () => apiService.getUserData(emailAddress),
-    staleTime: 10 * 1000, // Adjust as needed
-    enabled: !!emailAddress, // Only run the query if emailAddress is truthy
-  });
+const useUserData = () => {
+    const { getAccessTokenSilently } = useAuth0();
+    const apiService = createApiService(getAccessTokenSilently);
+
+    return useQuery<UserData | null, Error>({
+        queryKey: ['userData'],
+        queryFn: () => apiService.getUserData(),
+        staleTime: 10 * 1000,
+    });
 };
 
 export default useUserData;

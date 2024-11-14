@@ -1,43 +1,68 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAuth0 } from "@auth0/auth0-react";
 import { Boodschap } from "../../../../../types/Types";
-import { CACHE_KEY_BOODSCHAPPEN } from "../../../../../constants";
-import apiService from "../../../../../services/apiService";
+import { APIClient } from "../../../../../services/apiClient";
 
-
-interface UndoBoodschapContext {
-  previousBoodschaps: Boodschap[];
+interface UserData {
+  boodschapsData: Boodschap[];
 }
 
-const useUpsertBoodschap = (householdName:string) => {
+interface UndoBoodschapContext {
+  previousUserData: UserData | undefined;
+}
+
+const useUpsertBoodschap = () => {
   const queryClient = useQueryClient();
+  const { getAccessTokenSilently } = useAuth0();
+  
+  // Create API client instance
+  const apiClient = new APIClient(
+    "", // Base URL is handled in the client through env variable
+    getAccessTokenSilently
+  );
 
   return useMutation<Boodschap, Error, Boodschap, UndoBoodschapContext>({
-    mutationFn: apiService.undoBoodschapInBackend,
+    mutationFn: (boodschap: Boodschap) => apiClient.undoBoodschapInBackend(boodschap),
+    
     onMutate: async (updatedBoodschap: Boodschap) => {
-      await queryClient.cancelQueries({ queryKey: [CACHE_KEY_BOODSCHAPPEN, householdName] });
-      const previousBoodschaps = queryClient.getQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName]) || [];
-      queryClient.setQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName], (boodschappen) => {
-        if (!boodschappen) return [updatedBoodschap];
+      await queryClient.cancelQueries({ queryKey: ['userData'] });
+      const previousUserData = queryClient.getQueryData<UserData>(['userData']);
+
+      queryClient.setQueryData<UserData | undefined>(['userData'], (oldData) => {
+        if (!oldData?.boodschapsData) return oldData;
+
+        const boodschappen = oldData.boodschapsData;
         const index = boodschappen.findIndex(b => b.boodschapId === updatedBoodschap.boodschapId);
+
+        let updatedBoodschappen: Boodschap[];
         if (index !== -1) {
-          const newBoodschappen = [...boodschappen];
-          newBoodschappen[index] = updatedBoodschap;
-          return newBoodschappen;
+          // Update existing boodschap
+          updatedBoodschappen = boodschappen.map((b, i) => 
+            i === index ? updatedBoodschap : b
+          );
         } else {
-          return [updatedBoodschap, ...boodschappen];
+          // Add new boodschap at the beginning
+          updatedBoodschappen = [updatedBoodschap, ...boodschappen];
         }
+
+        return {
+          ...oldData,
+          boodschapsData: updatedBoodschappen
+        };
       });
 
-      return { previousBoodschaps };
+      return { previousUserData };
     },
+
     onError: (error, _, context) => {
-      console.error(error);
-      if (context) {
-        queryClient.setQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName], context.previousBoodschaps);
+      console.error('Upsert boodschap error:', error);
+      if (context?.previousUserData) {
+        queryClient.setQueryData<UserData>(['userData'], context.previousUserData);
       }
     },
+
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: [CACHE_KEY_BOODSCHAPPEN, householdName] });
+      queryClient.invalidateQueries({ queryKey: ['userData'] });
     },
   });
 };

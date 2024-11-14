@@ -1,20 +1,29 @@
 import React from "react";
 import useHouseholdStore from "../header/householdselector/householdStore";
-import useBoodschappen from "../useBoodschappen";
 import Spinner from "../../spinner/Spinner";
 import BoodschapRow from "./boodschaprow/BoodschapRow";
+import useUserData from "../../../auth/useUserData";
 
 const BoodschappenTable: React.FC = () => {
   console.log("BoodschappenTable rendered");
-  const { household } = useHouseholdStore();
+  const { household: currentHousehold } = useHouseholdStore();
+  console.log("currentHousehold: ", currentHousehold);
   const {
-    data: boodschappen,
-    error,
-    isLoading,
-  } = useBoodschappen(household.householdName);
+    data: userData,
+    isLoading: userDataLoading,
+    error: userDataError,
+  } = useUserData();
+
+  const boodschappen = userData?.boodschapsData?.filter(
+    (boodschap) => boodschap.householdUuid === currentHousehold?.householdUuid
+  );
+  console.log("currentHousehold: ", currentHousehold);
+
   console.log("BoodschappenTable boodschappen", boodschappen);
-  if (isLoading) return <Spinner />;
-  if (error) return <p>{error.message}</p>;
+  if (userDataLoading) return <Spinner />;
+  if (userDataError) return <p>{userDataError.message}</p>;
+  console.log("Current household: ", currentHousehold);
+  console.log("Boodschappen: ", boodschappen);
 
   return (
     <>

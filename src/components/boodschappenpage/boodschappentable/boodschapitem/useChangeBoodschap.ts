@@ -1,43 +1,51 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Boodschap } from '../../../../types/Types';
-import apiService from '../../../../services/apiService';
-import { CACHE_KEY_BOODSCHAPPEN } from '../../../../constants';
-
+import { createApiService } from '../../../../services/apiService';
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface UpdateBoodschapTextContext {
-    previousBoodschappen: Boodschap[];
+    previousUserData: any;
 }
 
-const useChangeBoodschap = (householdName:string) => {
+const useChangeBoodschap = () => {
     const queryClient = useQueryClient();
+    const { getAccessTokenSilently } = useAuth0();
+    const apiService = createApiService(getAccessTokenSilently);
 
-    return useMutation<void, Error, { boodschapId: number; item: string, userChanged: string }, UpdateBoodschapTextContext>({
-        mutationFn: ({ boodschapId, item, userChanged }) => apiService.editBoodschapTextInBackend(boodschapId, item, userChanged),
-        onMutate: async ({ boodschapId, item, userChanged }) => {
-            await queryClient.cancelQueries({ queryKey: [CACHE_KEY_BOODSCHAPPEN, householdName] });
+    return useMutation<void, Error, { boodschapId: number; item: string, userChangedUuid: string, userChangedFirstname: string }, UpdateBoodschapTextContext>({
+        mutationFn: ({ boodschapId, item, userChangedUuid, userChangedFirstname }) => 
+            apiService.editBoodschapTextInBackend(boodschapId, item, userChangedUuid, userChangedFirstname),
+            
+        onMutate: async ({ boodschapId, item, userChangedUuid, userChangedFirstname }) => {
+            await queryClient.cancelQueries({ queryKey: ['userData'] });
 
-            const previousBoodschappen = queryClient.getQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName]) ?? [];
+            const previousUserData = queryClient.getQueryData(['userData']);
 
-            queryClient.setQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName], old =>
-                old?.map(boodschap =>
-                    boodschap.boodschapId === boodschapId
-                        ? { ...boodschap, item, userChanged  }
-                        : boodschap
-                ) ?? []
-            );
+            queryClient.setQueryData(['userData'], (oldData: any) => {
+                if (!oldData?.boodschapsData) return oldData;
 
-            return { previousBoodschappen };
+                return {
+                    ...oldData,
+                    boodschapsData: oldData.boodschapsData.map((boodschap: Boodschap) =>
+                        boodschap.boodschapId === boodschapId
+                            ? { ...boodschap, item, userChangedUuid, userChangedFirstname }
+                            : boodschap
+                    )
+                };
+            });
+
+            return { previousUserData };
         },
 
         onError: (err, _, context) => {
             console.log(err);
-            if (context?.previousBoodschappen) {
-                queryClient.setQueryData<Boodschap[]>([CACHE_KEY_BOODSCHAPPEN, householdName], context.previousBoodschappen);
+            if (context?.previousUserData) {
+                queryClient.setQueryData(['userData'], context.previousUserData);
             }
         },
 
         onSettled: () => {
-            queryClient.invalidateQueries({ queryKey: [CACHE_KEY_BOODSCHAPPEN, householdName] });
+            queryClient.invalidateQueries({ queryKey: ['userData'] });
         },
     });
 };

@@ -1,13 +1,17 @@
+import useUserData from "../../../auth/useUserData";
 import styles from "./Avatar.module.scss";
-import { useUser } from "../../../auth/userContext";
 
 const Avatar = () => {
-  const { user } = useUser();
-  console.log("Avatar user", user);
+  const {
+    data: userData,
+    isLoading: userLoading,
+    error: userDataError,
+  } = useUserData();
+  console.log("Avatar user", userData?.firstName);
 
   // Ensuring the firstName is lowercased
-  const firstNameLowercase = user?.firstName?.toLowerCase();
-  const firstName = user?.firstName;
+  const firstNameLowercase = userData?.firstName?.toLowerCase();
+  const firstName = userData?.firstName;
 
   // Check the environment
   const isProduction = import.meta.env.MODE === "production";

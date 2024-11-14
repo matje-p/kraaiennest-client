@@ -2,8 +2,7 @@ import React from "react";
 import useToggleBoodschapDone from "./useToggleBoodschapDone";
 import useChangeStore from "../../header/dropdownmenu/undobutton/changeLogStore";
 import useHouseholdStore from "../../header/householdselector/householdStore";
-import useBoodschappen from "../../useBoodschappen";
-import { useUser } from "../../../../auth/userContext";
+import useUserData from "../../../../auth/useUserData";
 import Spinner from "../../../spinner/Spinner";
 
 interface BoodschapCheckboxProps {
@@ -13,17 +12,26 @@ interface BoodschapCheckboxProps {
 const BoodschapCheckbox: React.FC<BoodschapCheckboxProps> = ({
   boodschapId,
 }) => {
-  const { household } = useHouseholdStore();
+  const { household: currentHousehold } = useHouseholdStore();
   const {
-    data: boodschappen,
-    error,
-    isLoading,
-  } = useBoodschappen(household.householdName);
-  const boodschap = boodschappen?.find((b) => b.boodschapId === boodschapId);
-  const { mutate: toggleBoodschapDone } = useToggleBoodschapDone(
-    household.householdName
+    data: userData,
+    isLoading: userDataLoading,
+    error: userDataError,
+  } = useUserData();
+
+  if (!currentHousehold) {
+    return <div>No household selected</div>;
+  }
+
+  // Filter boodschappen for current household
+  const boodschappen = userData?.boodschapsData?.filter(
+    (boodschap) => boodschap.householdUuid === currentHousehold.householdUuid
   );
-  const { user } = useUser();
+
+  // Find specific boodschap
+  const boodschap = boodschappen?.find((b) => b.boodschapId === boodschapId);
+
+  const { mutate: toggleBoodschapDone } = useToggleBoodschapDone();
   const { appendChangeLog } = useChangeStore();
 
   const handleCheckboxChange = () => {
@@ -33,16 +41,17 @@ const BoodschapCheckbox: React.FC<BoodschapCheckboxProps> = ({
       toggleBoodschapDone({
         boodschapId: boodschap.boodschapId,
         done: !boodschap.done,
-        userDone: user?.firstName || "unknown",
+        userDoneUuid: userData?.userUuid || "Unknown user",
+        userDoneFirstname: userData?.firstName || "Unknown user",
       });
     }
   };
 
-  if (isLoading) {
+  if (userDataLoading) {
     return <Spinner />;
   }
 
-  if (error) {
+  if (userDataError) {
     return <div>Error loading boodschap.</div>;
   }
 
