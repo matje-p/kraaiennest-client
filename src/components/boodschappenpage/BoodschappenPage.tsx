@@ -1,12 +1,10 @@
 import Header from "./header/Header";
 import BoodschappenTable from "./boodschappentable/BoodschappenTable";
-import useHouseholdStore from "./header/householdselector/householdStore";
 import styles from "./BoodschappenPage.module.scss";
 import useUserData from "../../auth/useUserData";
 import Spinner from "../spinner/Spinner";
 
 const BoodschappenPage = () => {
-  const { household: currentHousehold } = useHouseholdStore();
   const {
     data: userData,
     isLoading: userDataLoading,

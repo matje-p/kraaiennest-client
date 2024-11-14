@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import { Boodschap, Household, NewBoodschap, User, UserData } from "../types/Types";
+import { Boodschap, NewBoodschap, UserData } from "../types/Types";
 
 export class APIClient {
     private axiosInstance: AxiosInstance;

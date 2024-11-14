@@ -3,8 +3,8 @@ import useUserData from "../../../../auth/useUserData";
 const ProfileTableEmailAddress = () => {
   const {
     data: userData,
-    isLoading: userLoading,
-    error: userDataError,
+    // isLoading: userLoading,
+    // error: userDataError,
   } = useUserData();
   return (
     <tr>

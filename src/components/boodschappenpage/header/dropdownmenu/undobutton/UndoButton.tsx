@@ -1,18 +1,14 @@
-import useUpsertBoodschap from "./useUpsertBoodschap";
 import useChangeStore from "./changeLogStore";
 import useUnAddLatestBoodschap from "./useUnAddBoodschap";
-import useHouseholdStore from "../../householdselector/householdStore";
+import useUpsertBoodschap from "./useUpsertBoodschap";
 
 const UndoButton = () => {
-  const { household: currentHousehold } = useHouseholdStore();
   const { changeLog, removeLastChange } = useChangeStore();
   const upsertBoodschap = useUpsertBoodschap();
   const unAddBoodschap = useUnAddLatestBoodschap();
   const lastBoodschap = changeLog[changeLog.length - 1]; // Get the most recent Boodschap
 
   const handleUndo = () => {
-    // console.log("Undoing changes to boodschappen");
-    // check if there is anything to undo at all
     if (lastBoodschap) {
       // If the boodschap has an Id, it is not a newly added one (boodschaps only get IDs on the backend)
       if ("boodschapId" in lastBoodschap) {

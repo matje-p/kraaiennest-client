@@ -3,8 +3,8 @@ import useUserData from "../../../../auth/useUserData";
 const ProfileTableHouseholds = () => {
   const {
     data: userData,
-    isLoading: userLoading,
-    error: userDataError,
+    // isLoading: userLoading,
+    // error: userDataError,
   } = useUserData();
   // const { data: households } = useHouseholds(user?.emailAddress || "");
 

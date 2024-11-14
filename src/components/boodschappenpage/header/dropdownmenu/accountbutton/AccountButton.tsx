@@ -4,8 +4,8 @@ import useUserData from "../../../../../auth/useUserData";
 const AccountButton = () => {
   const {
     data: userData,
-    isLoading: userLoading,
-    error: userDataError,
+    // isLoading: userLoading,
+    // error: userDataError,
   } = useUserData();
   return (
     <Link to="/account" className="dropdown-item">

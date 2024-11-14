@@ -4,8 +4,8 @@ import styles from "./Avatar.module.scss";
 const Avatar = () => {
   const {
     data: userData,
-    isLoading: userLoading,
-    error: userDataError,
+    // isLoading: userLoading,
+    // error: userDataError,
   } = useUserData();
   console.log("Avatar user", userData?.firstName);
 

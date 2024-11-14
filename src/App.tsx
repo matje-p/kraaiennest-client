@@ -5,12 +5,9 @@ import useUserData from "./auth/useUserData";
 const App = () => {
   const {
     data: userData,
-    isLoading: userLoading,
-    error: userDataError,
+    // isLoading: userLoading,
+    // error: userDataError,
   } = useUserData();
-  // const { setHousehold } = useHouseholdStore();
-  // const [isInitialized, setIsInitialized] = useState(false);
-  // Trigger another build
 
   useEffect(() => {
     let baseTitle = "Boodschappenlijstje";

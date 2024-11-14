@@ -11,7 +11,7 @@ const AddButton = () => {
   const {
     data: userData,
     isLoading: userLoading,
-    error: userDataError,
+    // error: userDataError,
   } = useUserData();
   const { changeLog, appendChangeLog } = useChangeStore();
   console.log("Changelog:", changeLog);

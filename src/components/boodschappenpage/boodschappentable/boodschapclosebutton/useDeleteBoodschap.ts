@@ -1,8 +1,7 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth0 } from '@auth0/auth0-react';
-import { Boodschap } from '../../../../types/Types';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createApiService } from '../../../../services/apiService';
-import { CACHE_KEY_BOODSCHAPPEN } from '../../../../constants';
+import { Boodschap } from '../../../../types/Types';
 
 interface DeleteBoodschapContext {
     previousUserData: any;
