@@ -1,8 +1,7 @@
-import styles from "./Header.module.scss";
-import HouseholdSelector from "./householdselector/householdSelector";
 import AddButton from "./addbutton/AddButton";
 import DropdownMenu from "./dropdownmenu/DropdownMenu";
-import UserButton from "./userbutton/UserButton";
+import styles from "./Header.module.scss";
+import HouseholdSelector from "./householdselector/householdSelector";
 
 const Header = () => {
   console.log("Rendering BoodschappenHeader");

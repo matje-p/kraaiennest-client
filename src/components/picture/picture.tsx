@@ -38,15 +38,15 @@ const ProfilePicture = ({
       className={`${styles.pic} ${styles[size]} ${className}`}
       src={src}
       alt="Profile Picture"
-      onError={(e) => {
-        console.error("Failed to load profile picture:", {
-          uuid,
-          src,
-          timestamp: new Date().toISOString(),
-        });
-        // Optional: Set a default fallback image
-        // e.currentTarget.src = '/path/to/default/avatar.png';
-      }}
+      // onError={(e) => {
+      //   console.error("Failed to load profile picture:", {
+      //     uuid,
+      //     src,
+      //     timestamp: new Date().toISOString(),
+      //   });
+      //   // Optional: Set a default fallback image
+      //   // e.currentTarget.src = '/path/to/default/avatar.png';
+      // }}
     />
   );
 };
