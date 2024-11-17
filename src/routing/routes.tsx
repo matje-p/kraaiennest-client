@@ -23,7 +23,7 @@ const routes: RouteObject[] = [
         element: <ProfilePage />,
       },
       {
-        path: "household",
+        path: "household/:householdId",
         element: <HouseholdPage />,
       },
     ],

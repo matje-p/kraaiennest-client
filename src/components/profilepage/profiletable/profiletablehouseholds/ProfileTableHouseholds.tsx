@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import useUserData from "../../../../auth/useUserData";
 
 const ProfileTableHouseholds = () => {
@@ -25,17 +26,19 @@ const ProfileTableHouseholds = () => {
           <i className={`bi bi-lg ${householdIcon}`}></i>
         </td>
         <td>
-          {/* Loop through householdNames and display each as a clickable link */}
           {householdNames.length > 0 ? (
             householdNames.map((household, index) => (
               <div key={index}>
-                {/* <Link to={`/household`} style={{ color: "black" }}> */}
-                {household.name}{" "}
-                {household.householdUuid == userData?.defaultHousehold &&
-                householdNames.length > 1
-                  ? "(default)"
-                  : ""}
-                {/* </Link>{" "} */}
+                <Link
+                  to={`/household/${household.householdUuid}`}
+                  style={{ color: "black", textDecoration: "none" }}
+                >
+                  {household.name}{" "}
+                  {household.householdUuid == userData?.defaultHousehold &&
+                  householdNames.length > 1
+                    ? "(default)"
+                    : ""}
+                </Link>
               </div>
             ))
           ) : (
