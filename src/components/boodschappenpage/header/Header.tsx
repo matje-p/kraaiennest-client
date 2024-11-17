@@ -2,6 +2,7 @@ import styles from "./Header.module.scss";
 import HouseholdSelector from "./householdselector/householdSelector";
 import AddButton from "./addbutton/AddButton";
 import DropdownMenu from "./dropdownmenu/DropdownMenu";
+import UserButton from "./userbutton/UserButton";
 
 const Header = () => {
   console.log("Rendering BoodschappenHeader");
@@ -12,17 +13,18 @@ const Header = () => {
         <div className="container align-items-center">
           <div className="d-flex flex-column">
             <div className="d-flex flex-row align-items-center">
-              <i className={`bi bi-cart4 fs-3 me-3 ${styles.brandIcon}`}> </i>
+              {/* <i className={`bi bi-cart4 fs-3 me-3 ${styles.brandIcon}`}> </i> */}
               <strong className={`fs-5 me-2 ${styles.brandText}`}>
                 Boodschappenlijstje
               </strong>
             </div>
             <div className={`d-flex flex-row align-items-baseline`}>
-              <div className={styles.selectorSpacer}></div>
+              {/* <div className={styles.selectorSpacer}></div> */}
               <HouseholdSelector />
             </div>
           </div>
           <div className="d-flex flex-row justify-content-end">
+            {/* <UserButton /> */}
             <AddButton />
             <DropdownMenu />
           </div>

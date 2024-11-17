@@ -1,0 +1,23 @@
+.centerContainer {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    margin-top: 0px; /* Fixed distance from the top */
+  }
+  
+  .profilePic{
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    margin-top: 50px;
+    margin-left: 10px;
+    margin-right: 10px;
+    box-shadow: 2px 2px 2px grey;
+  }
+
+  .accountName{
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }

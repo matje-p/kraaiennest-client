@@ -2,6 +2,7 @@ import LogoutButton from "./logoutbutton/LogoutButton";
 import UndoButton from "./undobutton/UndoButton";
 import styles from "./DropdownMenu.module.scss";
 import AccountButton from "./accountbutton/AccountButton";
+import HouseHoldButton from "./householdbutton/HouseHoldButton";
 
 const DropdownMenu = () => {
   return (
@@ -24,6 +25,9 @@ const DropdownMenu = () => {
         </li>
         <li>
           <UndoButton />
+        </li>
+        <li>
+          <HouseHoldButton />
         </li>
         <li>
           <LogoutButton />
