@@ -9,10 +9,10 @@ export class APIClient {
         this.getToken = getToken;
         const baseURL = import.meta.env.VITE_API_URL + baseUrl;
         
-        console.group('API Client Initialization');
-        console.log('Base URL:', baseURL);
-        console.log('Environment:', import.meta.env.PROD ? 'production' : 'development');
-        console.groupEnd();
+        // console.group('API Client Initialization');
+        // console.log('Base URL:', baseURL);
+        // console.log('Environment:', import.meta.env.PROD ? 'production' : 'development');
+        // console.groupEnd();
 
         this.axiosInstance = axios.create({ baseURL });
 
