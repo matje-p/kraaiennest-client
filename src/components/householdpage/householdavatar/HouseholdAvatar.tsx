@@ -1,16 +1,11 @@
 import useUserData from "../../../auth/useUserData";
+import useHouseholdStore from "../../boodschappenpage/header/householdselector/householdStore";
+import Picture from "../../picture/picture";
 import styles from "./HouseholdAvatar.module.scss";
 
 const HouseholdAvatar = () => {
-  const {
-    data: userData,
-    // isLoading: userLoading,
-    // error: userDataError,
-  } = useUserData();
-
-  // Using userUuid for image identification
-  const userUuid = userData?.userUuid;
-  const firstName = userData?.firstName;
+  const { household } = useHouseholdStore();
+  console.log("household", household);
 
   // Check the environment
   const isProduction = import.meta.env.MODE === "production";
@@ -19,26 +14,25 @@ const HouseholdAvatar = () => {
   const src = isProduction
     ? `https://${
         import.meta.env.VITE_S3_BUCKET_NAME
-      }.s3.amazonaws.com/profilepic_${userUuid}.png`
-    : `../../../public/images/profilepic_${userUuid}.png`;
+      }.s3.amazonaws.com/householdpic_${household?.householdUuid}.png`
+    : `../../../public/images/householdpic_${household?.householdUuid}.png`;
 
   // Add error handling for missing image
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    e.currentTarget.src = "../../../public/images/default-avatar.png"; // Fallback image
+    e.currentTarget.src = "../../../public/images/default-householdavatar.png"; // Fallback image
   };
 
   return (
     <div>
       <div className={`${styles.centerContainer}`}>
-        <img
-          className={`${styles.profilePic}`}
-          src={src}
-          alt={`${firstName}'s Profile Picture`}
-          onError={handleImageError}
+        <Picture
+          type="household"
+          uuid={household?.householdUuid}
+          size="large"
         />
       </div>
       <div className={`${styles.centerContainer}`}>
-        <h1 className={`${styles.accountName}`}>{firstName}</h1>
+        <h1 className={`${styles.accountName}`}>{household?.name}</h1>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
-import { Boodschap, NewBoodschap, UserData } from "../types/Types";
+import { Boodschap, NewBoodschap, User, UserData } from "../types/Types";
 
 export class APIClient {
     private axiosInstance: AxiosInstance;
@@ -156,6 +156,14 @@ export class APIClient {
                 item,
                 userChangedUuid,
                 userChangedFirstname,
+            })
+        );
+    }
+
+    async getHouseholdUsers(householdUuid: string): Promise<User[]> {
+        return this.handleRequest<User[]>(() =>
+            this.axiosInstance.get(`households/users`, {
+                params: { householdUuid }
             })
         );
     }

@@ -1,32 +1,30 @@
-import React, { useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import useHouseholdStore from "../header/householdselector/householdStore";
 import Spinner from "../../spinner/Spinner";
 import BoodschapRow from "./boodschaprow/BoodschapRow";
 import useUserData from "../../../auth/useUserData";
 import { Boodschap } from "../../../types/Types";
 
-const sortBoodschappen = (boodschappen: Boodschap[] | undefined) => {
+const getBoodschappenOrder = (boodschappen: Boodschap[] | undefined) => {
   if (!boodschappen) return [];
 
   // Separate into done and not done
-  const notDone = boodschappen.filter((boodschap) => !boodschap.done);
-  const done = boodschappen.filter((boodschap) => boodschap.done);
+  const notDone = boodschappen
+    .filter((boodschap) => !boodschap.done)
+    .sort(
+      (a, b) =>
+        new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime()
+    );
 
-  // Sort not done by dateAdded (most recent first)
-  const sortedNotDone = notDone.sort((a, b) => {
-    const dateA = new Date(a.dateAdded).getTime();
-    const dateB = new Date(b.dateAdded).getTime();
-    return dateB - dateA;
-  });
+  const done = boodschappen
+    .filter((boodschap) => boodschap.done)
+    .sort(
+      (a, b) =>
+        new Date(b.dateDone || 0).getTime() -
+        new Date(a.dateDone || 0).getTime()
+    );
 
-  // Sort done by dateDone (most recent first)
-  const sortedDone = done.sort((a, b) => {
-    const dateA = new Date(a.dateDone || 0).getTime();
-    const dateB = new Date(b.dateDone || 0).getTime();
-    return dateB - dateA;
-  });
-
-  return [...sortedNotDone, ...sortedDone];
+  return [...notDone, ...done].map((b) => b.boodschapId);
 };
 
 const BoodschappenTable: React.FC = () => {
@@ -37,21 +35,19 @@ const BoodschappenTable: React.FC = () => {
     error: userDataError,
   } = useUserData();
 
-  // Only resort when boodschappen data or household changes
-  const householdBoodschappen = useMemo(
-    () =>
-      userData?.boodschapsData?.filter(
-        (boodschap) =>
-          boodschap.householdUuid === currentHousehold?.householdUuid
-      ),
-    [currentHousehold?.householdUuid]
-  );
+  // State to store the order of boodschappen IDs
+  const [boodschappenOrder, setBoodschappenOrder] = useState<number[]>([]);
 
-  // Only resort when filtered boodschappen change
-  const sortedBoodschappen = useMemo(
-    () => sortBoodschappen(householdBoodschappen),
-    [householdBoodschappen]
-  );
+  // Update order when household changes
+  useEffect(() => {
+    if (userData?.boodschapsData && currentHousehold) {
+      const householdBoodschappen = userData.boodschapsData.filter(
+        (boodschap) =>
+          boodschap.householdUuid === currentHousehold.householdUuid
+      );
+      setBoodschappenOrder(getBoodschappenOrder(householdBoodschappen));
+    }
+  }, [currentHousehold?.householdUuid, userData?.boodschapsData]);
 
   if (userDataLoading) return <Spinner />;
   if (userDataError) return <p>{userDataError.message}</p>;
@@ -60,11 +56,8 @@ const BoodschappenTable: React.FC = () => {
     <div className="container">
       <table className="table">
         <tbody>
-          {sortedBoodschappen.map((boodschap) => (
-            <BoodschapRow
-              key={boodschap.boodschapId}
-              boodschapId={boodschap.boodschapId}
-            />
+          {boodschappenOrder.map((boodschapId) => (
+            <BoodschapRow key={boodschapId} boodschapId={boodschapId} />
           ))}
         </tbody>
       </table>

@@ -19,49 +19,56 @@ const BoodschapCheckbox: React.FC<BoodschapCheckboxProps> = ({
     error: userDataError,
   } = useUserData();
 
+  // Early return for loading state
+  if (userDataLoading) {
+    return <Spinner />;
+  }
+
+  // Early return for error state
+  if (userDataError) {
+    return <div>Error loading boodschap.</div>;
+  }
+
+  // Early return for no household
   if (!currentHousehold) {
     return <div>No household selected</div>;
   }
 
   // Filter boodschappen for current household
-  const boodschappen = userData?.boodschapsData?.filter(
-    (boodschap) => boodschap.householdUuid === currentHousehold.householdUuid
-  );
+  const boodschappen =
+    userData?.boodschapsData?.filter(
+      (boodschap) => boodschap.householdUuid === currentHousehold.householdUuid
+    ) ?? []; // Provide default empty array
 
   // Find specific boodschap
-  const boodschap = boodschappen?.find((b) => b.boodschapId === boodschapId);
+  const boodschap = boodschappen.find((b) => b.boodschapId === boodschapId);
+  const isDone = boodschap?.done ?? false; // Always have a boolean value
 
   const { mutate: toggleBoodschapDone } = useToggleBoodschapDone();
   const { appendChangeLog } = useChangeStore();
 
   const handleCheckboxChange = () => {
     console.log("Checkbox clicked");
-    if (boodschap) {
+    if (boodschap && userData) {
+      // Add userData check
       appendChangeLog(boodschap);
       toggleBoodschapDone({
         boodschapId: boodschap.boodschapId,
-        done: !boodschap.done,
-        userDoneUuid: userData?.userUuid || "Unknown user",
-        userDoneFirstname: userData?.firstName || "Unknown user",
+        done: !isDone, // Use isDone instead of boodschap.done
+        userDoneUuid: userData.userUuid,
+        userDoneFirstname: userData.firstName,
       });
     }
   };
-
-  if (userDataLoading) {
-    return <Spinner />;
-  }
-
-  if (userDataError) {
-    return <div>Error loading boodschap.</div>;
-  }
 
   return (
     <div id="check" className="checkbox">
       <input
         type="checkbox"
-        id="checkbox"
+        id={`checkbox-${boodschapId}`} // Add unique id
         onChange={handleCheckboxChange}
-        checked={boodschap?.done}
+        checked={isDone} // Use isDone instead of boodschap?.done
+        disabled={!boodschap || !userData} // Disable if data isn't available
       />
     </div>
   );
