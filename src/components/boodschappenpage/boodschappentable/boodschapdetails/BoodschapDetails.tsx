@@ -31,7 +31,8 @@ const BoodschapDetails: React.FC<BoodschapDetailsProps> = ({ boodschapId }) => {
   const dateAddedString = boodschap
     ? transformDate(boodschap.dateAdded)
     : "Date unknown";
-  const dateDoneString = transformDate(new Date());
+  // const dateDoneString = transformDate(new Date());
+  const dateDoneString = transformDate(boodschap?.dateDone);
 
   if (userDataLoading) {
     return <Spinner />;
