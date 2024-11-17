@@ -54,13 +54,19 @@ const BoodschappenTable: React.FC = () => {
 
   return (
     <div className="container">
-      <table className="table">
-        <tbody>
-          {boodschappenOrder.map((boodschapId) => (
-            <BoodschapRow key={boodschapId} boodschapId={boodschapId} />
-          ))}
-        </tbody>
-      </table>
+      {boodschappenOrder.length > 0 ? (
+        <table className="table">
+          <tbody>
+            {boodschappenOrder.map((boodschapId) => (
+              <BoodschapRow key={boodschapId} boodschapId={boodschapId} />
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p className="text-center py-4">
+          Geen boodschappen voor dit huishouden
+        </p>
+      )}
     </div>
   );
 };

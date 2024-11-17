@@ -30,7 +30,11 @@ const ProfileTableHouseholds = () => {
             householdNames.map((household, index) => (
               <div key={index}>
                 {/* <Link to={`/household`} style={{ color: "black" }}> */}
-                {household.name}
+                {household.name}{" "}
+                {household.householdUuid == userData?.defaultHousehold &&
+                householdNames.length > 1
+                  ? "(default)"
+                  : ""}
                 {/* </Link>{" "} */}
               </div>
             ))
