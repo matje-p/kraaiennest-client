@@ -1,5 +1,5 @@
 import useHouseholdStore from "../../boodschappenpage/header/householdselector/householdStore";
-import styles from "./householdMemberTable.module.scss";
+import styles from "./HouseholdMemberTable.module.scss"; // Adjust the import based on your file structure
 import "bootstrap-icons/font/bootstrap-icons.css";
 import useHouseholdMembers from "./useHouseholdMembers"; // Updated import name to match the hook
 import Picture from "../../picture/picture";
