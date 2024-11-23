@@ -15,10 +15,8 @@
 }
 
 .root {
-  background-color: red; 
   display: flex;
   justify-content: center;
-  // align-items: center;
   min-height: 100dvh; // Changed from 100vh for better mobile support
   // Enable proper safe area behavior
   padding-top: env(safe-area-inset-top, 0);
