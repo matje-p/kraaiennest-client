@@ -17,7 +17,7 @@ const ProfileTable = () => {
         <tbody>
           {members.map((member) => (
             <tr key={member.userUuid}>
-              <td className="col-1">
+              <td className="col-1 align-middle">
                 <Link
                   to={`/user/${member.userUuid}`}
                   className={styles.memberLink}
@@ -30,12 +30,12 @@ const ProfileTable = () => {
                   to={`/user/${member.userUuid}`}
                   style={{ color: "black", textDecoration: "none" }}
                 >
-                  <div className="d-flex justify-content-between">
+                  <div className="d-flex justify-content-between align-items-center">
                     <div>
                       {member.firstName} {member.lastName || ""}
                     </div>
                     <i
-                      className={`bi bi-lg bi-chevron-right ${styles.chevron}`}
+                      className={`bi bi-lg bi-chevron-right fs-4 ${styles.chevron}`}
                     ></i>
                   </div>
                 </Link>

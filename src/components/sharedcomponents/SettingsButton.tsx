@@ -5,7 +5,7 @@ const SettingsButton = () => {
   return (
     <>
       <Link to="" className={`btn btn-primary ${styles.Button}`}>
-        <i className="bi bi-gear"></i>
+        <i className="bi bi-gear fs-3"></i>
       </Link>
     </>
   );

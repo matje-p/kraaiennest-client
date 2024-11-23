@@ -1,4 +1,15 @@
-.addButton{
-    // background-color: #084298 !important;
-    // border-color: #084298 !important
+.addButton {
+    background-color: transparent !important;
+    border-color: transparent !important;
+
+    &:hover,
+    &:focus,
+    &:active,
+    &:focus-visible,
+    &.active,
+    &:disabled {
+        background-color: transparent !important;
+        border-color: transparent !important;
+        box-shadow: none !important;
+    }
 }

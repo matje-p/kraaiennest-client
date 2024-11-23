@@ -37,11 +37,11 @@ const UserPage = () => {
         <table className={`${styles.profileTable} table`}>
           <tbody>
             <tr>
-              <td className="col-1">
-                <i className="bi bi-lg bi-person"></i>
+              <td className="col-1 align-middle">
+                <i className="bi bi-person fs-4"></i>
               </td>
               {/* Removed stray 's' character */}
-              <td className="col-11">
+              <td className="col-11 align-middle">
                 <div>
                   {userPageData?.firstName?.concat(
                     " ",
@@ -51,16 +51,16 @@ const UserPage = () => {
               </td>
             </tr>
             <tr>
-              <td className="col-1">
-                <i className="bi bi-lg bi-envelope"></i>
+              <td className="col-1 align-middle">
+                <i className="bi bi-envelope fs-4"></i>
               </td>
-              <td className="col-11">
+              <td className="col-11 align-middle">
                 <div>{userPageData?.emailAddress}</div>
               </td>
             </tr>
             <tr>
               <td className="col-1">
-                <i className={`bi bi-lg ${householdIcon}`}></i>
+                <i className={`bi fs-4 ${householdIcon}`}></i>
               </td>
               <td className="col-11">
                 {householdNames.length > 0 ? (
@@ -81,7 +81,7 @@ const UserPage = () => {
                               : ""}
                           </div>
                           <i
-                            className={`bi bi-lg bi-chevron-right ${styles.chevron}`}
+                            className={`bi bi-lg bi-chevron-right fs-4 ${styles.chevron}`}
                           ></i>
                         </div>
                       </Link>

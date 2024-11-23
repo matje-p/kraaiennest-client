@@ -10,7 +10,7 @@ const BackButton = () => {
 
   return (
     <button onClick={handleBack} className={`btn btn-primary ${styles.Button}`}>
-      <i className="bi bi-arrow-left"></i>
+      <i className="bi bi-arrow-left fs-3"></i>
     </button>
   );
 };

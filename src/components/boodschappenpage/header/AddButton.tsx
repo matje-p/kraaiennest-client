@@ -44,7 +44,7 @@ const AddButton = () => {
       className={`btn btn-primary btn-sm me-2 ${styles.addButton}`}
       disabled={isDisabled}
     >
-      <i className="bi bi-plus"></i>
+      <i className="bi bi-plus fs-3"></i>
     </button>
   );
 };
