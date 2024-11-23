@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import useHouseholdStore from "../header/householdselector/householdStore";
-import Spinner from "../../spinner/Spinner";
-import BoodschapRow from "./boodschaprow/BoodschapRow";
-import useUserData from "../../../auth/useUserData";
+import useHouseholdStore from "../../../stores/householdStore";
+import Spinner from "../../sharedcomponents/Spinner";
+import BoodschapRow from "./BoodschapRow";
+import useUserData from "../../../hooks/useUserData";
 import { Boodschap } from "../../../types/Types";
 
 const getBoodschappenOrder = (boodschappen: Boodschap[] | undefined) => {
@@ -63,9 +63,7 @@ const BoodschappenTable: React.FC = () => {
           </tbody>
         </table>
       ) : (
-        <p className="text-center py-4">
-          Geen boodschappen voor dit huishouden
-        </p>
+        <p className="text-center py-4">Dit lijstje is leeg</p>
       )}
     </div>
   );

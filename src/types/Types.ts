@@ -39,23 +39,42 @@ export interface Household {
 }
 
 export interface User {
-  emailAddress: string;
-  sub:string;
+  emailAddress?: string;
+  sub?:string;
   userUuid: string;
   firstName: string;
   lastName?: string; // Adding lastName as optional
-  households: string[];
+  households?: string[];
   defaultHousehold?: string;
 }
 
-export interface UserData {
+export interface OtherUserData {
   userUuid: string;
   emailAddress: string;
   firstName: string;
   lastName: string;
-  sub: string;
+  // sub: string;
   households: string[]; // Array of household UUIDs
   defaultHousehold: string;
   householdData: Household[];
+  // boodschapsData: Boodschap[];
+}
+
+
+export interface UserData extends OtherUserData {
   boodschapsData: Boodschap[];
+  // defaultHousehold: string;
+  sub: string;
+}
+
+type HouseholdMember = {
+  firstName: string;
+  lastName: string;
+  userUuid: string;
+}
+
+export interface HouseholdData {
+  householdUuid: string;
+  householdFullName: string;
+  householdMembers: HouseholdMember[];
 }

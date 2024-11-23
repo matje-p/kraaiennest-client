@@ -1,8 +1,8 @@
 import Header from "./header/Header";
 import BoodschappenTable from "./boodschappentable/BoodschappenTable";
 import styles from "./BoodschappenPage.module.scss";
-import useUserData from "../../auth/useUserData";
-import Spinner from "../spinner/Spinner";
+import useUserData from "../../hooks/useUserData";
+import Spinner from "../sharedcomponents/Spinner";
 
 const BoodschappenPage = () => {
   const {
@@ -35,9 +35,7 @@ const BoodschappenPage = () => {
     <>
       <Header />
       {!userData.boodschapsData?.length ? (
-        <p className={styles.geenBoodschappen}>
-          Geen boodschappen te doen voor dit huishouden
-        </p>
+        <p className={styles.geenBoodschappen}>Dit lijstje is leeg</p>
       ) : (
         <BoodschappenTable />
         // <p> test </p>

@@ -1,5 +1,5 @@
-import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
-import { Boodschap, NewBoodschap, User, UserData } from "../types/Types";
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
+import { Boodschap, HouseholdData, NewBoodschap, OtherUserData, UserData } from "../types/Types";
 
 export class APIClient {
     private axiosInstance: AxiosInstance;
@@ -8,15 +8,9 @@ export class APIClient {
     constructor(baseUrl: string, getToken: () => Promise<string>) {
         this.getToken = getToken;
         const baseURL = import.meta.env.VITE_API_URL + baseUrl;
-        
-        // console.group('API Client Initialization');
-        // console.log('Base URL:', baseURL);
-        // console.log('Environment:', import.meta.env.PROD ? 'production' : 'development');
-        // console.groupEnd();
 
         this.axiosInstance = axios.create({ baseURL });
 
-        // Request interceptor
         this.axiosInstance.interceptors.request.use(
             async (config) => {
                 const apiKey = import.meta.env.VITE_API_KEY;
@@ -27,56 +21,21 @@ export class APIClient {
                 try {
                     const token = await this.getToken();
                     config.headers.Authorization = `Bearer ${token}`;
-                    
-                    console.group('API Request');
-                    console.log('URL:', `${config.baseURL}${config.url}`);
-                    console.log('Method:', config.method?.toUpperCase());
-                    console.log('Headers:', {
-                        'x-api-key': 'Present',
-                        Authorization: 'Bearer [...]'
-                    });
-                    if (config.data) {
-                        console.log('Request Data:', config.data);
-                    }
-                    console.groupEnd();
                 } catch (error) {
-                    console.error('Token Error:', {
-                        error,
-                        timestamp: new Date().toISOString(),
-                        environment: import.meta.env.PROD ? 'production' : 'development'
-                    });
+                    // Handle error silently
                 }
                 return config;
             },
             (error) => {
-                console.error('Request Interceptor Error:', error);
                 return Promise.reject(error);
             }
         );
 
-        // Response interceptor
         this.axiosInstance.interceptors.response.use(
             (response: AxiosResponse) => {
-                console.group('API Response');
-                console.log('Status:', response.status);
-                console.log('URL:', response.config.url);
-                console.log('Data:', response.data);
-                console.log('Timestamp:', new Date().toISOString());
-                console.groupEnd();
                 return response;
             },
             (error: AxiosError) => {
-                console.group('API Error');
-                console.error('Error Details:', {
-                    status: error.response?.status,
-                    statusText: error.response?.statusText,
-                    url: error.config?.url,
-                    method: error.config?.method?.toUpperCase(),
-                    data: error.response?.data,
-                    timestamp: new Date().toISOString(),
-                    environment: import.meta.env.PROD ? 'production' : 'development'
-                });
-                console.groupEnd();
                 return Promise.reject(error);
             }
         );
@@ -89,16 +48,10 @@ export class APIClient {
             const response = await requestFn();
             return response.data;
         } catch (error) {
-            console.error('Request Failed:', {
-                error,
-                timestamp: new Date().toISOString(),
-                environment: import.meta.env.PROD ? 'production' : 'development'
-            });
             throw error;
         }
     }
 
-    // Boodschappen methods
     async unAddLatestBoodschap() {
         return this.handleRequest(() => 
             this.axiosInstance.patch('boodschappen/unaddlatest')
@@ -160,25 +113,28 @@ export class APIClient {
         );
     }
 
-    async getHouseholdUsers(householdUuid: string): Promise<User[]> {
-        return this.handleRequest<User[]>(() =>
-            this.axiosInstance.get(`households/users`, {
-                params: { householdUuid }
-            })
+    async getHouseholdData(householdUuid: string): Promise<HouseholdData> {
+        return this.handleRequest<HouseholdData>(() =>
+            this.axiosInstance.get(`households/${householdUuid}`)
         );
     }
-
+    
     async getUserData(): Promise<UserData | null> {
         try {
             return await this.handleRequest<UserData>(() =>
                 this.axiosInstance.get('users/me')
             );
         } catch (error) {
-            console.error('getUserData Error:', {
-                error,
-                timestamp: new Date().toISOString(),
-                environment: import.meta.env.PROD ? 'production' : 'development'
-            });
+            return null;
+        }
+    }
+
+    async getOtherUserData(userUuid:string): Promise<OtherUserData | null> {
+        try {
+            return await this.handleRequest<OtherUserData>(() =>
+                this.axiosInstance.get(`users/${userUuid}`)
+            );
+        } catch (error) {
             return null;
         }
     }

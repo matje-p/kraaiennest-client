@@ -15,7 +15,6 @@
   display: flex;
   justify-content: center; /* Center horizontally */
   margin-top: 0px; /* Fixed distance from the top */
-  margin-bottom:10px;
 }
 
 .profilePic{
@@ -30,8 +29,24 @@
 
 .accountName{
   font-size: 20px;
-  // font-weight: bold;
+  font-weight: bold;
   margin-top: 10px;
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.profileTableRow {
+  border-bottom: 1px solid #ccc; /* Adds a line under each row */
+  border-top: 1px solid #ccc; /* Adds a line under each row */
+  height: 50px; /* Set the height of each row */
+}
+
+.profileTable{
+  width:100%; /* Set the width of the table */
+  border-bottom: 1px solid #ccc; /* Adds a line under each row */
+  border-top: 1px solid #ccc; /* Adds a line under each row */
+}
+
+.chevron{
+  color: #999;
 }

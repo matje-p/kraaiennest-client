@@ -21,18 +21,6 @@ const AuthStateLogger: React.FC<AuthStateLoggerProps> = ({ children }) => {
 
   useEffect(() => {
     const envMode = import.meta.env.PROD ? "production" : "development";
-    // console.group(`Auth0 State (${envMode})`);
-    // console.log("isAuthenticated:", isAuthenticated);
-    // console.log("isLoading:", isLoading);
-    // console.log("User:", user);
-    // console.log("Current URL:", window.location.href);
-    // console.log("Origin:", window.location.origin);
-    // console.log("Pathname:", window.location.pathname);
-    // console.log(
-    //   "Search Params:",
-    //   new URLSearchParams(window.location.search).toString()
-    // );
-    // console.groupEnd();
 
     if (error) {
       console.error("Auth0 Error:", {
@@ -64,15 +52,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // Enhanced configuration logging
   useEffect(() => {
     const envMode = import.meta.env.PROD ? "production" : "development";
-    // console.group("Detailed Auth0 Configuration");
-    // console.log("Environment:", envMode);
-    // console.log("Domain:", envConfig.domain);
-    // console.log("Client ID:", envConfig.clientId?.substring(0, 6) + "...");
-    // console.log("Audience:", envConfig.audience);
-    // console.log("Redirect URI:", envConfig.redirectUri);
-    // console.log("API URL:", import.meta.env.VITE_API_URL);
-    // console.log("Full Current URL:", window.location.href);
-    // console.groupEnd();
 
     // Validate configuration
     const validationIssues = [];
@@ -94,22 +73,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const error = urlParams.get("error");
     const errorDescription = urlParams.get("error_description");
     const state = urlParams.get("state");
-
-    // console.group("Auth0 Redirect Callback");
-    // console.log("Timestamp:", new Date().toISOString());
-    // console.log("App State:", appState);
-    // console.log("Return To:", appState?.returnTo || window.location.pathname);
-    // console.log("URL Parameters:", {
-    //   error,
-    //   errorDescription,
-    //   state,
-    // });
-    // console.log("Current Location:", {
-    //   href: window.location.href,
-    //   origin: window.location.origin,
-    //   pathname: window.location.pathname,
-    // });
-    // console.groupEnd();
 
     if (error) {
       console.error("Auth0 Redirect Error:", {

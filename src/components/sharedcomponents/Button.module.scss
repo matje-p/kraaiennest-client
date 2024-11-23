@@ -1,0 +1,15 @@
+.Button {
+  margin: 5px 0px 0px 0px;
+  background: transparent;
+  border: none;
+  
+  &:hover,
+  &:focus,
+  &:active,
+  &:focus-visible {
+      background: transparent !important;
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+  }
+}

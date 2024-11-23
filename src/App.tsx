@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import useUserData from "./auth/useUserData";
+import useUserData from "./hooks/useUserData";
 
 const App = () => {
   const {
@@ -21,7 +21,6 @@ const App = () => {
 
   console.log("Rendering App");
   console.log("VITE_API_URL", import.meta.env.VITE_API_URL);
-  console.log("User", userData?.emailAddress);
 
   return (
     <>
