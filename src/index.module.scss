@@ -22,12 +22,8 @@
   width: 100%;
   position: relative;
   background-color: red;
-  // Remove padding-top and handle safe area differently
-  min-height: calc(100dvh + env(safe-area-inset-top));
   padding: 0;
   box-sizing: border-box;
-  // Ensure background extends into safe areas
-  -webkit-fill-available: safe-area-inset-top;
 }
 
 .body > * {
