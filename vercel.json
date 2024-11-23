@@ -1,27 +1,5 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "dist/**",
-        "use": "@vercel/static"
-      }
-    ],
-    "routes": [
-      { 
-        "src": "/assets/(.*)", 
-        "dest": "/assets/$1" 
-      },
-      { 
-        "src": "/(.+\\.[a-zA-Z]+)$", 
-        "dest": "/$1" 
-      },
-      { 
-        "handle": "filesystem" 
-      },
-      { 
-        "src": "/(.*)", 
-        "dest": "/index.html",
-        "continue": true
-      }
-    ]
-  }
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
