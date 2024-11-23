@@ -45,12 +45,23 @@ const BoodschapDetails: React.FC<BoodschapDetailsProps> = ({ boodschapId }) => {
   return (
     <div className="col-12">
       <span id="meta" className="text-muted">
-        {boodschap?.done
-          ? `Afgevinkt door ${userData?.firstName} op ${dateDoneString}`
-          : boodschap?.userChangedUuid &&
-            boodschap?.userChangedUuid !== boodschap?.userAddedUuid
-          ? `Gewijzigd door ${boodschap?.userChangedFirstname} op ${dateAddedString}`
-          : `Toegevoegd door ${boodschap?.userAddedFirstname} op ${dateAddedString}`}
+        {boodschap?.done ? (
+          <>
+            Afgevinkt door {userData?.firstName}
+            <br />
+            op {dateDoneString}
+          </>
+        ) : boodschap?.userChangedUuid &&
+          boodschap?.userChangedUuid !== boodschap?.userAddedUuid ? (
+          <>
+            Gewijzigd door {boodschap?.userChangedFirstname} op{" "}
+            {dateAddedString}
+          </>
+        ) : (
+          <>
+            Toegevoegd door {boodschap?.userAddedFirstname} op {dateAddedString}
+          </>
+        )}
       </span>
     </div>
   );
