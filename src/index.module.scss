@@ -17,12 +17,17 @@
 .root {
   display: flex;
   justify-content: center;
-  min-height: 100dvh; // Changed from 100vh for better mobile support
-  // Enable proper safe area behavior
-  padding-top: env(safe-area-inset-top, 0);
+  min-height: 100dvh;
   margin: 0;
   width: 100%;
-  position: relative; // This helps with absolute positioned children if needed
+  position: relative;
+  background-color: red;
+  // Remove padding-top and handle safe area differently
+  min-height: calc(100dvh + env(safe-area-inset-top));
+  padding: 0;
+  box-sizing: border-box;
+  // Ensure background extends into safe areas
+  -webkit-fill-available: safe-area-inset-top;
 }
 
 .body > * {
