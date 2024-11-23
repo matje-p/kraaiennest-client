@@ -1,25 +1,27 @@
 {
-    "rewrites": [
-      { 
-        "source": "/(.*)", 
-        "destination": "/index.html",
-        "has": [
-          {
-            "type": "header",
-            "key": "x-vercel-draft-status"
-          }
-        ]
+    "version": 2,
+    "builds": [
+      {
+        "src": "dist/**",
+        "use": "@vercel/static"
       }
     ],
-    "headers": [
-      {
-        "source": "/(.*)",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "no-cache, no-store, must-revalidate"
-          }
-        ]
+    "routes": [
+      { 
+        "src": "/assets/(.*)", 
+        "dest": "/assets/$1" 
+      },
+      { 
+        "src": "/(.+\\.[a-zA-Z]+)$", 
+        "dest": "/$1" 
+      },
+      { 
+        "handle": "filesystem" 
+      },
+      { 
+        "src": "/(.*)", 
+        "dest": "/index.html",
+        "continue": true
       }
     ]
   }
