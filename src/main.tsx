@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import "./global.scss";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
@@ -25,7 +26,7 @@ const MainApp = () => {
         </QueryClientProvider>
       </div>
     </div>
-  ); 
+  );
 };
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
