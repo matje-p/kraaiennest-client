@@ -1,5 +1,25 @@
 {
     "rewrites": [
-      { "source": "/(.*)", "destination": "/index.html" }
+      { 
+        "source": "/(.*)", 
+        "destination": "/index.html",
+        "has": [
+          {
+            "type": "header",
+            "key": "x-vercel-draft-status"
+          }
+        ]
+      }
+    ],
+    "headers": [
+      {
+        "source": "/(.*)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, no-store, must-revalidate"
+          }
+        ]
+      }
     ]
   }
