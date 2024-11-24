@@ -6,6 +6,7 @@ import useUserData from "../../../hooks/useUserData";
 import useChangeStore from "../../../stores/changeLogStore";
 import useHouseholdStore from "../../../stores/householdStore";
 import styles from "./DropdownMenu.module.scss";
+import Picture from "../../sharedcomponents/Picture";
 
 const DropdownMenu = () => {
   const { data: userData } = useUserData();
@@ -40,7 +41,7 @@ const DropdownMenu = () => {
   return (
     <div className="dropdown">
       <button
-        className={`btn btn-primary btn-sm ${styles.dropdownButton}`}
+        className={`btn btn-primary btn-sm d-flex align-items-center ${styles.dropdownButton}`}
         type="button"
         id="mobileDropdownMenuButton"
         data-bs-toggle="dropdown"
@@ -49,45 +50,73 @@ const DropdownMenu = () => {
         <i className="bi bi-list fs-3"></i>
       </button>
       <ul
-        className="dropdown-menu dropdown-menu-end"
+        className="dropdown-menu dropdown-menu-end p-2"
+        style={{ minWidth: "240px" }}
         aria-labelledby="mobileDropdownMenuButton"
       >
-        <li>
-          <Link to={`/user/${userData?.userUuid}`} className="dropdown-item">
-            <i className="bi bi-person-circle fs-5 me-2"></i>
-            {userData?.firstName}
+        <li className="my-n1">
+          <Link
+            to={`/user/${userData?.userUuid}`}
+            className={`dropdown-item d-flex align-items-center py-1 ${styles.dropdownItem}`}
+          >
+            <div className="d-flex align-items-center w-100">
+              <div className="col-3 d-flex justify-content-center">
+                <Picture type="user" uuid={userData?.userUuid} size="small" />
+              </div>
+              <div className="col-9">
+                <span>{userData?.firstName}</span>
+              </div>
+            </div>
           </Link>
         </li>
-        <li>
-          <>
-            <button
-              className="dropdown-item"
-              onClick={handleUndo}
-              disabled={!lastBoodschap}
-            >
-              <i className="bi bi-arrow-counterclockwise fs-5 me-1"></i> Maak
-              ongedaan
-            </button>
-          </>
+        <li className="my-n1">
+          <button
+            className={`dropdown-item d-flex align-items-center py-1 ${styles.dropdownItem}`}
+            onClick={handleUndo}
+            disabled={!lastBoodschap}
+          >
+            <div className="d-flex align-items-center w-100">
+              <div className="col-3 d-flex justify-content-center">
+                <i className="bi bi-arrow-counterclockwise fs-5"></i>
+              </div>
+              <div className="col-9">
+                <span>Maak ongedaan</span>
+              </div>
+            </div>
+          </button>
         </li>
-        <li>
+        <li className="my-n1">
           <Link
             to={`/household/${household?.householdUuid}`}
-            className="dropdown-item"
+            className={`dropdown-item d-flex align-items-center py-1 ${styles.dropdownItem}`}
           >
-            <i className="bi bi-house fs-5 me-2"></i>
-            Naar huishouden
+            <div className="d-flex align-items-center w-100">
+              <div className="col-3 d-flex justify-content-center">
+                <i className="bi bi-house fs-5"></i>
+              </div>
+              <div className="col-9">
+                <span>Naar huishouden</span>
+              </div>
+            </div>
           </Link>
         </li>
-        <li>
-          <button className="dropdown-item" onClick={handleLogout}>
-            <i className="bi bi-box-arrow-right fs-5 me-2"></i>
-            Log uit
+        <li className="my-n1">
+          <button
+            className={`dropdown-item d-flex align-items-center py-1 ${styles.dropdownItem}`}
+            onClick={handleLogout}
+          >
+            <div className="d-flex align-items-center w-100">
+              <div className="col-3 d-flex justify-content-center">
+                <i className="bi bi-box-arrow-right fs-5"></i>
+              </div>
+              <div className="col-9">
+                <span>Log uit</span>
+              </div>
+            </div>
           </button>
         </li>
       </ul>
     </div>
   );
 };
-
 export default DropdownMenu;

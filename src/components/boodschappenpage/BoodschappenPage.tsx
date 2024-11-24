@@ -14,7 +14,6 @@ const BoodschappenPage = () => {
   if (userDataLoading || !userData) {
     return (
       <>
-        {/* <Header /> */}
         <Spinner />
       </>
     );

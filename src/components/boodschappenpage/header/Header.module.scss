@@ -1,11 +1,6 @@
-@import "../../../../node_modules/bootstrap/scss/functions";
-@import "../../../../node_modules/bootstrap/scss/variables";
 
 .header {
     min-height: 60px;
-    color: $blue-700;
-    // background-color: $gray-200;
-    // background-image: linear-gradient(to right, #6685D6, #084298);
     background-color: #084298
   }
 
@@ -17,19 +12,17 @@
   width: 35px;
 }
 
-.brandIcon {
-  width: 20px;
-  color: white;
-}
 
 .brandText {
   color: white;
+  margin-top:-8px;
+  margin-bottom:3px;
 }
 
-.headerButton {
-  width: 40px;
-  height: 40px;
-  border-radius: 5px;
-  border: none;
-  margin-right: 5px;
-}
+// .headerButton {
+//   // width: 40px;
+//   // height: 40px;
+//   // border-radius: 5px;
+//   // // border: none;
+//   // // margin-right: 1px;
+// }

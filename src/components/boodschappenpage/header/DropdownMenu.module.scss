@@ -1,6 +1,8 @@
 .dropdownButton{
     background-color: transparent !important;
     border-color: transparent !important;
+    padding-left: 0rem !important;
+    padding-right: 0rem !important;
 
     &:hover,
     &:focus,
@@ -12,4 +14,25 @@
         border-color: transparent !important;
         box-shadow: none !important;
     }   
+}
+
+// .dropdownItem{
+//     padding:0px;
+// }
+
+.dropdownItem {
+    // Reset button styles
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    padding: 0rem !important; // top right bottom left
+}
+
+.menuItem {
+    margin-top: -4px; // Reduce space between items
+    margin-bottom: -4px;
+    // Or use padding instead
+    // padding-top: 2px;
+    // padding-bottom: 2px;
 }
