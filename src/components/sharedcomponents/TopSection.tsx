@@ -32,7 +32,7 @@ const TopSection: React.FC<TopSectionProps> = ({ type }) => {
 
   return (
     <div>
-      <SimpleHeader settings={false} />
+      <SimpleHeader />
       <div>
         <div className={styles.centerContainer}>
           <Picture type={type} uuid={uuid} size="large" />

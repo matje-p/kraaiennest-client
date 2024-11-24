@@ -1,11 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./SimpleHeader.module.scss";
 
-interface SimpleHeaderProps {
-  settings?: boolean;
-}
-
-const SimpleHeader = ({ settings = false }: SimpleHeaderProps) => {
+const SimpleHeader = () => {
   const navigate = useNavigate();
 
   const handleBack = () => {
