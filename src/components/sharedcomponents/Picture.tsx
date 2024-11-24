@@ -3,7 +3,7 @@ import styles from "./Picture.module.scss";
 interface ProfilePictureProps {
   type: "user" | "household";
   uuid?: string;
-  size?: "small" | "medium" | "large";
+  size?: "small" | "medium" | "large" | "menu";
   className?: string;
 }
 

@@ -61,7 +61,7 @@ const DropdownMenu = () => {
           >
             <div className="d-flex align-items-center w-100">
               <div className="col-3 d-flex justify-content-center">
-                <Picture type="user" uuid={userData?.userUuid} size="small" />
+                <Picture type="user" uuid={userData?.userUuid} size="menu" />
               </div>
               <div className="col-9">
                 <span>{userData?.firstName}</span>

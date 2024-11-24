@@ -1,6 +1,6 @@
 import BackButton from "./BackButton";
 import SettingsButton from "./SettingsButton";
-import HomeButton from "./homeButton";
+import HomeButton from "./HomeButton";
 
 interface SimpleHeaderProps {
   settings?: boolean;

@@ -1,0 +1,15 @@
+  .centerContainer {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    margin-top: 0px; /* Fixed distance from the top */
+    margin-bottom:15px;
+  }
+  
+  
+  .accountName{
+    font-size: 30px;
+    // font-weight: bold;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }

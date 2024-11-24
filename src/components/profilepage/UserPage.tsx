@@ -1,8 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import useProfilePageData from "../../hooks/useProfilePageData";
 import useUserData from "../../hooks/useUserData";
-import Picture from "../sharedcomponents/Picture";
-import SimpleHeader from "../sharedcomponents/SimpleHeader";
+import TopSection from "../sharedcomponents/TopSection";
 import styles from "./UserPage.module.scss";
 
 const UserPage = () => {
@@ -23,16 +22,7 @@ const UserPage = () => {
 
   return (
     <div className={`container ${styles.profilePageBg}`}>
-      <SimpleHeader settings={false} />
-      {/* <SimpleHeader settings={ownProfile} /> */}
-      <div>
-        <div className={`${styles.centerContainer}`}>
-          <Picture type="user" uuid={userPageData?.userUuid} size="large" />
-        </div>
-        <div className={`${styles.centerContainer}`}>
-          <h1 className={`${styles.accountName}`}>{userPageData?.firstName}</h1>
-        </div>
-      </div>
+      <TopSection type="user" />
       <div>
         <table className={`${styles.profileTable} table`}>
           <tbody>

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import styles from "./Button.module.scss";
 
-const homeButton = () => {
+const HomeButton = () => {
   return (
     <>
       <Link to="/" className={`btn btn-primary ${styles.Button}`}>
@@ -11,4 +11,4 @@ const homeButton = () => {
   );
 };
 
-export default homeButton;
+export default HomeButton;
