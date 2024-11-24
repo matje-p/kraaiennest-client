@@ -11,16 +11,16 @@ const BoodschappenPage = () => {
     error: userDataError,
   } = useUserData();
 
-  if (userDataLoading) {
+  if (userDataLoading || !userData) {
     return (
       <>
-        <Header />
+        {/* <Header /> */}
         <Spinner />
       </>
     );
   }
 
-  if (userDataError || !userData) {
+  if (userDataError) {
     // Added check for undefined userData
     return (
       <>
@@ -34,12 +34,7 @@ const BoodschappenPage = () => {
   return (
     <>
       <Header />
-      {!userData.boodschapsData?.length ? (
-        <p className={styles.geenBoodschappen}>Dit lijstje is leeg</p>
-      ) : (
-        <BoodschappenTable />
-        // <p> test </p>
-      )}
+      <BoodschappenTable />
     </>
   );
 };
