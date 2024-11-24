@@ -4,13 +4,14 @@ import useHouseholdData from "../../hooks/useHouseholdData";
 import useUserData from "../../hooks/useUserData"; // Assuming you have this
 import { useParams } from "react-router-dom";
 import styles from "./TopSection.module.scss";
+import useProfilePageData from "../../hooks/useProfilePageData";
 
 interface TopSectionProps {
   type: "household" | "user";
 }
 
 const TopSection: React.FC<TopSectionProps> = ({ type }) => {
-  const { householdUuid } = useParams<{
+  const { householdUuid, userUuid } = useParams<{
     householdUuid?: string;
     userUuid?: string;
   }>();
@@ -18,7 +19,9 @@ const TopSection: React.FC<TopSectionProps> = ({ type }) => {
   const { data: householdData } = useHouseholdData(
     type === "household" ? householdUuid || "" : ""
   );
-  const { data: userData } = useUserData();
+  const { data: userData } = useProfilePageData(
+    type === "user" ? userUuid || "" : ""
+  );
 
   const title =
     type === "household"
