@@ -1,5 +1,4 @@
 import { Link, useNavigate } from "react-router-dom";
-import SettingsButton from "./SettingsButton";
 import styles from "./SimpleHeader.module.scss";
 
 interface SimpleHeaderProps {
@@ -23,7 +22,6 @@ const SimpleHeader = ({ settings = false }: SimpleHeaderProps) => {
           <i className="bi bi-arrow-left fs-3"></i>
         </button>
         <div>
-          {settings && <SettingsButton />}
           <Link to="/" className={`btn btn-primary ${styles.Button}`}>
             <i className="bi bi-house fs-3"></i>
           </Link>
