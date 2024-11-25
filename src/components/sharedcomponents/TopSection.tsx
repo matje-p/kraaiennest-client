@@ -1,10 +1,9 @@
-import SimpleHeader from "./SimpleHeader";
-import Picture from "./Picture";
-import useHouseholdData from "../../hooks/useHouseholdData";
-import useUserData from "../../hooks/useUserData"; // Assuming you have this
 import { useParams } from "react-router-dom";
-import styles from "./TopSection.module.scss";
+import useHouseholdData from "../../hooks/useHouseholdData";
 import useProfilePageData from "../../hooks/useProfilePageData";
+import Picture from "./Picture";
+import SimpleHeader from "./SimpleHeader";
+import styles from "./TopSection.module.scss";
 
 interface TopSectionProps {
   type: "household" | "user";
