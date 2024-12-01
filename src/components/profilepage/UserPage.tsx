@@ -61,15 +61,7 @@ const UserPage = () => {
                         style={{ color: "black", textDecoration: "none" }}
                       >
                         <div className="d-flex justify-content-between">
-                          <div>
-                            {household.name}{" "}
-                            {userUuid === userData?.userUuid &&
-                            household.householdUuid ===
-                              userPageData?.defaultHousehold &&
-                            householdNames.length > 1
-                              ? "(default)"
-                              : ""}
-                          </div>
+                          <div>{household.name}</div>
                           <i
                             className={`bi bi-lg bi-chevron-right fs-4 ${styles.chevron}`}
                           ></i>

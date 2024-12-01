@@ -138,4 +138,12 @@ export class APIClient {
             return null;
         }
     }
+
+    async setDefaultHousehold(householdUuid: string) {
+        return this.handleRequest(() =>
+            this.axiosInstance.patch('users/me/default-household', {
+                householdUuid
+            })
+        );
+    }
 }

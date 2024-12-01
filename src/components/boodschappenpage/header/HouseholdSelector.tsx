@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "./HouseholdSelector.module.scss";
 import useHouseholdStore from "../../../stores/householdStore";
 import useUserData from "../../../hooks/useUserData";
+import useUpdateDefaultHousehold from "../../../hooks/useUpdateDefaultHousehold";
 import { Household } from "../../../types/Types";
 
 const HouseholdSelector: React.FC = () => {
@@ -12,6 +13,7 @@ const HouseholdSelector: React.FC = () => {
     error: userDataError,
   } = useUserData();
   const { household, setHousehold } = useHouseholdStore();
+  const updateDefaultHousehold = useUpdateDefaultHousehold();
 
   // Initialize with default household when data is loaded
   useEffect(() => {
@@ -19,7 +21,6 @@ const HouseholdSelector: React.FC = () => {
       const defaultHouseholdData = userData.householdData.find(
         (h: Household) => h.householdUuid === userData.defaultHousehold
       );
-
       if (defaultHouseholdData) {
         setHousehold({
           householdUuid: defaultHouseholdData.householdUuid,
@@ -32,6 +33,27 @@ const HouseholdSelector: React.FC = () => {
       }
     }
   }, [userData, household, setHousehold]);
+
+  const handleHouseholdChange = (selectedHouseholdUuid: string) => {
+    const selectedHousehold = userData?.householdData.find(
+      (h: Household) => h.householdUuid === selectedHouseholdUuid
+    );
+
+    if (selectedHousehold) {
+      // Update the store
+      setHousehold({
+        householdUuid: selectedHousehold.householdUuid,
+        name: selectedHousehold.name,
+      });
+
+      // Update the default household in the backend
+      updateDefaultHousehold.mutate({
+        householdUuid: selectedHousehold.householdUuid,
+      });
+
+      console.log("Updated household in store:", selectedHousehold);
+    }
+  };
 
   if (userDataLoading) {
     console.log("Household data is loading...");
@@ -56,7 +78,6 @@ const HouseholdSelector: React.FC = () => {
     );
   }
 
-  // Find currently selected household
   const currentHousehold = userData.householdData.find(
     (h: Household) => h.householdUuid === household?.householdUuid
   );
@@ -65,20 +86,7 @@ const HouseholdSelector: React.FC = () => {
     <select
       id="location-selector"
       value={currentHousehold?.householdUuid || ""}
-      onChange={(e) => {
-        const selectedHousehold = userData.householdData.find(
-          (h: Household) => h.householdUuid === e.target.value
-        );
-        console.log("User selected household:", selectedHousehold);
-
-        if (selectedHousehold) {
-          setHousehold({
-            householdUuid: selectedHousehold.householdUuid,
-            name: selectedHousehold.name,
-          });
-          console.log("Updated household in store:", selectedHousehold);
-        }
-      }}
+      onChange={(e) => handleHouseholdChange(e.target.value)}
       className={`form-select ${styles.HouseholdSelector}`}
       style={{ color: "black" }}
     >
