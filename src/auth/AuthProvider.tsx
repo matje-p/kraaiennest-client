@@ -16,6 +16,12 @@ interface EnvConfig {
   redirectUri: string;
 }
 
+const supportedLanguages = ["en-US", "nl-NL"]; // Add languages you support
+const browserLanguage = navigator.language;
+const userLanguage = supportedLanguages.includes(browserLanguage)
+  ? browserLanguage
+  : "en-US";
+
 const AuthStateLogger: React.FC<AuthStateLoggerProps> = ({ children }) => {
   const { isAuthenticated, isLoading, user, error } = useAuth0();
 
@@ -112,6 +118,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       authorizationParams={{
         redirect_uri: envConfig.redirectUri,
         audience: envConfig.audience,
+        ui_locales: userLanguage,
       }}
       onRedirectCallback={onRedirectCallback}
       cacheLocation="localstorage" // Added for better token persistence
